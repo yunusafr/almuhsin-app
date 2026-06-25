@@ -1,34 +1,71 @@
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
-export default function DataTable({ columns, data }) {
+import DataTableEmpty from "./data-table-empty";
+
+export default function DataTable({ data, columns }) {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
-    <div className="rounded-2xl border bg-white">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {columns.map((column) => (
-              <TableHead key={column.key}>{column.label}</TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {data.map((row, index) => (
-            <TableRow key={index}>
-              {columns.map((column) => (
-                <TableCell key={column.key}>{row[column.key]}</TableCell>
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id} className="border-b">
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className="
+                        px-6
+                        py-4
+                        text-left
+                        text-sm
+                        font-semibold
+                      "
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
+                </th>
               ))}
-            </TableRow>
+            </tr>
           ))}
-        </TableBody>
-      </Table>
+        </thead>
+
+        <tbody>
+          {data.length === 0 ? (
+            <tr>
+              <td colSpan={columns.length}>
+                <DataTableEmpty />
+              </td>
+            </tr>
+          ) : (
+            table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className="
+                    border-b
+                    hover:bg-muted/40
+                  "
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="px-6 py-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }

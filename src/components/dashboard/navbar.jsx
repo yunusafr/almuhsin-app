@@ -1,22 +1,26 @@
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+import ThemeToggle from "./theme-toggle";
+import UserDropdown from "./user-dropdown";
+
+import { useSidebarStore } from "@/app/store/sidebar-store";
+
 export default function Navbar() {
-  const { theme, setTheme } = useTheme();
+  const { toggle } = useSidebarStore();
 
   return (
-    <header className="h-16 border-b bg-white px-6 flex items-center justify-between">
-      <h2 className="font-semibold">Dashboard</h2>
-
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+    <header className="h-16 border-b bg-white flex items-center justify-between px-6">
+      <Button variant="ghost" size="icon" onClick={toggle}>
+        <Menu size={20} />
       </Button>
+
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
+
+        <UserDropdown />
+      </div>
     </header>
   );
 }

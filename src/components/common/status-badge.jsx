@@ -1,15 +1,27 @@
 import { Badge } from "@/components/ui/badge";
 
-export default function StatusBadge({ status }) {
-  const variants = {
-    aktif: "bg-green-100 text-green-700",
-    nonaktif: "bg-red-100 text-red-700",
-    pending: "bg-yellow-100 text-yellow-700",
-    lunas: "bg-green-100 text-green-700",
-    sebagian: "bg-orange-100 text-orange-700",
-  };
+const variants = {
+  active: "bg-green-100 text-green-700 border-green-200",
 
+  pending: "bg-amber-100 text-amber-700 border-amber-200",
+
+  danger: "bg-red-100 text-red-700 border-red-200",
+
+  info: "bg-blue-100 text-blue-700 border-blue-200",
+};
+
+export default function StatusBadge({ children, variant = "active" }) {
   return (
-    <Badge className={variants[status?.toLowerCase()] || ""}>{status}</Badge>
+    <Badge
+      className={`
+      rounded-full
+      px-3
+      py-1
+      border
+      ${variants[variant]}
+      `}
+    >
+      {children}
+    </Badge>
   );
 }

@@ -1,19 +1,53 @@
-import StatCard from "@/components/dashboard/stat-card";
+import { Users, Wallet, UserCog, ClipboardCheck } from "lucide-react";
+
+import PageHeader from "@/components/common/page-header";
+import StatCard from "@/components/common/stat-card";
+import SectionCard from "@/components/common/section-card";
 
 export default function DashboardPage() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+    <div className="space-y-6">
+      <PageHeader
+        title="Dashboard"
+        description="Ringkasan aktivitas pondok pesantren"
+      />
 
-      <div className="grid md:grid-cols-4 gap-4">
-        <StatCard title="Jumlah Santri" value="1.250" />
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          title="Jumlah Santri"
+          value="1.250"
+          trend="+12%"
+          icon={Users}
+        />
 
-        <StatCard title="Jumlah Asatidz" value="45" />
+        <StatCard
+          title="Jumlah Asatidz"
+          value="45"
+          trend="+5%"
+          icon={UserCog}
+        />
 
-        <StatCard title="Presensi Hari Ini" value="1.120" />
+        <StatCard
+          title="Presensi Hari Ini"
+          value="1.120"
+          trend="+8%"
+          icon={ClipboardCheck}
+        />
 
-        <StatCard title="Pembayaran Bulan Ini" value="Rp 54 Juta" />
+        <StatCard
+          title="Pembayaran"
+          value="Rp54jt"
+          trend="+15%"
+          icon={Wallet}
+        />
       </div>
+
+      <SectionCard
+        title="Aktivitas Terbaru"
+        description="Aktivitas pondok hari ini"
+      >
+        <p className="text-muted-foreground">Belum ada aktivitas.</p>
+      </SectionCard>
     </div>
   );
 }
