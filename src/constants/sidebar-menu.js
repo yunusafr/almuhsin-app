@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 
 export const sidebarMenus = {
-  super_admin: [
+  "Super Admin": [
     {
       title: "Dashboard",
       path: "/app",
@@ -48,7 +48,7 @@ export const sidebarMenus = {
     },
   ],
 
-  asatidz: [
+  Asatidz: [
     {
       title: "Dashboard",
       path: "/app",
@@ -62,7 +62,7 @@ export const sidebarMenus = {
     },
   ],
 
-  keamanan: [
+  Keamanan: [
     {
       title: "Dashboard",
       path: "/app",
@@ -82,7 +82,7 @@ export const sidebarMenus = {
     },
   ],
 
-  bendahara: [
+  Bendahara: [
     {
       title: "Dashboard",
       path: "/app",

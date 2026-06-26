@@ -3,6 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 import PublicLayout from "@/layouts/public-layout";
 import DashboardLayout from "@/layouts/dashboard-layout";
 
+import ProtectedRoute from "@/app/router/protected-route";
+
 import LandingPage from "@/pages/public/landing-page";
 import LoginPage from "@/pages/auth/login-page";
 import DashboardPage from "@/pages/dashboard/dashboard-page";
@@ -27,7 +29,11 @@ export const router = createBrowserRouter([
 
   {
     path: "/app",
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

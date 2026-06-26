@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 import { sidebarMenus } from "@/constants/sidebar-menu";
-import { dummyUser } from "@/constants/dummy-user";
-
+import useAuthStore from "@/features/auth/stores/auth-store";
 import { useSidebarStore } from "@/app/store/sidebar-store";
 
 import AppLogo from "./app-logo";
@@ -10,20 +9,32 @@ import AppLogo from "./app-logo";
 export default function Sidebar() {
   const { collapsed } = useSidebarStore();
 
-  const menus = sidebarMenus[dummyUser.role];
+  const user = useAuthStore((s) => s.user);
+  const roles = useAuthStore((s) => s.roles);
+
+  const role = roles?.[0] ?? "Super Admin";
+
+  const menus = sidebarMenus[role] ?? [];
 
   return (
     <aside
       className={`
-    relative h-screen
-    border-r border-green-500/30
-    bg-gradient-to-b from-green-600 to-green-700
-    text-white
-    shadow-2xl
-    transition-all
-    duration-300
-    ${collapsed ? "w-20" : "w-72"}
-  `}
+hidden
+lg:flex
+flex-col
+h-screen
+border-r
+border-green-500/20
+bg-gradient-to-b
+from-green-700
+via-green-600
+to-green-700
+transition-all
+duration-300
+shadow-2xl
+text-white
+${collapsed ? "w-20" : "w-72"}
+`}
     >
       {/* Header */}
       <div className="flex h-16 items-center border-b border-white/10 px-5">
@@ -71,15 +82,13 @@ export default function Sidebar() {
 
       {/* Footer */}
       {!collapsed && (
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="absolute bottom-4 px-3 py-4 space-y-2 w-70">
           <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-md">
             <p className="text-xs text-green-100">Logged in as</p>
 
-            <h3 className="mt-1 font-semibold">{dummyUser.name}</h3>
+            <h3 className="mt-1 font-semibold">{user?.name}</h3>
 
-            <p className="text-xs capitalize text-green-100">
-              {dummyUser.role}
-            </p>
+            <p className="text-xs capitalize text-green-100">{role}</p>
           </div>
         </div>
       )}
