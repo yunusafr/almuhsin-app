@@ -109,70 +109,15 @@ export default function Navbar() {
             {/* Mobile */}
 
             <Button
-              size="icon"
-              variant="ghost"
-              className="lg:hidden"
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? <X /> : <Menu />}
-            </Button>
+                asChild
+                className="lg:hidden rounded-xl bg-green-600 hover:bg-green-700 w-20"
+              >
+                <Link to="/login">Login</Link>
+              </Button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-
-      <div
-        className={`fixed left-0 top-20 z-40 w-full overflow-hidden border-b bg-white transition-all duration-300 dark:border-slate-800 dark:bg-slate-950 lg:hidden ${
-          mobileOpen ? "max-h-[500px]" : "max-h-0"
-        }`}
-      >
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex flex-col gap-5">
-            {menus.map((item) => (
-              <a
-                key={item.title}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="text-base font-medium text-slate-700 transition hover:text-green-600 dark:text-slate-200"
-              >
-                {item.title}
-              </a>
-            ))}
-
-            <div className="mt-4 flex gap-3">
-              <Button variant="outline" asChild className="flex-1 rounded-xl">
-                <Link to="/login">Login</Link>
-              </Button>
-
-              <Button
-                asChild
-                className="flex-1 rounded-xl bg-green-600 hover:bg-green-700"
-              >
-                <Link to="/login">Mulai</Link>
-              </Button>
-            </div>
-
-            <Button
-              variant="ghost"
-              className="justify-start rounded-xl"
-              onClick={() => setDark(!dark)}
-            >
-              {dark ? (
-                <>
-                  <Sun size={18} className="mr-2" />
-                  Light Mode
-                </>
-              ) : (
-                <>
-                  <Moon size={18} className="mr-2" />
-                  Dark Mode
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      </div>
     </>
   );
 }

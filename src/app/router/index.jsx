@@ -9,6 +9,8 @@ import LandingPage from "@/pages/public/landing-page";
 import LoginPage from "@/pages/auth/login-page";
 import DashboardPage from "@/pages/dashboard/dashboard-page";
 import SantriPage from "@/pages/santri/santri-page";
+import AcademicYearPage from "@/pages/academic-year/academic-year-page";
+
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path: "santri",
         element: <SantriPage />,
+      },
+            {
+        path: "tapel",
+        element: <AcademicYearPage />,
       },
     ],
   },

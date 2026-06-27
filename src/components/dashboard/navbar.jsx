@@ -6,9 +6,12 @@ import { Input } from "@/components/ui/input";
 import UserDropdown from "./user-dropdown";
 
 import { useSidebarStore } from "@/app/store/sidebar-store";
+import useAuthStore from "@/features/auth/stores/auth-store";
 
 export default function Navbar() {
   const { toggle } = useSidebarStore();
+    const user = useAuthStore((s) => s.user);
+  const roles = useAuthStore((s) => s.roles);
 
   return (
     <header className="sticky top-0 z-40 h-16 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -25,7 +28,7 @@ export default function Navbar() {
           </Button>
 
           <div className="hidden xl:block">
-            <h2 className="font-semibold">Dashboard</h2>
+            <h2 className="font-semibold">Halo, {user?.name} </h2>
 
             <p className="text-xs text-muted-foreground">
               Selamat datang kembali

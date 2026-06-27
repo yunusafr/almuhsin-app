@@ -1,4 +1,4 @@
-import axios from "./axios";
+import axios from "@/services/api/axios";
 
 export const loginRequest = async (payload) => {
   const { data } = await axios.post("/login", payload);

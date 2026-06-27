@@ -8,20 +8,29 @@ import {
 
 import { Textarea } from "@/components/ui/textarea";
 
-export default function FormTextarea({ control, name, label, placeholder }) {
+export default function FormTextarea({
+  control,
+  name,
+  label,
+  placeholder,
+  rows = 4,
+  disabled = false,
+}) {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {label && <FormLabel>{label}</FormLabel>}
 
           <FormControl>
             <Textarea
-              placeholder={placeholder}
               {...field}
-              className="rounded-2xl"
+              rows={rows}
+              placeholder={placeholder}
+              disabled={disabled}
+              className="resize-none rounded-xl"
             />
           </FormControl>
 

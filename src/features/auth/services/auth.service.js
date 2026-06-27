@@ -11,3 +11,7 @@ export const me = async () => {
 
   return data.data;
 };
+
+export const logout = async () => {
+  const { data } = await api.post("/logout", payload);
+};

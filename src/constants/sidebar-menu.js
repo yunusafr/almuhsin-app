@@ -18,6 +18,12 @@ export const sidebarMenus = {
     },
 
     {
+      title: "Tahun Ajaran",
+      path: "/app/tapel",
+      icon: GraduationCap,
+    },
+
+    {
       title: "Santri",
       path: "/app/santri",
       icon: Users,

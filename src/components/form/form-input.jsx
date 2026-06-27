@@ -14,6 +14,7 @@ export default function FormInput({
   label,
   placeholder,
   type = "text",
+  disabled = false,
 }) {
   return (
     <FormField
@@ -21,14 +22,19 @@ export default function FormInput({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {label && (
+            <FormLabel>
+              {label}
+            </FormLabel>
+          )}
 
           <FormControl>
             <Input
+              {...field}
               type={type}
               placeholder={placeholder}
-              {...field}
-              className="h-11 rounded-2xl"
+              disabled={disabled}
+              className="h-11 rounded-xl"
             />
           </FormControl>
 

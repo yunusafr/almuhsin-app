@@ -1,15 +1,30 @@
-export default function FormSection({ title, description, children }) {
+export default function FormSection({
+  title,
+  description,
+  children,
+  className = "",
+}) {
   return (
-    <div className="p-6 border-b last:border-b-0">
-      <div className="mb-6">
-        <h3 className="font-semibold text-lg">{title}</h3>
+    <section
+      className={`rounded-3xl border bg-card p-6 shadow-sm ${className}`}
+    >
+      {(title || description) && (
+        <div className="mb-6">
+          {title && (
+            <h3 className="text-lg font-semibold">
+              {title}
+            </h3>
+          )}
 
-        {description && (
-          <p className="text-sm text-muted-foreground mt-1">{description}</p>
-        )}
-      </div>
+          {description && (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {description}
+            </p>
+          )}
+        </div>
+      )}
 
       {children}
-    </div>
+    </section>
   );
 }

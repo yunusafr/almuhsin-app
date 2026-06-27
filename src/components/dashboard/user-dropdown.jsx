@@ -5,12 +5,33 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { LogOut } from "lucide-react";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useAuthStore from "@/features/auth/stores/auth-store";
+import { removeToken } from "@/features/auth/lib/token";
 
 export default function UserDropdown() {
   const user = useAuthStore((s) => s.user);
   const roles = useAuthStore((s) => s.roles);
+  const logoutStore = useAuthStore((s) => s.logout);
+  const handleLogout = async () => {
+  try {
+    // nanti kalau backend punya endpoint
+    // await logout();
+
+  } finally {
+    removeToken();
+
+    logoutStore();
+
+    queryClient.clear();
+
+    navigate("/login", {
+      replace: true,
+    });
+  }
+};
 
   const role = roles?.[0] ?? "Super Admin";
   return (
@@ -37,7 +58,14 @@ export default function UserDropdown() {
 
         <DropdownMenuItem>Pengaturan</DropdownMenuItem>
 
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem
+  onClick={handleLogout}
+  className="text-red-600 focus:text-red-600"
+>
+  <LogOut className="mr-2 h-4 w-4" />
+
+  Logout
+</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

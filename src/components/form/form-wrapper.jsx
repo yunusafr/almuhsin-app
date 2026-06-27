@@ -1,20 +1,19 @@
-import { cn } from "@/lib/utils";
+import { Form } from "@/components/ui/form";
 
-export default function FormWrapper({ children, className, onSubmit }) {
+export default function FormWrapper({
+  form,
+  onSubmit,
+  children,
+  className = "",
+}) {
   return (
-    <form
-      onSubmit={onSubmit}
-      className={cn(
-        `
-        rounded-3xl
-        border
-        bg-card
-        shadow-sm
-        `,
-        className,
-      )}
-    >
-      {children}
-    </form>
+    <Form {...form}>
+      <form
+        onSubmit={onSubmit}
+        className={`space-y-6 ${className}`}
+      >
+        {children}
+      </form>
+    </Form>
   );
 }
