@@ -35,11 +35,7 @@ export default function FormDatePicker({
       name={name}
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          {label && (
-            <FormLabel>
-              {label}
-            </FormLabel>
-          )}
+          {label && <FormLabel>{label}</FormLabel>}
 
           <Popover>
             <PopoverTrigger asChild>
@@ -50,39 +46,26 @@ export default function FormDatePicker({
                   disabled={disabled}
                   className={cn(
                     "h-11 justify-start rounded-xl text-left font-normal",
-                    !field.value && "text-muted-foreground"
+                    !field.value && "text-muted-foreground",
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
 
-                  {field.value ? (
-                    format(new Date(field.value), "dd MMMM yyyy", {
-                      locale: id,
-                    })
-                  ) : (
-                    placeholder
-                  )}
+                  {field.value
+                    ? format(new Date(field.value), "dd MMMM yyyy", {
+                        locale: id,
+                      })
+                    : placeholder}
                 </Button>
               </FormControl>
             </PopoverTrigger>
 
-            <PopoverContent
-              className="w-auto p-0"
-              align="start"
-            >
+            <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
-                selected={
-                  field.value
-                    ? new Date(field.value)
-                    : undefined
-                }
+                selected={field.value ? new Date(field.value) : undefined}
                 onSelect={(date) =>
-                  field.onChange(
-                    date
-                      ? format(date, "yyyy-MM-dd")
-                      : ""
-                  )
+                  field.onChange(date ? format(date, "yyyy-MM-dd") : "")
                 }
                 initialFocus
               />

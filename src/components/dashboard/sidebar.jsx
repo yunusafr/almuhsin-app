@@ -82,7 +82,7 @@ ${collapsed ? "w-20" : "w-72"}
 
       {/* Footer */}
       {!collapsed && (
-        <div className="absolute bottom-4 px-3 py-4 space-y-2 w-70">
+        <div className="absolute bottom-4 px-3 py-4 space-y-2 w-auto">
           <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-md">
             <p className="text-xs text-green-100">Logged in as</p>
 

@@ -1,88 +1,89 @@
 import { useMemo, useState } from "react";
-import { Pencil, Plus, RefreshCw, Trash2 } from "lucide-react";
+
+import { Pencil, Trash2, Plus, Search, CalendarDays } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import PageHeader from "@/components/common/page-header";
 import StatusBadge from "@/components/common/status-badge";
 
-import TableContainer from "@/components/data-table/table-container";
 import DataTable from "@/components/data-table/data-table";
+import TableContainer from "@/components/data-table/table-container";
 import DataTableHeader from "@/components/data-table/data-table-header";
 import DataTableSearch from "@/components/data-table/data-table-search";
 
-import {
-  useAcademicYears,
-  useActiveAcademicYear,
-} from "@/features/academic-year/hooks/use-academic-year";
+import AcademicYearDialog from "./components/academic-year-dialog";
+import AcademicYearDeleteDialog from "./components/academic-year-delete-dialog";
+import AcademicYearSwitch from "./components/academic-year-switch";
 
+import { useAcademicYears } from "@/features/academic-year/hooks/use-academic-year";
 
 export default function AcademicYearPage() {
+  const { data, isLoading } = useAcademicYears();
+
+  const academicYears = data?.data ?? [];
+
   const [search, setSearch] = useState("");
 
-  const [selected, setSelected] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const { data, isLoading, refetch } = useAcademicYears();
-
-  const { data: activeYear } = useActiveAcademicYear();
-
-  const rows = data?.data ?? [];
+  const [selected, setSelected] = useState(null);
 
   const filteredData = useMemo(() => {
-    return rows.filter((item) =>
-      item.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [rows, search]);
+    const keyword = search.toLowerCase();
+
+    return academicYears.filter((item) => {
+      return item.name.toLowerCase().includes(keyword);
+    });
+  }, [academicYears, search]);
 
   const columns = [
     {
       accessorKey: "name",
+
       header: "Tahun Pelajaran",
     },
 
     {
       accessorKey: "is_active",
+
       header: "Status",
 
       cell: ({ row }) =>
         row.original.is_active ? (
-          <StatusBadge>Aktif</StatusBadge>
+          <StatusBadge color="green">Aktif</StatusBadge>
         ) : (
-          <StatusBadge variant="secondary">
-            Tidak Aktif
-          </StatusBadge>
+          <StatusBadge color="gray">Tidak Aktif</StatusBadge>
         ),
     },
 
     {
-      accessorKey: "created_at",
+      id: "switch",
 
-      header: "Dibuat",
+      header: "Aktifkan",
 
-      cell: ({ row }) =>
-        new Date(row.original.created_at).toLocaleDateString("id-ID"),
+      cell: ({ row }) => <AcademicYearSwitch academicYear={row.original} />,
     },
 
     {
-      id: "action",
+      id: "aksi",
 
-      header: "",
+      header: "Aksi",
 
       cell: ({ row }) => (
-        <div className="flex justify-end gap-2">
-
+        <div className="flex gap-2">
           <Button
             size="icon"
             variant="outline"
             onClick={() => {
               setSelected(row.original);
 
-              // nanti buka dialog edit
+              setDialogOpen(true);
             }}
           >
-            <Pencil className="h-4 w-4" />
+            <Pencil size={16} />
           </Button>
 
           <Button
@@ -95,70 +96,108 @@ export default function AcademicYearPage() {
               setDeleteOpen(true);
             }}
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 size={16} />
           </Button>
-
         </div>
       ),
     },
   ];
+  const activeYear = academicYears.find((x) => x.is_active);
 
   return (
     <div className="space-y-6">
-
       <PageHeader
         title="Tahun Pelajaran"
-        description="Kelola tahun pelajaran pondok"
-
+        description="Kelola tahun pelajaran yang digunakan dalam sistem."
         actions={
-          <div className="flex gap-2">
-
-            <Button
-              variant="outline"
-              onClick={refetch}
-            >
-              <RefreshCw className="mr-2 h-4 w-4" />
-
-              Refresh
-            </Button>
-
-            <Button
-              onClick={() => {
-                // nanti buka dialog tambah
-              }}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-
-              Tambah
-            </Button>
-
-          </div>
+          <Button
+            onClick={() => {
+              setSelected(null);
+              setDialogOpen(true);
+            }}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Tambah Tahun
+          </Button>
         }
       />
 
-      <TableContainer>
+      {/* Statistic */}
+      <div className="grid gap-6 md:grid-cols-3">
+        <div className="rounded-3xl border bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Total Tahun</p>
 
+              <h2 className="mt-3 text-3xl font-bold">
+                {academicYears.length}
+              </h2>
+            </div>
+
+            <div className="rounded-2xl bg-primary/10 p-3">
+              <CalendarDays className="text-primary" />
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-3xl border bg-white p-6 shadow-sm">
+          <p className="text-sm text-muted-foreground">Tahun Aktif</p>
+
+          <h2 className="mt-3 text-2xl font-bold">{activeYear?.name ?? "-"}</h2>
+
+          <div className="mt-3">
+            <StatusBadge color="green">Aktif</StatusBadge>
+          </div>
+        </div>
+
+        <div className="rounded-3xl border bg-white p-6 shadow-sm">
+          <p className="text-sm text-muted-foreground">Tidak Aktif</p>
+
+          <h2 className="mt-3 text-3xl font-bold">
+            {academicYears.filter((x) => !x.is_active).length}
+          </h2>
+        </div>
+      </div>
+
+      {/* Table */}
+
+      <TableContainer>
         <DataTableHeader
           title="Daftar Tahun Pelajaran"
-          description={`${filteredData.length} data ditemukan`}
+          description={`Total ${filteredData.length} data`}
           search={
             <DataTableSearch
-              placeholder="Cari tahun pelajaran..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              placeholder="Cari tahun pelajaran..."
             />
           }
         />
 
-        <DataTable
-          data={filteredData}
-          columns={columns}
-          loading={isLoading}
-        />
-
+        {isLoading ? (
+          <div className="flex h-60 items-center justify-center">
+            <div className="animate-pulse text-muted-foreground">
+              Memuat data...
+            </div>
+          </div>
+        ) : (
+          <DataTable data={filteredData} columns={columns} />
+        )}
       </TableContainer>
 
+      {/* Dialog */}
 
+      <AcademicYearDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        data={selected}
+      />
+
+      <AcademicYearDeleteDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        data={selected}
+      />
     </div>
   );
 }

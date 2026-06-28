@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getToken } from "./token";
 
-const axiosInstance = axios.create({
+const api = axios.create({
   baseURL: "https://api-almuhsin.ingintau.my.id/api/v1",
   headers: {
     Accept: "application/json",
@@ -8,8 +9,8 @@ const axiosInstance = axios.create({
   },
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access_token");
+api.interceptors.request.use((config) => {
+  const token = getToken();
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -18,4 +19,4 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-export default axiosInstance;
+export default api;
