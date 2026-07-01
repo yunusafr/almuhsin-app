@@ -11,13 +11,14 @@ export default function DashboardLayout() {
       <>
         <Sidebar />
 
-        <div className="flex flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col">
           <Navbar />
 
           <main className="flex-1 overflow-auto bg-slate-50 p-6 pb-24 lg:pb-6">
-            <PageBreadcrumb />
-
-            <Outlet />
+            <div className="w-full max-w-full">
+              <PageBreadcrumb />
+              <Outlet />
+            </div>
           </main>
         </div>
 

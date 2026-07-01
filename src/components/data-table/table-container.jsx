@@ -5,7 +5,6 @@ export default function TableContainer({ children, className }) {
     <div
       className={cn(
         `
-        overflow-hidden
         rounded-3xl
         border
         bg-card

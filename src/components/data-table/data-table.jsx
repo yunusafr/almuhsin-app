@@ -14,8 +14,8 @@ export default function DataTable({ data, columns }) {
   });
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
+    <div className="w-full max-w-full overflow-x-auto">
+      <table className="min-w-full">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="border-b">
