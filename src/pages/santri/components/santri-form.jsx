@@ -12,6 +12,53 @@ import FormActions from "@/components/form/form-actions";
 
 import { santriSchema } from "@/features/santri/schemas/santri-schema";
 
+const INITIAL_VALUES = {
+  nis: "",
+  name: "",
+  birth_place: "",
+  birth_date: "",
+  address: "",
+  guardian_name: "",
+  guardian_phone: "",
+  tingkat: "",
+  rombel: "",
+  status: "aktif",
+};
+
+const STATUS_OPTIONS = [
+  {
+    label: "Aktif",
+    value: "aktif",
+  },
+  {
+    label: "Lulus",
+    value: "lulus",
+  },
+  {
+    label: "Keluar",
+    value: "keluar",
+  },
+  {
+    label: "Mutasi",
+    value: "mutasi",
+  },
+];
+
+const TINGKAT_OPTIONS = [
+  {
+    label: "Tingkat 10",
+    value: "10",
+  },
+  {
+    label: "Tingkat 11",
+    value: "11",
+  },
+  {
+    label: "Tingkat 12",
+    value: "12",
+  },
+];
+
 export default function SantriForm({
   defaultValues,
   loading = false,
@@ -19,42 +66,34 @@ export default function SantriForm({
 }) {
   const form = useForm({
     resolver: zodResolver(santriSchema),
-    defaultValues: {
-      nis: "",
-      name: "",
-      birth_place: "",
-      birth_date: "",
-      address: "",
-      guardian_name: "",
-      guardian_phone: "",
-      rombel: "",
-      status: "aktif",
-    },
+    defaultValues: INITIAL_VALUES,
   });
 
-  useEffect(() => {
-    if (defaultValues) {
-      form.reset(defaultValues);
-    } else {
-      form.reset({
-        nis: "",
-        name: "",
-        birth_place: "",
-        birth_date: "",
-        address: "",
-        guardian_name: "",
-        guardian_phone: "",
-        rombel: "",
-        status: "aktif",
-      });
-    }
-  }, [defaultValues, form]);
+useEffect(() => {
+  if (!defaultValues) {
+    form.reset(INITIAL_VALUES);
+    return;
+  }
+
+  form.reset({
+    ...INITIAL_VALUES,
+    ...defaultValues,
+    tingkat: String(defaultValues.tingkat ?? ""),
+    status: String(defaultValues.status ?? "aktif"),
+  });
+}, [defaultValues]);
 
   return (
-    <FormWrapper form={form} onSubmit={form.handleSubmit(onSubmit)}>
+    <FormWrapper
+      form={form}
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
       <div className="grid gap-6 xl:grid-cols-2">
-        <FormSection title="Identitas Santri" description="Data utama santri.">
-          <div className="grid gap-3 lg:grid-cols-2">
+        <FormSection
+          title="Identitas Santri"
+          description="Data utama santri."
+        >
+          <div className="grid gap-4 lg:grid-cols-2">
             <FormInput
               control={form.control}
               name="nis"
@@ -82,11 +121,18 @@ export default function SantriForm({
               label="Tanggal Lahir"
             />
 
+<FormSelect
+  control={form.control}
+  name="tingkat"
+  label="Tingkat"
+  options={TINGKAT_OPTIONS}
+/>
+
             <FormInput
               control={form.control}
               name="rombel"
               label="Rombel"
-              placeholder="7A"
+              placeholder="11 TKJ 2"
             />
 
             <FormSelect
@@ -94,12 +140,7 @@ export default function SantriForm({
               name="status"
               label="Status"
               placeholder="Pilih Status"
-              options={[
-                { label: "Aktif", value: "aktif" },
-                { label: "Lulus", value: "lulus" },
-                { label: "Keluar", value: "keluar" },
-                { label: "Mutasi", value: "mutasi" },
-              ]}
+              options={STATUS_OPTIONS}
             />
           </div>
         </FormSection>
@@ -108,7 +149,7 @@ export default function SantriForm({
           title="Data Wali Santri"
           description="Informasi wali yang dapat dihubungi."
         >
-          <div className="grid gap-5">
+          <div className="grid gap-4">
             <FormInput
               control={form.control}
               name="guardian_name"
@@ -126,7 +167,10 @@ export default function SantriForm({
         </FormSection>
       </div>
 
-      <FormSection title="Alamat" description="Alamat tempat tinggal santri.">
+      <FormSection
+        title="Alamat"
+        description="Alamat tempat tinggal santri."
+      >
         <FormTextarea
           control={form.control}
           name="address"
@@ -138,9 +182,13 @@ export default function SantriForm({
 
       <FormActions
         loading={loading}
-        submitLabel={defaultValues ? "Simpan Perubahan" : "Tambah Santri"}
+        submitLabel={
+          defaultValues
+            ? "Simpan Perubahan"
+            : "Tambah Santri"
+        }
         cancelLabel="Batal"
-        onCancel={() => form.reset()}
+        onCancel={() => form.reset(defaultValues ?? INITIAL_VALUES)}
       />
     </FormWrapper>
   );

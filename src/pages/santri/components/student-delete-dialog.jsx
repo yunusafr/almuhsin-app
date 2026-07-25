@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,15 +12,19 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-import { Loader2 } from "lucide-react";
+import { useDeleteStudent } from "@/features/santri/hooks/use-students";
 
-import { useDeleteStudents } from "@/features/santri/hooks/use-students";
+export default function StudentDeleteDialog({
+  open,
+  onOpenChange,
+  student,
+}) {
+  const deleteMutation = useDeleteStudent();
 
-export default function StudentDeleteDialog({ open, onOpenChange, student }) {
-  const deleteMutation = useDeleteStudents();
+  const isLoading = deleteMutation.isPending;
 
   const handleDelete = () => {
-    if (!student) return;
+    if (!student?.id) return;
 
     deleteMutation.mutate(student.id, {
       onSuccess: () => {
@@ -26,33 +33,51 @@ export default function StudentDeleteDialog({ open, onOpenChange, student }) {
     });
   };
 
+  useEffect(() => {
+    if (!open) {
+      deleteMutation.reset();
+    }
+  }, [open, deleteMutation]);
+
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Santri</AlertDialogTitle>
+          <AlertDialogTitle>
+            Hapus Data Santri
+          </AlertDialogTitle>
 
           <AlertDialogDescription>
-            Apakah Anda yakin ingin menghapus
-            <span className="font-semibold"> {student?.name}</span>
+            Apakah Anda yakin ingin menghapus data santri
+            <span className="font-semibold">
+              {" "}
+              {student?.name}
+            </span>
             ?
             <br />
             <br />
-            Data yang sudah dihapus tidak dapat dikembalikan.
+            Tindakan ini tidak dapat dibatalkan dan seluruh data
+            yang terkait dengan santri akan ikut terhapus.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>Batal</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            Batal
+          </AlertDialogCancel>
 
           <AlertDialogAction
             onClick={handleDelete}
-            disabled={deleteMutation.isPending}
-            className="bg-red-600 hover:bg-red-700"
+            disabled={isLoading}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {deleteMutation.isPending && (
+            {isLoading && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
+
             Hapus
           </AlertDialogAction>
         </AlertDialogFooter>

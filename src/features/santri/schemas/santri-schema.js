@@ -17,6 +17,10 @@ export const santriSchema = z.object({
 
   rombel: z.string().min(1),
 
+  tingkat: z
+  .string()
+  .min(1, "Tingkat wajib diisi"),
+
   status: z.enum([
     "aktif",
     "keluar",

@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   getStudents,
@@ -7,7 +11,15 @@ import {
   updateStudent,
   deleteStudent,
   syncStudents,
+  searchExternalStudents,
+  pullExternalStudents,
 } from "../api/students.api";
+
+/*
+|--------------------------------------------------------------------------
+| Students
+|--------------------------------------------------------------------------
+*/
 
 export function useStudents() {
   return useQuery({
@@ -24,7 +36,13 @@ export function useStudent(id) {
   });
 }
 
-export function useCreateStudents() {
+/*
+|--------------------------------------------------------------------------
+| CRUD
+|--------------------------------------------------------------------------
+*/
+
+export function useCreateStudent() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -38,7 +56,7 @@ export function useCreateStudents() {
   });
 }
 
-export function useUpdateStudents() {
+export function useUpdateStudent() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -52,7 +70,7 @@ export function useUpdateStudents() {
   });
 }
 
-export function useDeleteStudents() {
+export function useDeleteStudent() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -65,6 +83,53 @@ export function useDeleteStudents() {
     },
   });
 }
+
+/*
+|--------------------------------------------------------------------------
+| External Search
+|--------------------------------------------------------------------------
+*/
+
+export function useExternalStudents(keyword) {
+  return useQuery({
+    queryKey: ["external-students", keyword],
+
+    queryFn: () =>
+      searchExternalStudents(keyword),
+
+    enabled: keyword.trim().length >= 3,
+
+    staleTime: 1000 * 60 * 5,
+
+    placeholderData: (previous) => previous ?? [],
+  });
+}
+
+/*
+|--------------------------------------------------------------------------
+| External Pull
+|--------------------------------------------------------------------------
+*/
+
+export function usePullExternalStudents() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: pullExternalStudents,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["students"],
+      });
+    },
+  });
+}
+
+/*
+|--------------------------------------------------------------------------
+| External Sync
+|--------------------------------------------------------------------------
+*/
 
 export function useSyncStudents() {
   const queryClient = useQueryClient();

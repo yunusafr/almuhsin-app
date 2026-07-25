@@ -3,43 +3,44 @@ import { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 
 import SantriForm from "./santri-form";
 
 import {
-  useCreateStudents,
-  useUpdateStudents,
+  useCreateStudent,
+  useUpdateStudent,
 } from "@/features/santri/hooks/use-students";
 
-export default function StudentsDialog({ open, onOpenChange, data }) {
-  const createMutation = useCreateStudents();
+export default function SantriDialog({
+  open,
+  onOpenChange,
+  data,
+}) {
+  const createMutation = useCreateStudent();
 
-  const updateMutation = useUpdateStudents();
+  const updateMutation = useUpdateStudent();
 
-  const loading = createMutation.isPending || updateMutation.isPending;
+  const isLoading =
+    createMutation.isPending ||
+    updateMutation.isPending;
 
   const handleSubmit = (values) => {
-    if (data) {
-      updateMutation.mutate(
-        {
+    const mutation = data
+      ? updateMutation
+      : createMutation;
+
+    const payload = data
+      ? {
           id: data.id,
           payload: values,
-        },
-        {
-          onSuccess: () => {
-            onOpenChange(false);
-          },
-        },
-      );
+        }
+      : values;
 
-      return;
-    }
-
-    createMutation.mutate(values, {
+    mutation.mutate(payload, {
       onSuccess: () => {
         onOpenChange(false);
       },
@@ -51,26 +52,38 @@ export default function StudentsDialog({ open, onOpenChange, data }) {
       createMutation.reset();
       updateMutation.reset();
     }
-  }, [open]);
+  }, [
+    open,
+    createMutation,
+    updateMutation,
+  ]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[1100px]">
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <DialogContent className="max-w-5xl">
         <DialogHeader>
           <DialogTitle>
-            {data ? "Edit Data Santri" : "Tambah Santri"}
+            {data
+              ? "Edit Data Santri"
+              : "Tambah Santri"}
           </DialogTitle>
 
           <DialogDescription>
-            {data ? "Perbarui informasi santri." : "Masukkan data santri baru."}
+            {data
+              ? "Perbarui informasi data santri."
+              : "Lengkapi informasi santri baru."}
           </DialogDescription>
         </DialogHeader>
 
         <SantriForm
-          defaultValues={data}
-          loading={loading}
-          onSubmit={handleSubmit}
-        />
+    key={data?.id ?? "new"}
+    defaultValues={data}
+    loading={isLoading}
+    onSubmit={handleSubmit}
+/>
       </DialogContent>
     </Dialog>
   );

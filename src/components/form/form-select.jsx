@@ -26,36 +26,39 @@ export default function FormSelect({
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <FormItem>
-          {label && <FormLabel>{label}</FormLabel>}
+      render={({ field }) => {
 
-          <Select
-            disabled={disabled}
-            value={field.value}
-            onValueChange={field.onChange}
-          >
-            <FormControl>
-              <SelectTrigger className="h-11 rounded-xl w-full">
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-            </FormControl>
+        return (
+          <FormItem>
+            {label && <FormLabel>{label}</FormLabel>}
 
-            <SelectContent>
-              {options.map((option) => (
-                <SelectItem
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <Select
+              disabled={disabled}
+              value={String(field.value ?? "")}
+              onValueChange={(value) => field.onChange(value)}
+            >
+              <FormControl>
+                <SelectTrigger className="h-11 w-full rounded-xl">
+                  <SelectValue placeholder={placeholder} />
+                </SelectTrigger>
+              </FormControl>
 
-          <FormMessage />
-        </FormItem>
-      )}
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem
+                    key={String(option.value)}
+                    value={String(option.value)}
+                  >
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 }

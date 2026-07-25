@@ -1,13 +1,15 @@
 import { useMemo, useState } from "react";
 import {
+  ArrowRightLeft,
+  GraduationCap,
   Plus,
   RefreshCw,
   RotateCw,
-  Users,
   UserCheck,
-  GraduationCap,
-  ArrowRightLeft,
   UserX,
+  Users,
+  Download,
+  Database,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,25 +27,45 @@ import {
   useSyncStudents,
 } from "@/features/santri/hooks/use-students";
 
-import StudentDeleteDialog from "./components/student-delete-dialog";
-import SantriDialog from "./components/santri-dialog";
 import { santriColumns } from "./components/santri-columns";
 
+import SantriDialog from "./components/santri-dialog";
+import StudentDeleteDialog from "./components/student-delete-dialog";
+import ExternalStudentDialog from "./components/external-student-dialog";
+
 export default function SantriPage() {
-  const { data = [], isLoading, refetch } = useStudents();
+  const {
+    data = [],
+    isLoading,
+    refetch,
+  } = useStudents();
 
   const syncMutation = useSyncStudents();
 
+  /*
+  |--------------------------------------------------------------------------
+  | State
+  |--------------------------------------------------------------------------
+  */
+
   const [search, setSearch] = useState("");
+
+  const [selected, setSelected] = useState(null);
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const [selected, setSelected] = useState(null);
+  const [externalOpen, setExternalOpen] = useState(false);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Filter
+  |--------------------------------------------------------------------------
+  */
 
   const filteredData = useMemo(() => {
-    const keyword = search.toLowerCase();
+    const keyword = search.trim().toLowerCase();
 
     return data.filter((item) => {
       return (
@@ -55,15 +77,91 @@ export default function SantriPage() {
     });
   }, [data, search]);
 
-  const total = data.length;
+  /*
+  |--------------------------------------------------------------------------
+  | Statistics
+  |--------------------------------------------------------------------------
+  */
 
-  const aktif = data.filter((x) => x.status === "aktif").length;
+  const statistics = useMemo(() => {
+    return data.reduce(
+      (acc, item) => {
+        acc.total++;
 
-  const lulus = data.filter((x) => x.status === "lulus").length;
+        switch (item.status) {
+          case "aktif":
+            acc.aktif++;
+            break;
 
-  const keluar = data.filter((x) => x.status === "keluar").length;
+          case "lulus":
+            acc.lulus++;
+            break;
 
-  const mutasi = data.filter((x) => x.status === "mutasi").length;
+          case "keluar":
+            acc.keluar++;
+            break;
+
+          case "mutasi":
+            acc.mutasi++;
+            break;
+        }
+
+        return acc;
+      },
+      {
+        total: 0,
+        aktif: 0,
+        lulus: 0,
+        keluar: 0,
+        mutasi: 0,
+      }
+    );
+  }, [data]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Actions
+  |--------------------------------------------------------------------------
+  */
+
+  function handleCreate() {
+    setSelected(null);
+    setDialogOpen(true);
+  }
+
+function handleEdit(student) {
+
+  setSelected(student);
+
+  setTimeout(() => {
+    setDialogOpen(true);
+  }, 0);
+}
+
+  function handleDelete(student) {
+    setSelected(student);
+    setDeleteOpen(true);
+  }
+
+  function handleDetail(student) {
+    console.log(student);
+
+    // Next:
+    // setSelected(student)
+    // setDetailOpen(true)
+  }
+
+  function handleExternalPull() {
+    setExternalOpen(true);
+  }
+
+  function handleImportExcel() {
+    console.log("Import Excel");
+  }
+
+  function handleSync() {
+    syncMutation.mutate();
+  }
 
   return (
     <div className="space-y-6">
@@ -72,39 +170,84 @@ export default function SantriPage() {
         description="Kelola seluruh data santri pondok pesantren."
         actions={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => syncMutation.mutate()}>
-              <RotateCw className="mr-2 h-4 w-4" />
-              Sinkronisasi
-            </Button>
-
-            <Button variant="outline" onClick={refetch}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Refresh
+            <Button onClick={handleCreate}>
+              <Plus className="mr-2 h-4 w-4" />
+              Tambah Santri
             </Button>
 
             <Button
-              onClick={() => {
-                setSelected(null);
-                setDialogOpen(true);
-              }}
+              variant="outline"
+              onClick={handleImportExcel}
             >
-              <Plus className="mr-2 h-4 w-4" />
-              Tambah Santri
+              <Download className="mr-2 h-4 w-4" />
+              Import Excel
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={handleExternalPull}
+            >
+              <Database className="mr-2 h-4 w-4" />
+              Tarik Data
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={handleSync}
+              disabled={syncMutation.isPending}
+            >
+              <RotateCw
+                className={`mr-2 h-4 w-4 ${
+                  syncMutation.isPending
+                    ? "animate-spin"
+                    : ""
+                }`}
+              />
+
+              Sinkronisasi
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={refetch}
+            >
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Refresh
             </Button>
           </div>
         }
       />
 
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-        <StatCard title="Total Santri" value={total} icon={Users} />
+        <StatCard
+          title="Total Santri"
+          value={statistics.total}
+          icon={Users}
+        />
 
-        <StatCard title="Aktif" value={aktif} icon={UserCheck} />
+        <StatCard
+          title="Aktif"
+          value={statistics.aktif}
+          icon={UserCheck}
+        />
 
-        <StatCard title="Lulus" value={lulus} icon={GraduationCap} />
+        <StatCard
+          title="Lulus"
+          value={statistics.lulus}
+          icon={GraduationCap}
+        />
 
-        <StatCard title="Keluar" value={keluar} icon={UserX} />
+        <StatCard
+          title="Keluar"
+          value={statistics.keluar}
+          icon={UserX}
+        />
 
-        <StatCard title="Mutasi" value={mutasi} icon={ArrowRightLeft} />
+        <StatCard
+          title="Mutasi"
+          value={statistics.mutasi}
+          icon={ArrowRightLeft}
+        />
       </div>
 
       <TableContainer>
@@ -114,8 +257,10 @@ export default function SantriPage() {
           search={
             <DataTableSearch
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari NIS, nama, rombel..."
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
+              placeholder="Cari NIS, Nama, Rombel..."
             />
           }
         />
@@ -124,19 +269,9 @@ export default function SantriPage() {
           loading={isLoading}
           data={filteredData}
           columns={santriColumns({
-            onDetail: (row) => {
-              console.log(row);
-            },
-
-            onEdit: (row) => {
-              setSelected(row);
-              setDialogOpen(true);
-            },
-
-            onDelete: (row) => {
-              setSelected(row);
-              setDeleteOpen(true);
-            },
+            onDetail: handleDetail,
+            onEdit: handleEdit,
+            onDelete: handleDelete,
           })}
         />
       </TableContainer>
@@ -151,6 +286,11 @@ export default function SantriPage() {
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
         student={selected}
+      />
+
+      <ExternalStudentDialog
+        open={externalOpen}
+        onOpenChange={setExternalOpen}
       />
     </div>
   );

@@ -30,8 +30,39 @@ export const deleteStudent = async (id) => {
   return data;
 };
 
-export const syncStudents = async () => {
-  const { data } = await api.post("/students/external-sync");
+/*
+|--------------------------------------------------------------------------
+| External System
+|--------------------------------------------------------------------------
+*/
+
+export const searchExternalStudents = async (keyword) => {
+  const { data } = await api.get("/students/external-search", {
+    params: {
+      q: keyword,
+    },
+  });
+
+  return data.data;
+};
+
+export const pullExternalStudents = async (payload) => {
+  const { data } = await api.post(
+    "/students/external-pull",
+    payload,
+  );
 
   return data;
+};
+
+export const syncStudents = async () => {
+  try {
+    const { data } = await api.post("/students/external-sync");
+
+    return data;
+  } catch (error) {
+    console.log(error.response);
+
+    throw error;
+  }
 };
