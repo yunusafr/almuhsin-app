@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Bell, BellOff, Menu, Moon, Search, Sun } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Bell, BellOff, Globe, Menu, Moon, Search, Sun } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -82,6 +82,18 @@ export default function Navbar() {
 
         {/* Right */}
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-xl"
+            aria-label="Kembali ke landing page"
+            title="Kembali ke landing page"
+            nativeButton={false}
+            render={<Link to="/" />}
+          >
+            <Globe size={18} />
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger
               render={

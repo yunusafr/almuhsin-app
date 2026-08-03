@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { LogOut } from "lucide-react";
+import { LogOut, Settings, UserRound } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useAuthStore from "@/features/auth/stores/auth-store";
@@ -56,18 +56,26 @@ export default function UserDropdown() {
           <p className="text-xs text-muted-foreground capitalize">{role}</p>
         </div>
 
-        <DropdownMenuItem>Profil</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate("/app/profil")}>
+          <UserRound className="mr-2 h-4 w-4" />
 
-        <DropdownMenuItem>Pengaturan</DropdownMenuItem>
+          Profil
+        </DropdownMenuItem>
+
+        <DropdownMenuItem onClick={() => navigate("/app/pengaturan")}>
+          <Settings className="mr-2 h-4 w-4" />
+
+          Pengaturan
+        </DropdownMenuItem>
 
         <DropdownMenuItem
-  onClick={handleLogout}
-  className="text-red-600 focus:text-red-600"
->
-  <LogOut className="mr-2 h-4 w-4" />
+          onClick={handleLogout}
+          className="text-red-600 focus:text-red-600"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
 
-  Logout
-</DropdownMenuItem>
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -29,6 +29,8 @@ const RekapBulananPage = lazy(() => import("@/pages/rekap/rekap-bulanan-page"));
 const InvoicePage = lazy(() => import("@/pages/invoice/invoice-page"));
 const PembayaranPage = lazy(() => import("@/pages/pembayaran/pembayaran-page"));
 const LaporanPage = lazy(() => import("@/pages/laporan/laporan-page"));
+const ProfilPage = lazy(() => import("@/pages/profil/profil-page"));
+const PengaturanPage = lazy(() => import("@/pages/pengaturan/pengaturan-page"));
 const ComingSoonPage = lazy(() => import("@/pages/misc/coming-soon-page"));
 const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
@@ -136,6 +138,14 @@ export const router = createBrowserRouter([
       {
         path: "laporan",
         element: <LaporanPage />,
+      },
+      {
+        path: "profil",
+        element: <ProfilPage />,
+      },
+      {
+        path: "pengaturan",
+        element: <PengaturanPage />,
       },
       {
         path: "hp",
