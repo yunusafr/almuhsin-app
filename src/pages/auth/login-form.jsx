@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Loader2, Lock, Mail } from "lucide-react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 import { useLogin } from "@/features/auth/hooks/use-login";
 
@@ -23,6 +27,10 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const submit = (values) => {
@@ -35,46 +43,75 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-5">
-      <div>
-        <label className="mb-2 block text-sm font-medium">Email</label>
+      <div className="space-y-2">
+        <Label htmlFor="email" className="text-sm font-medium">
+          Email
+        </Label>
 
-        <input
-          {...register("email")}
-          className="w-full rounded-xl border bg-background p-3 outline-none transition focus:border-green-600"
-        />
+        <div className="relative">
+          <Mail
+            size={16}
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+
+          <Input
+            id="email"
+            type="email"
+            placeholder="admin@example.com"
+            autoComplete="email"
+            className="h-11 rounded-xl pl-10"
+            {...register("email")}
+          />
+        </div>
 
         {errors.email && (
-          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+          <p className="text-sm text-destructive">{errors.email.message}</p>
         )}
       </div>
 
-      <div>
-        <label className="mb-2 block text-sm font-medium">Password</label>
+      <div className="space-y-2">
+        <Label htmlFor="password" className="text-sm font-medium">
+          Password
+        </Label>
 
-        <input
-          type="password"
-          {...register("password")}
-          className="w-full rounded-xl border bg-background p-3 outline-none transition focus:border-green-600"
-        />
+        <div className="relative">
+          <Lock
+            size={16}
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            autoComplete="current-password"
+            className="h-11 rounded-xl pl-10"
+            {...register("password")}
+          />
+        </div>
 
         {errors.password && (
-          <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.password.message}
+          </p>
         )}
       </div>
 
-      <button
+      <Button
         type="submit"
+        size="lg"
         disabled={loginMutation.isPending}
-        className="flex h-12 w-full items-center justify-center rounded-xl bg-green-600 font-medium text-white transition hover:bg-green-700 disabled:opacity-70"
+        className="h-12 w-full rounded-xl text-base font-semibold"
       >
         {loginMutation.isPending && (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         )}
+
         Masuk
-      </button>
+      </Button>
 
       {loginMutation.isError && (
-        <p className="text-center text-sm text-red-500">
+        <p className="text-center text-sm text-destructive">
           {loginMutation.error?.response?.data?.message ?? "Login gagal"}
         </p>
       )}

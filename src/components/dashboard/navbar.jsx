@@ -1,4 +1,5 @@
-import { Bell, Menu, Moon, Search } from "lucide-react";
+import { Bell, Menu, Moon, Search, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,8 +11,9 @@ import useAuthStore from "@/features/auth/stores/auth-store";
 
 export default function Navbar() {
   const { toggle } = useSidebarStore();
+  const { resolvedTheme, setTheme } = useTheme();
+
   const user = useAuthStore((s) => s.user);
-  const roles = useAuthStore((s) => s.roles);
 
   return (
     <header className="sticky top-0 z-50 h-16 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -53,10 +55,29 @@ export default function Navbar() {
 
         {/* Right */}
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="relative rounded-xl">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative rounded-xl"
+            aria-label="Notifikasi"
+          >
             <Bell size={18} />
 
             <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-xl"
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            aria-label="Ganti tema"
+          >
+            {resolvedTheme === "dark" ? (
+              <Sun size={18} />
+            ) : (
+              <Moon size={18} />
+            )}
           </Button>
 
           <UserDropdown />

@@ -23,7 +23,7 @@ export default function AuthProvider({ children }) {
         const user = await me();
 
         setUser(user);
-      } catch (error) {
+      } catch {
         removeToken();
         logout();
       } finally {

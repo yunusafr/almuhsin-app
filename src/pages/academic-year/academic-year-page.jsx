@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { Pencil, Trash2, Plus, Search, CalendarDays } from "lucide-react";
+import { Pencil, Trash2, Plus, CalendarDays } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 

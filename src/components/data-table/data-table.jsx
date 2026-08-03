@@ -5,13 +5,22 @@ import {
 } from "@tanstack/react-table";
 
 import DataTableEmpty from "./data-table-empty";
+import LoadingSkeleton from "@/components/common/loading-skeleton";
 
-export default function DataTable({ data, columns }) {
+export default function DataTable({ data, columns, loading = false }) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  if (loading) {
+    return (
+      <div className="w-full p-6">
+        <LoadingSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-full overflow-x-auto">

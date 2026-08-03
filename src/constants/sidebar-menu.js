@@ -4,9 +4,13 @@ import {
   GraduationCap,
   UserCog,
   ClipboardCheck,
+  CalendarCheck,
+  CalendarRange,
   Shield,
   Wallet,
   FileText,
+  ReceiptText,
+  HandCoins,
 } from "lucide-react";
 
 export const sidebarMenus = {
@@ -42,15 +46,39 @@ export const sidebarMenus = {
     },
 
     {
+      title: "Presensi",
+      path: "/app/presensi",
+      icon: ClipboardCheck,
+    },
+
+    {
       title: "Rekap Harian",
       path: "/app/rekap-harian",
-      icon: ClipboardCheck,
+      icon: CalendarCheck,
     },
 
     {
       title: "Rekap Bulanan",
       path: "/app/rekap-bulanan",
-      icon: ClipboardCheck,
+      icon: CalendarRange,
+    },
+
+    {
+      title: "Invoice",
+      path: "/app/invoice",
+      icon: ReceiptText,
+    },
+
+    {
+      title: "Pembayaran",
+      path: "/app/pembayaran",
+      icon: HandCoins,
+    },
+
+    {
+      title: "Laporan",
+      path: "/app/laporan",
+      icon: FileText,
     },
   ],
 

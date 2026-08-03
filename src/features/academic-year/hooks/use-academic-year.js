@@ -48,6 +48,7 @@ export function useActiveAcademicYear() {
   return useQuery({
     queryKey: ["active-academic-year"],
     queryFn: getActiveAcademicYear,
+    retry: false,
   });
 }
 

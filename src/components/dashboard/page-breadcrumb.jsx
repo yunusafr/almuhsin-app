@@ -4,6 +4,7 @@ import { ChevronRight, Home } from "lucide-react";
 const breadcrumbNameMap = {
   app: "Dashboard",
   santri: "Santri",
+  tapel: "Tahun Pelajaran",
   kelas: "Kelas",
   asatidz: "Asatidz",
   invoice: "Invoice",
@@ -11,6 +12,10 @@ const breadcrumbNameMap = {
   laporan: "Laporan",
   keuangan: "Keuangan",
   presensi: "Presensi",
+  "rekap-harian": "Rekap Harian",
+  "rekap-bulanan": "Rekap Bulanan",
+  hp: "Pengumpulan HP",
+  perizinan: "Perizinan",
   "tahun-pelajaran": "Tahun Pelajaran",
 };
 

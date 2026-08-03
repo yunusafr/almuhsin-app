@@ -12,6 +12,14 @@ import SantriPage from "@/pages/santri/santri-page";
 import AcademicYearPage from "@/pages/academic-year/academic-year-page";
 import ClassPage from "@/pages/kelas/class-page";
 import TeacherPage from "@/pages/asatidz/teacher-page";
+import PresensiPage from "@/pages/presensi/presensi-page";
+import RekapHarianPage from "@/pages/rekap/rekap-harian-page";
+import RekapBulananPage from "@/pages/rekap/rekap-bulanan-page";
+import InvoicePage from "@/pages/invoice/invoice-page";
+import PembayaranPage from "@/pages/pembayaran/pembayaran-page";
+import LaporanPage from "@/pages/laporan/laporan-page";
+import ComingSoonPage from "@/pages/misc/coming-soon-page";
+import NotFoundPage from "@/pages/misc/not-found-page";
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +66,53 @@ export const router = createBrowserRouter([
         path: "asatidz",
         element: <TeacherPage />,
       },
+      {
+        path: "presensi",
+        element: <PresensiPage />,
+      },
+      {
+        path: "rekap-harian",
+        element: <RekapHarianPage />,
+      },
+      {
+        path: "rekap-bulanan",
+        element: <RekapBulananPage />,
+      },
+      {
+        path: "invoice",
+        element: <InvoicePage />,
+      },
+      {
+        path: "pembayaran",
+        element: <PembayaranPage />,
+      },
+      {
+        path: "laporan",
+        element: <LaporanPage />,
+      },
+      {
+        path: "hp",
+        element: (
+          <ComingSoonPage
+            title="Pengumpulan HP"
+            description="Kelola pengumpulan dan pengembalian handphone santri."
+          />
+        ),
+      },
+      {
+        path: "perizinan",
+        element: (
+          <ComingSoonPage
+            title="Perizinan"
+            description="Kelola izin keluar masuk santri."
+          />
+        ),
+      },
     ],
+  },
+
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);

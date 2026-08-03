@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import { RouterProvider } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import AuthProvider from "@/features/auth/components/auth-provider";
 import QueryProvider from "@/app/providers/query-provider";
@@ -20,5 +21,16 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </ThemeProvider>
       </AuthProvider>
     </QueryProvider>
+
+    <Toaster
+      position="top-right"
+      richColors
+      closeButton
+      toastOptions={{
+        classNames: {
+          toast: "rounded-2xl border shadow-lg",
+        },
+      }}
+    />
   </React.StrictMode>,
 );

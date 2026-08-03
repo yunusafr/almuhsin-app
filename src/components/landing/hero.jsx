@@ -1,4 +1,4 @@
-import { ArrowRight, PlayCircle, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import DashboardMockup from "@/components/landing/dashboard-mockup";
@@ -54,8 +54,10 @@ export default function Hero() {
           <Button
             size="lg"
             className="h-14 rounded-2xl bg-green-600 px-8 text-base font-semibold text-white hover:bg-green-700"
+            render={<NavLink to="/login" />}
           >
-            <NavLink to="/login">Mulai Sekarang</NavLink>
+            Mulai Sekarang
+
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
@@ -69,7 +71,7 @@ export default function Hero() {
 
           <Stat text="100% Responsive" />
         </div>
-        <DashboardMockup />;
+        <DashboardMockup />
       </div>
     </section>
   );

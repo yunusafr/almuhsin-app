@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,15 +15,15 @@ import useAuthStore from "@/features/auth/stores/auth-store";
 import { removeToken } from "@/features/auth/lib/token";
 
 export default function UserDropdown() {
+  const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+
   const user = useAuthStore((s) => s.user);
   const roles = useAuthStore((s) => s.roles);
   const logoutStore = useAuthStore((s) => s.logout);
-  const handleLogout = async () => {
-  try {
-    // nanti kalau backend punya endpoint
-    // await logout();
 
-  } finally {
+  const handleLogout = () => {
     removeToken();
 
     logoutStore();
@@ -30,8 +33,7 @@ export default function UserDropdown() {
     navigate("/login", {
       replace: true,
     });
-  }
-};
+  };
 
   const role = roles?.[0] ?? "Super Admin";
   return (

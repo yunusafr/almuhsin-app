@@ -13,5 +13,5 @@ export const me = async () => {
 };
 
 export const logout = async () => {
-  const { data } = await api.post("/logout", payload);
+  await api.post("/logout");
 };
