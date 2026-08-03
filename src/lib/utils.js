@@ -30,3 +30,38 @@ export function formatDate(value, locale = "id-ID") {
     return value;
   }
 }
+
+export function downloadCsv({ filename, columns, rows }) {
+  const escape = (value) => {
+    const text = String(value ?? "");
+
+    if (/[",\n;]/.test(text)) {
+      return `"${text.replace(/"/g, '""')}"`;
+    }
+
+    return text;
+  };
+
+  const header = columns.map((column) => escape(column.label)).join(";");
+  const body = rows
+    .map((row) =>
+      columns
+        .map((column) => escape(column.value ? column.value(row) : row[column.key]))
+        .join(";"),
+    )
+    .join("\n");
+
+  const blob = new Blob([`\uFEFF${header}\n${body}`], {
+    type: "text/csv;charset=utf-8;",
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   ArrowRightLeft,
   GraduationCap,
@@ -27,9 +28,12 @@ import {
   useSyncStudents,
 } from "@/features/santri/hooks/use-students";
 
+import { downloadCsv } from "@/lib/utils";
+
 import { santriColumns } from "./components/santri-columns";
 
 import SantriDialog from "./components/santri-dialog";
+import SantriDetailDialog from "./components/santri-detail-dialog";
 import StudentDeleteDialog from "./components/student-delete-dialog";
 import ExternalStudentDialog from "./components/external-student-dialog";
 
@@ -48,15 +52,35 @@ export default function SantriPage() {
   |--------------------------------------------------------------------------
   */
 
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const search = searchParams.get("q") ?? "";
 
   const [selected, setSelected] = useState(null);
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const [detailOpen, setDetailOpen] = useState(false);
+
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   const [externalOpen, setExternalOpen] = useState(false);
+
+  // Pencarian memakai query param ?q= sebagai sumber kebenaran tunggal
+  // (navbar search mengarah ke sini, dan URL ikut diperbarui saat mengetik).
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    const next = new URLSearchParams(searchParams);
+
+    if (value.trim()) {
+      next.set("q", value);
+    } else {
+      next.delete("q");
+    }
+
+    setSearchParams(next, { replace: true });
+  };
 
   /*
   |--------------------------------------------------------------------------
@@ -144,19 +168,28 @@ function handleEdit(student) {
   }
 
   function handleDetail(student) {
-    console.log(student);
-
-    // Next:
-    // setSelected(student)
-    // setDetailOpen(true)
+    setSelected(student);
+    setDetailOpen(true);
   }
 
   function handleExternalPull() {
     setExternalOpen(true);
   }
 
-  function handleImportExcel() {
-    console.log("Import Excel");
+  function handleExportCsv() {
+    downloadCsv({
+      filename: `data-santri-${new Date().toISOString().slice(0, 10)}.csv`,
+      columns: [
+        { key: "nis", label: "NIS" },
+        { key: "name", label: "Nama" },
+        { key: "tingkat", label: "Tingkat" },
+        { key: "rombel", label: "Rombel" },
+        { key: "guardian_name", label: "Wali" },
+        { key: "guardian_phone", label: "No HP Wali" },
+        { key: "status", label: "Status" },
+      ],
+      rows: filteredData,
+    });
   }
 
   function handleSync() {
@@ -177,10 +210,11 @@ function handleEdit(student) {
 
             <Button
               variant="outline"
-              onClick={handleImportExcel}
+              onClick={handleExportCsv}
+              disabled={filteredData.length === 0}
             >
               <Download className="mr-2 h-4 w-4" />
-              Import Excel
+              Export CSV
             </Button>
 
             <Button
@@ -257,9 +291,7 @@ function handleEdit(student) {
           search={
             <DataTableSearch
               value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
+              onChange={handleSearchChange}
               placeholder="Cari NIS, Nama, Rombel..."
             />
           }
@@ -280,6 +312,12 @@ function handleEdit(student) {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         data={selected}
+      />
+
+      <SantriDetailDialog
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+        student={selected}
       />
 
       <StudentDeleteDialog

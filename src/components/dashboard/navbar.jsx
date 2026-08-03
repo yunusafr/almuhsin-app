@@ -1,8 +1,16 @@
-import { Bell, Menu, Moon, Search, Sun } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Bell, BellOff, Menu, Moon, Search, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import UserDropdown from "./user-dropdown";
 
@@ -13,7 +21,21 @@ export default function Navbar() {
   const { toggle } = useSidebarStore();
   const { resolvedTheme, setTheme } = useTheme();
 
+  const navigate = useNavigate();
+
   const user = useAuthStore((s) => s.user);
+
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const keyword = search.trim();
+
+    if (!keyword) return;
+
+    navigate(`/app/santri?q=${encodeURIComponent(keyword)}`);
+  };
 
   return (
     <header className="sticky top-0 z-50 h-16 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -39,7 +61,10 @@ export default function Navbar() {
         </div>
 
         {/* Center */}
-        <div className="hidden lg:flex w-full max-w-md">
+        <form
+          onSubmit={handleSearch}
+          className="hidden lg:flex w-full max-w-md"
+        >
           <div className="relative w-full">
             <Search
               size={18}
@@ -47,24 +72,44 @@ export default function Navbar() {
             />
 
             <Input
-              placeholder="Cari menu, santri, invoice..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Cari santri... (Enter untuk mencari)"
               className="pl-10 rounded-xl"
             />
           </div>
-        </div>
+        </form>
 
         {/* Right */}
         <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative rounded-xl"
-            aria-label="Notifikasi"
-          >
-            <Bell size={18} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative rounded-xl"
+                aria-label="Notifikasi"
+              >
+                <Bell size={18} />
+              </Button>
+            </DropdownMenuTrigger>
 
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
-          </Button>
+            <DropdownMenuContent align="end" className="w-72 p-0">
+              <div className="border-b p-4">
+                <h3 className="font-semibold">Notifikasi</h3>
+              </div>
+
+              <div className="flex flex-col items-center justify-center gap-2 px-4 py-10 text-center">
+                <BellOff size={28} className="text-muted-foreground/50" />
+
+                <p className="text-sm font-medium">Tidak ada notifikasi</p>
+
+                <p className="text-xs text-muted-foreground">
+                  Notifikasi baru akan muncul di sini.
+                </p>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Button
             variant="ghost"

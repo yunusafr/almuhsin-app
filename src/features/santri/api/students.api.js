@@ -56,13 +56,7 @@ export const pullExternalStudents = async (payload) => {
 };
 
 export const syncStudents = async () => {
-  try {
-    const { data } = await api.post("/students/external-sync");
+  const { data } = await api.post("/students/external-sync");
 
-    return data;
-  } catch (error) {
-    console.log(error.response);
-
-    throw error;
-  }
+  return data;
 };

@@ -1,9 +1,20 @@
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Smartphone, Users, UserCog, ClipboardCheck, HandCoins } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import DashboardMockup from "@/components/landing/dashboard-mockup";
+import AnimatedStat from "@/components/landing/animated-stat";
+
+import { useLandingStats } from "@/features/landing/hooks/use-landing-stats";
+
+function formatCompact(value) {
+  return new Intl.NumberFormat("id-ID", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);
+}
 
 export default function Hero() {
+  const stats = useLandingStats();
   return (
     <section className="relative overflow-hidden pt-36 pb-20">
       {/* Background */}
@@ -63,13 +74,27 @@ export default function Hero() {
         </div>
         {/* Stats */}
         <div className="mt-12 flex flex-wrap justify-center gap-8">
-          <Stat text="1200+ Santri" />
+          <Stat icon={Users} label="Santri">
+            <AnimatedStat value={stats.students} suffix="+" />
+          </Stat>
 
-          <Stat text="45 Asatidz" />
+          <Stat icon={UserCog} label="Asatidz">
+            <AnimatedStat value={stats.teachers} />
+          </Stat>
 
-          <Stat text="98% Presensi" />
+          <Stat icon={ClipboardCheck} label="Tingkat Kehadiran">
+            <AnimatedStat value={stats.attendanceRate} suffix="%" />
+          </Stat>
 
-          <Stat text="100% Responsive" />
+          {stats.isLive ? (
+            <Stat icon={HandCoins} label="Pembayaran Terkumpul">
+              <AnimatedStat value={formatCompact(stats.collected ?? 0)} prefix="Rp " />
+            </Stat>
+          ) : (
+            <Stat icon={Smartphone} label="Responsive">
+              <AnimatedStat value={100} suffix="%" />
+            </Stat>
+          )}
         </div>
         <DashboardMockup />
       </div>
@@ -77,13 +102,16 @@ export default function Hero() {
   );
 }
 
-function Stat({ text }) {
+function Stat({ icon: Icon, label, children }) {
   return (
     <div className="flex items-center gap-2">
-      <CheckCircle2 size={18} className="text-green-600" />
+      <Icon size={18} className="text-green-600" />
 
       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-        {text}
+        <span className="text-lg font-bold text-slate-900 dark:text-white">
+          {children}
+        </span>{" "}
+        {label}
       </span>
     </div>
   );

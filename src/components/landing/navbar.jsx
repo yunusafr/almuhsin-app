@@ -5,24 +5,7 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 
-const menus = [
-  {
-    title: "Beranda",
-    href: "/",
-  },
-  {
-    title: "Fitur",
-    href: "#features",
-  },
-  {
-    title: "Role",
-    href: "#roles",
-  },
-  {
-    title: "FAQ",
-    href: "#faq",
-  },
-];
+import { landingMenu } from "@/constants/landing-menu";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -76,7 +59,7 @@ export default function Navbar() {
             {/* Desktop menu */}
 
             <nav className="hidden items-center gap-8 lg:flex">
-              {menus.map((menu) => (
+              {landingMenu.map((menu) => (
                 <a
                   key={menu.title}
                   href={menu.href}
@@ -158,7 +141,7 @@ export default function Navbar() {
         {mobileOpen && (
           <div className="border-t border-slate-200/60 bg-white/95 backdrop-blur-xl lg:hidden dark:border-slate-800 dark:bg-slate-950/95">
             <div className="container mx-auto space-y-1 px-5 py-4">
-              {menus.map((menu) => (
+              {landingMenu.map((menu) => (
                 <a
                   key={menu.title}
                   href={menu.href}
