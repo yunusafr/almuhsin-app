@@ -6,6 +6,15 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 import ProtectedRoute from "@/app/router/protected-route";
 
 import LandingPage from "@/pages/public/landing-page";
+import TentangPage from "@/pages/public/tentang-page";
+import KontakPage from "@/pages/public/kontak-page";
+import BantuanPage from "@/pages/public/bantuan-page";
+import KebijakanPrivasiPage from "@/pages/public/kebijakan-privasi-page";
+import SyaratKetentuanPage from "@/pages/public/syarat-ketentuan-page";
+import ProdukSantriPage from "@/pages/public/produk/santri-page";
+import ProdukPresensiPage from "@/pages/public/produk/presensi-page";
+import ProdukKeuanganPage from "@/pages/public/produk/keuangan-page";
+import ProdukLaporanPage from "@/pages/public/produk/laporan-page";
 import LoginPage from "@/pages/auth/login-page";
 import DashboardPage from "@/pages/dashboard/dashboard-page";
 import SantriPage from "@/pages/santri/santri-page";
@@ -29,6 +38,42 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <LandingPage />,
+      },
+      {
+        path: "tentang",
+        element: <TentangPage />,
+      },
+      {
+        path: "kontak",
+        element: <KontakPage />,
+      },
+      {
+        path: "bantuan",
+        element: <BantuanPage />,
+      },
+      {
+        path: "kebijakan-privasi",
+        element: <KebijakanPrivasiPage />,
+      },
+      {
+        path: "syarat-ketentuan",
+        element: <SyaratKetentuanPage />,
+      },
+      {
+        path: "produk/santri",
+        element: <ProdukSantriPage />,
+      },
+      {
+        path: "produk/presensi",
+        element: <ProdukPresensiPage />,
+      },
+      {
+        path: "produk/keuangan",
+        element: <ProdukKeuanganPage />,
+      },
+      {
+        path: "produk/laporan",
+        element: <ProdukLaporanPage />,
       },
     ],
   },

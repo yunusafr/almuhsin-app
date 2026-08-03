@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
 
@@ -12,6 +12,28 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const { resolvedTheme, toggleTheme } = useThemeToggle();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  function handleMenuClick(e, href) {
+    if (!href.startsWith("#")) return;
+
+    e.preventDefault();
+    setMobileOpen(false);
+
+    const id = href.slice(1);
+
+    const scrollToSection = () =>
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+    if (location.pathname === "/") {
+      scrollToSection();
+    } else {
+      navigate("/");
+      setTimeout(scrollToSection, 150);
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,15 +81,26 @@ export default function Navbar() {
             {/* Desktop menu */}
 
             <nav className="hidden items-center gap-8 lg:flex">
-              {landingMenu.map((menu) => (
-                <a
-                  key={menu.title}
-                  href={menu.href}
-                  className="relative text-sm font-medium text-slate-600 transition hover:text-green-600 dark:text-slate-300"
-                >
-                  {menu.title}
-                </a>
-              ))}
+              {landingMenu.map((menu) =>
+                menu.href.startsWith("#") ? (
+                  <a
+                    key={menu.title}
+                    href={menu.href}
+                    onClick={(e) => handleMenuClick(e, menu.href)}
+                    className="relative text-sm font-medium text-slate-600 transition hover:text-green-600 dark:text-slate-300"
+                  >
+                    {menu.title}
+                  </a>
+                ) : (
+                  <Link
+                    key={menu.title}
+                    to={menu.href}
+                    className="relative text-sm font-medium text-slate-600 transition hover:text-green-600 dark:text-slate-300"
+                  >
+                    {menu.title}
+                  </Link>
+                )
+              )}
             </nav>
 
             {/* Desktop actions */}
@@ -139,16 +172,27 @@ export default function Navbar() {
         {mobileOpen && (
           <div className="border-t border-slate-200/60 bg-white/95 backdrop-blur-xl lg:hidden dark:border-slate-800 dark:bg-slate-950/95">
             <div className="container mx-auto space-y-1 px-5 py-4">
-              {landingMenu.map((menu) => (
-                <a
-                  key={menu.title}
-                  href={menu.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-green-50 hover:text-green-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                >
-                  {menu.title}
-                </a>
-              ))}
+              {landingMenu.map((menu) =>
+                menu.href.startsWith("#") ? (
+                  <a
+                    key={menu.title}
+                    href={menu.href}
+                    onClick={(e) => handleMenuClick(e, menu.href)}
+                    className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-green-50 hover:text-green-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    {menu.title}
+                  </a>
+                ) : (
+                  <Link
+                    key={menu.title}
+                    to={menu.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-green-50 hover:text-green-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    {menu.title}
+                  </Link>
+                )
+              )}
 
               <Link
                 to="/login"

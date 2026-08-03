@@ -1,25 +1,87 @@
-import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { ArrowRight, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const productMenus = [
-  "Dashboard",
-  "Presensi",
-  "Keuangan",
-  "Perizinan",
-  "Laporan",
+  { label: "Manajemen Santri", href: "/produk/santri" },
+  { label: "Presensi Digital", href: "/produk/presensi" },
+  { label: "Keuangan & Tagihan", href: "/produk/keuangan" },
+  { label: "Laporan & Statistik", href: "/produk/laporan" },
 ];
 
-const companyMenus = ["Tentang", "Fitur", "Roadmap", "FAQ", "Kontak"];
+const navigateMenus = [
+  { label: "Beranda", href: "/" },
+  { label: "Tentang Kami", href: "/tentang" },
+  { label: "Kontak", href: "/kontak" },
+  { label: "Fitur", href: "/#features" },
+  { label: "FAQ", href: "/#faq" },
+];
 
 const supportMenus = [
-  "Dokumentasi",
-  "API",
-  "Bantuan",
-  "Privacy Policy",
-  "Terms of Service",
+  { label: "Pusat Bantuan", href: "/bantuan" },
+  { label: "Kebijakan Privasi", href: "/kebijakan-privasi" },
+  { label: "Syarat & Ketentuan", href: "/syarat-ketentuan" },
+  { label: "Dokumentasi API", href: "https://api-almuhsin.ingintau.my.id", external: true },
 ];
 
+function FooterLink({ item, onClick }) {
+  if (item.external) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center gap-1 text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
+      >
+        {item.label}
+        <ExternalLink className="h-3 w-3" />
+      </a>
+    );
+  }
+
+  if (item.href.includes("#")) {
+    return (
+      <a
+        href={item.href}
+        onClick={onClick}
+        className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
+      >
+        {item.label}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      to={item.href}
+      className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
+    >
+      {item.label}
+    </Link>
+  );
+}
+
 export default function Footer() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  function handleHashClick(e, href) {
+    if (!href.includes("#")) return;
+    e.preventDefault();
+
+    const id = href.split("#")[1];
+
+    const scrollToSection = () =>
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+    if (location.pathname === "/") {
+      scrollToSection();
+    } else {
+      navigate("/");
+      setTimeout(scrollToSection, 150);
+    }
+  }
+
   return (
     <footer className="relative border-t bg-white text-slate-300 dark:bg-slate-950">
       {/* Background Glow */}
@@ -56,6 +118,8 @@ export default function Footer() {
             <Button
               size="lg"
               className="h-14 rounded-2xl bg-white px-8 text-base font-semibold text-green-700 hover:bg-slate-100"
+              nativeButton={false}
+              render={<Link to="/login" />}
             >
               Mulai Sekarang
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -109,7 +173,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Product */}
+          {/* Produk */}
 
           <div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -118,40 +182,38 @@ export default function Footer() {
 
             <ul className="mt-6 space-y-4">
               {productMenus.map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
+                <li key={item.href}>
+                  <Link
+                    to={item.href}
                     className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
                   >
-                    {item}
-                  </a>
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Navigasi */}
 
           <div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-              Perusahaan
+              Navigasi
             </h3>
 
             <ul className="mt-6 space-y-4">
-              {companyMenus.map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
-                  >
-                    {item}
-                  </a>
+              {navigateMenus.map((item) => (
+                <li key={item.href}>
+                  <FooterLink
+                    item={item}
+                    onClick={(e) => handleHashClick(e, item.href)}
+                  />
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Bantuan */}
 
           <div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -160,13 +222,11 @@ export default function Footer() {
 
             <ul className="mt-6 space-y-4">
               {supportMenus.map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
-                  >
-                    {item}
-                  </a>
+                <li key={item.href}>
+                  <FooterLink
+                    item={item}
+                    onClick={(e) => handleHashClick(e, item.href)}
+                  />
                 </li>
               ))}
             </ul>
