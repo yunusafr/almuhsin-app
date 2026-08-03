@@ -43,11 +43,27 @@ export default function ExternalStudentDialog({
 
   const pullMutation = usePullExternalStudents();
 
+  /*
+  |--------------------------------------------------------------------------
+  | Normalisasi data eksternal
+  |--------------------------------------------------------------------------
+  | Data dari sistem eksternal tidak selalu memiliki field `id` (identitas
+  | utamanya bisa `nis`). Tanpa id unik, semua baris berbagi id undefined
+  | sehingga mencentang satu baris akan mencentang semua baris.
+  */
+
+  const normalizedData = useMemo(() => {
+    return data.map((item, index) => ({
+      ...item,
+      id: item.id ?? item.nis ?? `ext-${index}`,
+    }));
+  }, [data]);
+
   const selectedData = useMemo(() => {
-    return data.filter((item) =>
+    return normalizedData.filter((item) =>
       selectedIds.includes(item.id)
     );
-  }, [data, selectedIds]);
+  }, [normalizedData, selectedIds]);
 
   function handleToggle(id) {
     setSelectedIds((prev) =>
@@ -152,7 +168,7 @@ export default function ExternalStudentDialog({
         <Separator />
 
         <ExternalStudentTable
-          data={data}
+          data={normalizedData}
           loading={isLoading}
           selectedIds={selectedIds}
           onToggle={handleToggle}
