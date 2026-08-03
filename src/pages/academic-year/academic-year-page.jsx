@@ -124,7 +124,7 @@ export default function AcademicYearPage() {
 
       {/* Statistic */}
       <div className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-3xl border bg-white p-6 shadow-sm">
+        <div className="rounded-3xl border bg-card p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Total Tahun</p>
@@ -140,7 +140,7 @@ export default function AcademicYearPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border bg-white p-6 shadow-sm">
+        <div className="rounded-3xl border bg-card p-6 shadow-sm">
           <p className="text-sm text-muted-foreground">Tahun Aktif</p>
 
           <h2 className="mt-3 text-2xl font-bold">{activeYear?.name ?? "-"}</h2>
@@ -150,7 +150,7 @@ export default function AcademicYearPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border bg-white p-6 shadow-sm">
+        <div className="rounded-3xl border bg-card p-6 shadow-sm">
           <p className="text-sm text-muted-foreground">Tidak Aktif</p>
 
           <h2 className="mt-3 text-3xl font-bold">

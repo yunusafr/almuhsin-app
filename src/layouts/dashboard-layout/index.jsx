@@ -14,7 +14,7 @@ export default function DashboardLayout() {
         <div className="flex min-w-0 flex-1 flex-col">
           <Navbar />
 
-          <main className="flex-1 overflow-auto bg-slate-50 p-6 pb-24 lg:pb-6">
+          <main className="flex-1 overflow-auto bg-slate-50 p-6 pb-24 lg:pb-6 dark:bg-slate-950">
             <div className="w-full max-w-full">
               <PageBreadcrumb />
               <Outlet />

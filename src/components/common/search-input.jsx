@@ -9,7 +9,7 @@ export default function SearchInput({
 }) {
   return (
     <div className="relative w-full max-w-sm">
-      <Search size={18} className="absolute left-3 top-3 text-slate-400" />
+      <Search size={18} className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" />
 
       <Input
         value={value}

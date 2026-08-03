@@ -18,10 +18,10 @@ function StatCard({ title, value, color, icon: Icon }) {
           <Icon className="h-5 w-5 text-white" />
         </div>
 
-        <MoreHorizontal size={18} className="text-slate-400" />
+        <MoreHorizontal size={18} className="text-slate-400 dark:text-slate-500" />
       </div>
 
-      <p className="mt-5 text-sm text-slate-500">{title}</p>
+      <p className="mt-5 text-sm text-slate-500 dark:text-slate-400">{title}</p>
 
       <h3 className="mt-1 text-3xl font-bold">{value}</h3>
     </div>
@@ -39,14 +39,14 @@ export default function DashboardMockup() {
 
       {/* Floating Card */}
 
-      <div className="absolute -left-6 top-10 hidden rounded-2xl border bg-white p-4 shadow-xl lg:block">
-        <p className="text-xs text-slate-500">Presensi Hari Ini</p>
+      <div className="absolute -left-6 top-10 hidden rounded-2xl border bg-white p-4 shadow-xl lg:block dark:border-slate-800 dark:bg-slate-900">
+        <p className="text-xs text-slate-500 dark:text-slate-400">Presensi Hari Ini</p>
 
         <h3 className="mt-2 text-3xl font-bold">98%</h3>
       </div>
 
-      <div className="absolute -right-6 bottom-20 hidden rounded-2xl border bg-white p-4 shadow-xl lg:block">
-        <p className="text-xs text-slate-500">Santri Aktif</p>
+      <div className="absolute -right-6 bottom-20 hidden rounded-2xl border bg-white p-4 shadow-xl lg:block dark:border-slate-800 dark:bg-slate-900">
+        <p className="text-xs text-slate-500 dark:text-slate-400">Santri Aktif</p>
 
         <h3 className="mt-2 text-3xl font-bold">1.250</h3>
       </div>
@@ -58,12 +58,12 @@ export default function DashboardMockup() {
 
         <div className="flex items-center justify-between border-b border-slate-200 px-8 py-5 dark:border-slate-800">
           <div>
-            <p className="text-sm text-slate-500">Dashboard</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Dashboard</p>
 
             <h2 className="text-2xl font-bold">Almuhsin App</h2>
           </div>
 
-          <Bell className="text-slate-400" />
+          <Bell className="text-slate-400 dark:text-slate-500" />
         </div>
 
         {/* Body */}

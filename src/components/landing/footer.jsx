@@ -21,7 +21,7 @@ const supportMenus = [
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-white text-slate-300">
+    <footer className="relative border-t bg-white text-slate-300 dark:bg-slate-950">
       {/* Background Glow */}
 
       <div className="absolute inset-0 overflow-hidden">
@@ -75,7 +75,7 @@ export default function Footer() {
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-slate-900">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                   Almuhsin App
                 </h2>
 
@@ -92,17 +92,17 @@ export default function Footer() {
             </p>
 
             <div className="mt-8 space-y-4 text-sm ">
-              <div className="flex items-center gap-3 text-slate-600">
+              <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
                 <MapPin size={18} className="text-green-400" />
                 Indonesia
               </div>
 
-              <div className="flex items-center gap-3 text-slate-600">
+              <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
                 <Phone size={18} className="text-green-400" />
                 +62 xxx xxxx xxxx
               </div>
 
-              <div className="flex items-center gap-3 text-slate-600">
+              <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
                 <Mail size={18} className="text-green-400" />
                 support@almuhsin.app
               </div>
@@ -112,14 +112,16 @@ export default function Footer() {
           {/* Product */}
 
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">Produk</h3>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Produk
+            </h3>
 
             <ul className="mt-6 space-y-4">
               {productMenus.map((item) => (
                 <li key={item}>
                   <a
                     href="#"
-                    className="text-slate-400 transition hover:text-green-400"
+                    className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
                   >
                     {item}
                   </a>
@@ -131,14 +133,16 @@ export default function Footer() {
           {/* Company */}
 
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">Perusahaan</h3>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Perusahaan
+            </h3>
 
             <ul className="mt-6 space-y-4">
               {companyMenus.map((item) => (
                 <li key={item}>
                   <a
                     href="#"
-                    className="text-slate-400 transition hover:text-green-400"
+                    className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
                   >
                     {item}
                   </a>
@@ -150,14 +154,16 @@ export default function Footer() {
           {/* Support */}
 
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">Bantuan</h3>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Bantuan
+            </h3>
 
             <ul className="mt-6 space-y-4">
               {supportMenus.map((item) => (
                 <li key={item}>
                   <a
                     href="#"
-                    className="text-slate-400 transition hover:text-green-400"
+                    className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
                   >
                     {item}
                   </a>
@@ -168,8 +174,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-8 text-sm text-slate-500 lg:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-200 py-8 text-sm text-slate-500 lg:flex-row dark:border-slate-800 dark:text-slate-400">
           <p>© {new Date().getFullYear()} Almuhsin App. All rights reserved.</p>
 
           <p>Developed by Almuhsin Universe</p>

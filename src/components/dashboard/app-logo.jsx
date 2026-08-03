@@ -9,7 +9,7 @@ export default function AppLogo({ collapsed = false }) {
         <div>
           <h2 className="font-bold">Almuhsin App</h2>
 
-          <p className="text-xs text-slate-500 text-white">
+          <p className="text-xs text-white/80">
             ERP Pondok Pesantren
           </p>
         </div>
