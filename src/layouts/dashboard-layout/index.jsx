@@ -4,6 +4,8 @@ import Navbar from "@/components/dashboard/navbar";
 import Sidebar from "@/components/dashboard/sidebar";
 import MobileBottomBar from "@/components/dashboard/mobile-bottom-bar";
 import PageBreadcrumb from "@/components/dashboard/page-breadcrumb";
+import ScrollToTop from "@/components/common/scroll-to-top";
+import BackToTop from "@/components/common/back-to-top";
 
 export default function DashboardLayout() {
   const location = useLocation();
@@ -16,7 +18,12 @@ export default function DashboardLayout() {
         <div className="flex min-w-0 flex-1 flex-col">
           <Navbar />
 
-          <main className="flex-1 overflow-auto bg-slate-50 p-6 pb-24 lg:pb-6 dark:bg-slate-950">
+          <main
+            data-scroll-container
+            className="flex-1 overflow-auto bg-slate-50 p-6 pb-24 lg:pb-6 dark:bg-slate-950"
+          >
+            <ScrollToTop />
+
             <div
               key={location.pathname}
               className="page-enter w-full max-w-full"
@@ -28,6 +35,7 @@ export default function DashboardLayout() {
         </div>
 
         <MobileBottomBar />
+        <BackToTop />
       </>
     </div>
   );

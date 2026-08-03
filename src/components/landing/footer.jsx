@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { ArrowRight, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { scrollContainersToTop } from "@/lib/scroll";
 
 const productMenus = [
   { label: "Manajemen Santri", href: "/produk/santri" },
@@ -21,24 +22,9 @@ const supportMenus = [
   { label: "Pusat Bantuan", href: "/bantuan" },
   { label: "Kebijakan Privasi", href: "/kebijakan-privasi" },
   { label: "Syarat & Ketentuan", href: "/syarat-ketentuan" },
-  { label: "Dokumentasi API", href: "https://api-almuhsin.ingintau.my.id", external: true },
 ];
 
 function FooterLink({ item, onClick }) {
-  if (item.external) {
-    return (
-      <a
-        href={item.href}
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-center gap-1 text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
-      >
-        {item.label}
-        <ExternalLink className="h-3 w-3" />
-      </a>
-    );
-  }
-
   if (item.href.includes("#")) {
     return (
       <a
@@ -54,6 +40,7 @@ function FooterLink({ item, onClick }) {
   return (
     <Link
       to={item.href}
+      onClick={onClick}
       className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
     >
       {item.label}
@@ -79,6 +66,18 @@ export default function Footer() {
     } else {
       navigate("/");
       setTimeout(scrollToSection, 150);
+    }
+  }
+
+  function handleMenuClick(e, item) {
+    if (item.href.includes("#")) {
+      handleHashClick(e, item.href);
+      return;
+    }
+
+    // Klik menu yang menuju halaman yang sedang dibuka -> kembali ke atas
+    if (location.pathname === item.href) {
+      scrollContainersToTop();
     }
   }
 
@@ -183,12 +182,10 @@ export default function Footer() {
             <ul className="mt-6 space-y-4">
               {productMenus.map((item) => (
                 <li key={item.href}>
-                  <Link
-                    to={item.href}
-                    className="text-slate-400 transition hover:text-green-400 dark:text-slate-400 dark:hover:text-green-300"
-                  >
-                    {item.label}
-                  </Link>
+                  <FooterLink
+                    item={item}
+                    onClick={(e) => handleMenuClick(e, item)}
+                  />
                 </li>
               ))}
             </ul>
@@ -206,7 +203,7 @@ export default function Footer() {
                 <li key={item.href}>
                   <FooterLink
                     item={item}
-                    onClick={(e) => handleHashClick(e, item.href)}
+                    onClick={(e) => handleMenuClick(e, item)}
                   />
                 </li>
               ))}
@@ -225,7 +222,7 @@ export default function Footer() {
                 <li key={item.href}>
                   <FooterLink
                     item={item}
-                    onClick={(e) => handleHashClick(e, item.href)}
+                    onClick={(e) => handleMenuClick(e, item)}
                   />
                 </li>
               ))}

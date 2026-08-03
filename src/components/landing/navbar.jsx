@@ -6,6 +6,7 @@ import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import { Button } from "@/components/ui/button";
 
 import { landingMenu } from "@/constants/landing-menu";
+import { scrollContainersToTop } from "@/lib/scroll";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -95,6 +96,11 @@ export default function Navbar() {
                   <Link
                     key={menu.title}
                     to={menu.href}
+                    onClick={() => {
+                      if (location.pathname === menu.href) {
+                        scrollContainersToTop();
+                      }
+                    }}
                     className="relative text-sm font-medium text-slate-600 transition hover:text-green-600 dark:text-slate-300"
                   >
                     {menu.title}
@@ -186,7 +192,12 @@ export default function Navbar() {
                   <Link
                     key={menu.title}
                     to={menu.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => {
+                      setMobileOpen(false);
+                      if (location.pathname === menu.href) {
+                        scrollContainersToTop();
+                      }
+                    }}
                     className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-green-50 hover:text-green-700 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
                     {menu.title}

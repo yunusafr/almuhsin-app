@@ -1,7 +1,6 @@
 import { ArrowRight, Sparkles, Smartphone, Users, UserCog, ClipboardCheck, HandCoins } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import DashboardMockup from "@/components/landing/dashboard-mockup";
 import AnimatedStat from "@/components/landing/animated-stat";
 
 import { useLandingStats } from "@/features/landing/hooks/use-landing-stats";
@@ -97,7 +96,6 @@ export default function Hero() {
             </Stat>
           )}
         </div>
-        <DashboardMockup />
       </div>
     </section>
   );
