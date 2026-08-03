@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import AnimatedStat from "@/components/landing/animated-stat";
 
 import { useLandingStats } from "@/features/landing/hooks/use-landing-stats";
+import useAuthStore from "@/features/auth/stores/auth-store";
 
 function formatCompact(value) {
   return new Intl.NumberFormat("id-ID", {
@@ -14,6 +15,8 @@ function formatCompact(value) {
 
 export default function Hero() {
   const stats = useLandingStats();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
   return (
     <section className="relative overflow-hidden pt-36 pb-20">
       {/* Background */}
@@ -65,9 +68,9 @@ export default function Hero() {
             size="lg"
             className="h-14 rounded-2xl bg-green-600 px-8 text-base font-semibold text-white hover:bg-green-700"
             nativeButton={false}
-            render={<NavLink to="/login" />}
+            render={<NavLink to={isAuthenticated ? "/app" : "/login"} />}
           >
-            Mulai Sekarang
+            {isAuthenticated ? "Buka Dashboard" : "Mulai Sekarang"}
 
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>

@@ -2,6 +2,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { scrollContainersToTop } from "@/lib/scroll";
+import useAuthStore from "@/features/auth/stores/auth-store";
 
 const productMenus = [
   { label: "Manajemen Santri", href: "/produk/santri" },
@@ -51,6 +52,8 @@ function FooterLink({ item, onClick }) {
 export default function Footer() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   function handleHashClick(e, href) {
     if (!href.includes("#")) return;
@@ -118,9 +121,9 @@ export default function Footer() {
               size="lg"
               className="h-14 rounded-2xl bg-white px-8 text-base font-semibold text-green-700 hover:bg-slate-100"
               nativeButton={false}
-              render={<Link to="/login" />}
+              render={<Link to={isAuthenticated ? "/app" : "/login"} />}
             >
-              Mulai Sekarang
+              {isAuthenticated ? "Buka Dashboard" : "Mulai Sekarang"}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>

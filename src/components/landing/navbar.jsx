@@ -7,12 +7,15 @@ import { Button } from "@/components/ui/button";
 
 import { landingMenu } from "@/constants/landing-menu";
 import { scrollContainersToTop } from "@/lib/scroll";
+import useAuthStore from "@/features/auth/stores/auth-store";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const { resolvedTheme, toggleTheme } = useThemeToggle();
+
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -126,21 +129,33 @@ export default function Navbar() {
                 )}
               </Button>
 
-              <Button
-                className="h-10 rounded-2xl bg-slate-100 px-5 text-base font-semibold text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-                nativeButton={false}
-                render={<NavLink to="/login" />}
-              >
-                Login
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  className="h-10 rounded-2xl bg-green-600 px-5 text-base font-semibold text-white hover:bg-green-700"
+                  nativeButton={false}
+                  render={<NavLink to="/app" />}
+                >
+                  Buka Dashboard
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    className="h-10 rounded-2xl bg-slate-100 px-5 text-base font-semibold text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                    nativeButton={false}
+                    render={<NavLink to="/login" />}
+                  >
+                    Login
+                  </Button>
 
-              <Button
-                className="h-10 rounded-2xl bg-green-600 px-5 text-base font-semibold text-white hover:bg-green-700"
-                nativeButton={false}
-                render={<NavLink to="/login" />}
-              >
-                Mulai Sekarang
-              </Button>
+                  <Button
+                    className="h-10 rounded-2xl bg-green-600 px-5 text-base font-semibold text-white hover:bg-green-700"
+                    nativeButton={false}
+                    render={<NavLink to="/login" />}
+                  >
+                    Mulai Sekarang
+                  </Button>
+                </>
+              )}
             </div>
 
             {/* Mobile toggles */}
@@ -205,13 +220,23 @@ export default function Navbar() {
                 )
               )}
 
-              <Link
-                to="/login"
-                onClick={() => setMobileOpen(false)}
-                className="mt-2 block rounded-xl bg-green-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-green-700"
-              >
-                Login / Mulai Sekarang
-              </Link>
+              {isAuthenticated ? (
+                <Link
+                  to="/app"
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-2 block rounded-xl bg-green-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-green-700"
+                >
+                  Buka Dashboard
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-2 block rounded-xl bg-green-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-green-700"
+                >
+                  Login / Mulai Sekarang
+                </Link>
+              )}
             </div>
           </div>
         )}

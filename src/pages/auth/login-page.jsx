@@ -1,7 +1,23 @@
+import { Navigate } from "react-router-dom";
+
 import LoginForm from "./login-form";
 import BackButton from "@/components/common/back-button";
+import PageLoader from "@/components/common/page-loader";
+import useAuthStore from "@/features/auth/stores/auth-store";
 
 export default function LoginPage() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isLoading = useAuthStore((s) => s.isLoading);
+
+  // Pengguna yang sudah login tidak perlu login ulang
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/app" replace />;
+  }
+
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Left */}
