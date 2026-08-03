@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import PublicLayout from "@/layouts/public-layout";
@@ -5,30 +7,30 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 
 import ProtectedRoute from "@/app/router/protected-route";
 
-import LandingPage from "@/pages/public/landing-page";
-import TentangPage from "@/pages/public/tentang-page";
-import KontakPage from "@/pages/public/kontak-page";
-import BantuanPage from "@/pages/public/bantuan-page";
-import KebijakanPrivasiPage from "@/pages/public/kebijakan-privasi-page";
-import SyaratKetentuanPage from "@/pages/public/syarat-ketentuan-page";
-import ProdukSantriPage from "@/pages/public/produk/santri-page";
-import ProdukPresensiPage from "@/pages/public/produk/presensi-page";
-import ProdukKeuanganPage from "@/pages/public/produk/keuangan-page";
-import ProdukLaporanPage from "@/pages/public/produk/laporan-page";
-import LoginPage from "@/pages/auth/login-page";
-import DashboardPage from "@/pages/dashboard/dashboard-page";
-import SantriPage from "@/pages/santri/santri-page";
-import AcademicYearPage from "@/pages/academic-year/academic-year-page";
-import ClassPage from "@/pages/kelas/class-page";
-import TeacherPage from "@/pages/asatidz/teacher-page";
-import PresensiPage from "@/pages/presensi/presensi-page";
-import RekapHarianPage from "@/pages/rekap/rekap-harian-page";
-import RekapBulananPage from "@/pages/rekap/rekap-bulanan-page";
-import InvoicePage from "@/pages/invoice/invoice-page";
-import PembayaranPage from "@/pages/pembayaran/pembayaran-page";
-import LaporanPage from "@/pages/laporan/laporan-page";
-import ComingSoonPage from "@/pages/misc/coming-soon-page";
-import NotFoundPage from "@/pages/misc/not-found-page";
+const LandingPage = lazy(() => import("@/pages/public/landing-page"));
+const TentangPage = lazy(() => import("@/pages/public/tentang-page"));
+const KontakPage = lazy(() => import("@/pages/public/kontak-page"));
+const BantuanPage = lazy(() => import("@/pages/public/bantuan-page"));
+const KebijakanPrivasiPage = lazy(() => import("@/pages/public/kebijakan-privasi-page"));
+const SyaratKetentuanPage = lazy(() => import("@/pages/public/syarat-ketentuan-page"));
+const ProdukSantriPage = lazy(() => import("@/pages/public/produk/santri-page"));
+const ProdukPresensiPage = lazy(() => import("@/pages/public/produk/presensi-page"));
+const ProdukKeuanganPage = lazy(() => import("@/pages/public/produk/keuangan-page"));
+const ProdukLaporanPage = lazy(() => import("@/pages/public/produk/laporan-page"));
+const LoginPage = lazy(() => import("@/pages/auth/login-page"));
+const DashboardPage = lazy(() => import("@/pages/dashboard/dashboard-page"));
+const SantriPage = lazy(() => import("@/pages/santri/santri-page"));
+const AcademicYearPage = lazy(() => import("@/pages/academic-year/academic-year-page"));
+const ClassPage = lazy(() => import("@/pages/kelas/class-page"));
+const TeacherPage = lazy(() => import("@/pages/asatidz/teacher-page"));
+const PresensiPage = lazy(() => import("@/pages/presensi/presensi-page"));
+const RekapHarianPage = lazy(() => import("@/pages/rekap/rekap-harian-page"));
+const RekapBulananPage = lazy(() => import("@/pages/rekap/rekap-bulanan-page"));
+const InvoicePage = lazy(() => import("@/pages/invoice/invoice-page"));
+const PembayaranPage = lazy(() => import("@/pages/pembayaran/pembayaran-page"));
+const LaporanPage = lazy(() => import("@/pages/laporan/laporan-page"));
+const ComingSoonPage = lazy(() => import("@/pages/misc/coming-soon-page"));
+const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
 export const router = createBrowserRouter([
   {

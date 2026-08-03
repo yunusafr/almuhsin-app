@@ -184,6 +184,12 @@
     outline: none !important;
   }
 
+  /* Hilangkan stroke putih default pada sector grafik donat/pie —
+     recharts memakai stroke putih yang mencolok di dark mode */
+  .recharts-pie-sector path {
+    stroke: none !important;
+  }
+
   /* Tooltip grafik recharts mengikuti tema (terutama dark mode) —
      default recharts memakai latar putih yang mencolok di dark mode */
   .recharts-default-tooltip {

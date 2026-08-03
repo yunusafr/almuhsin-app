@@ -1,10 +1,20 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 import { sidebarMenus } from "@/constants/sidebar-menu";
 import useAuthStore from "@/features/auth/stores/auth-store";
 import { useSidebarStore } from "@/app/store/sidebar-store";
 
 import AppLogo from "./app-logo";
+
+function getInitials(name) {
+  return (name ?? "U")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+}
 
 export default function Sidebar() {
   const { collapsed } = useSidebarStore();
@@ -21,6 +31,7 @@ export default function Sidebar() {
       className={`
 hidden
 lg:flex
+relative
 flex-col
 h-screen
 border-r
@@ -36,13 +47,17 @@ text-white
 ${collapsed ? "w-20" : "w-72"}
 `}
     >
-      {/* Header */}
-      <div className="flex h-16 items-center border-b border-white/10 px-5">
+      {/* Header — klik logo menuju dashboard */}
+      <Link
+        to="/app"
+        aria-label="Ke dashboard"
+        className="flex h-16 shrink-0 items-center border-b border-white/10 px-5"
+      >
         <AppLogo collapsed={collapsed} />
-      </div>
+      </Link>
 
       {/* Menu */}
-      <nav className="px-3 py-4 space-y-2">
+      <nav className="flex-1 space-y-2 overflow-y-auto px-3 py-4">
         {menus.map((menu) => {
           const Icon = menu.icon;
 
@@ -81,18 +96,25 @@ ${collapsed ? "w-20" : "w-72"}
         })}
       </nav>
 
-      {/* Footer */}
-      {!collapsed && (
-        <div className="absolute bottom-4 px-3 py-4 space-y-2 w-auto">
+      {/* Footer — badge user menyesuaikan ukuran sidebar */}
+      <div className="mt-auto shrink-0 px-3 py-4">
+        {collapsed ? (
+          <div
+            title={`${user?.name ?? "Pengguna"} — ${role}`}
+            className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sm font-bold text-white"
+          >
+            {getInitials(user?.name)}
+          </div>
+        ) : (
           <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-md">
             <p className="text-xs text-green-100">Logged in as</p>
 
-            <h3 className="mt-1 font-semibold">{user?.name}</h3>
+            <h3 className="mt-1 truncate font-semibold">{user?.name}</h3>
 
             <p className="text-xs capitalize text-green-100">{role}</p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </aside>
   );
 }

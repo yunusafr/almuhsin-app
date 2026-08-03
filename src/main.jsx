@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 
 import "./index.css";
@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import AuthProvider from "@/features/auth/components/auth-provider";
 import QueryProvider from "@/app/providers/query-provider";
 import { ThemeProvider } from "@/app/providers/theme-provider";
+import PageLoader from "@/components/common/page-loader";
 
 import { router } from "@/app/router";
 
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <QueryProvider>
       <AuthProvider>
         <ThemeProvider>
-          <RouterProvider router={router} />
+          <Suspense fallback={<PageLoader />}>
+            <RouterProvider router={router} />
+          </Suspense>
         </ThemeProvider>
       </AuthProvider>
     </QueryProvider>
