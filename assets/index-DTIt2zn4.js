@@ -34,7 +34,7 @@ duration-300
 shadow-2xl
 text-white
 ${e?`w-20`:`w-72`}
-`,children:[(0,G.jsx)(`div`,{className:`flex h-16 items-center border-b border-white/10 px-5`,children:(0,G.jsx)(Qx,{collapsed:e})}),(0,G.jsx)(`nav`,{className:`px-3 py-4 space-y-2`,children:r.map(t=>{let n=t.icon;return(0,G.jsxs)(Vi,{to:t.path,className:({isActive:e})=>`
+`,children:[(0,G.jsx)(`div`,{className:`flex h-16 items-center border-b border-white/10 px-5`,children:(0,G.jsx)(Qx,{collapsed:e})}),(0,G.jsx)(`nav`,{className:`px-3 py-4 space-y-2`,children:r.map(t=>{let n=t.icon;return(0,G.jsxs)(Vi,{to:t.path,end:!0,className:({isActive:e})=>`
                 group flex items-center gap-3
                 rounded-xl
                 px-4 py-3
@@ -52,7 +52,7 @@ ${e?`w-20`:`w-72`}
       backdrop-blur-xl
       lg:hidden
       dark:bg-slate-900/95
-    `,children:(0,G.jsx)(`div`,{className:`grid grid-cols-6`,children:(Zx[bl(e=>e.roles)?.[0]??`Super Admin`]??[]).slice(0,6).map(e=>{let t=e.icon;return(0,G.jsxs)(Vi,{to:e.path,className:({isActive:e})=>`
+    `,children:(0,G.jsx)(`div`,{className:`grid grid-cols-6`,children:(Zx[bl(e=>e.roles)?.[0]??`Super Admin`]??[]).slice(0,6).map(e=>{let t=e.icon;return(0,G.jsxs)(Vi,{to:e.path,end:!0,className:({isActive:e})=>`
                 flex
                 flex-col
                 items-center
