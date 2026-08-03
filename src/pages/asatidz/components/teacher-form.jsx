@@ -18,6 +18,7 @@ export default function TeacherForm({
   defaultValues,
   loading = false,
   onSubmit,
+  onCancel,
 }) {
   const isEdit = !!defaultValues;
 
@@ -117,7 +118,7 @@ export default function TeacherForm({
         loading={loading}
         submitLabel={isEdit ? "Simpan Perubahan" : "Tambah Asatidz"}
         cancelLabel="Batal"
-        onCancel={() => form.reset()}
+        onCancel={onCancel ?? (() => form.reset())}
       />
     </FormWrapper>
   );

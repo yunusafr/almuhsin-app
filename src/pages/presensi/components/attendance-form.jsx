@@ -46,6 +46,7 @@ export default function AttendanceForm({
   defaultValues,
   loading = false,
   onSubmit,
+  onCancel,
 }) {
   const { data: academicYearResponse } = useAcademicYears();
   const { data: classes = [] } = useClasses();
@@ -309,7 +310,7 @@ export default function AttendanceForm({
         loading={loading}
         submitLabel="Simpan Presensi"
         cancelLabel="Batal"
-        onCancel={() => form.reset()}
+        onCancel={onCancel ?? (() => form.reset())}
       />
     </FormWrapper>
   );

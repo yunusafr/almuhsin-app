@@ -176,6 +176,7 @@ export default function PembayaranPage() {
     <div className="space-y-6">
       <PageHeader
         title="Pembayaran"
+        back="/app"
         description="Catat pembayaran tagihan santri."
         actions={
           <Button variant="outline" onClick={refetch}>

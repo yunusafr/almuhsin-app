@@ -186,3 +186,45 @@
     @apply rounded-3xl border bg-card shadow-sm transition-all hover:shadow-md;
   }
 }
+
+/* Animasi transisi tema (dark-light) — kelas ini ditambahkan sesaat oleh
+   tombol toggle tema lalu dihapus setelah transisi selesai. */
+.theme-transition,
+.theme-transition * {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    fill 0.3s ease,
+    stroke 0.3s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition,
+  .theme-transition * {
+    transition: none !important;
+  }
+}
+
+/* Animasi masuk halaman (dipakai pada layout dashboard saat pindah rute). */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: page-enter 0.25s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}

@@ -54,6 +54,7 @@ export default function AttendanceDialog({ open, onOpenChange }) {
         <AttendanceForm
           loading={createMutation.isPending}
           onSubmit={handleSubmit}
+          onCancel={() => onOpenChange(false)}
         />
       </DialogContent>
     </Dialog>

@@ -4,8 +4,16 @@ function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
 
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
 /**
  * Animasi angka naik dari 0 ke `target` ketika elemen terlihat di layar.
+ * Menghormati prefers-reduced-motion: nilai langsung melompat ke target.
  */
 export function useCountUp(target, { duration = 1600, enabled = true } = {}) {
   const [value, setValue] = useState(0);
@@ -14,10 +22,12 @@ export function useCountUp(target, { duration = 1600, enabled = true } = {}) {
   const ref = useRef(null);
   const frameRef = useRef(null);
 
+  const reduceMotion = prefersReducedMotion();
+
   useEffect(() => {
     const element = ref.current;
 
-    if (!element || !enabled) return;
+    if (!element || !enabled || reduceMotion) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -32,10 +42,10 @@ export function useCountUp(target, { duration = 1600, enabled = true } = {}) {
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [enabled]);
+  }, [enabled, reduceMotion]);
 
   useEffect(() => {
-    if (!started || !enabled) return;
+    if (!started || !enabled || reduceMotion) return;
 
     const from = 0;
     const startTime = performance.now();
@@ -54,7 +64,10 @@ export function useCountUp(target, { duration = 1600, enabled = true } = {}) {
     frameRef.current = requestAnimationFrame(tick);
 
     return () => cancelAnimationFrame(frameRef.current);
-  }, [started, target, duration, enabled]);
+  }, [started, target, duration, enabled, reduceMotion]);
 
-  return { ref, value: enabled ? value : target };
+  return {
+    ref,
+    value: enabled && !reduceMotion ? value : target,
+  };
 }

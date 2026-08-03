@@ -1,7 +1,24 @@
-export default function PageHeader({ title, description, actions }) {
+import BackButton from "./back-button";
+
+export default function PageHeader({
+  title,
+  description,
+  actions,
+  back = null,
+}) {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
+        {back && (
+          <div className="mb-3">
+            {back === true ? (
+              <BackButton />
+            ) : (
+              <BackButton to={back} />
+            )}
+          </div>
+        )}
+
         <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
 
         {description && (

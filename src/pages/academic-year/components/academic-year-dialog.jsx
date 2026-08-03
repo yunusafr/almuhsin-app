@@ -87,6 +87,7 @@ export default function AcademicYearDialog({
           defaultValues={data}
           loading={loading}
           onSubmit={handleSubmit}
+          onCancel={() => onOpenChange(false)}
         />
       </DialogContent>
     </Dialog>

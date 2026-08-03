@@ -17,6 +17,7 @@ export default function AcademicYearForm({
   defaultValues,
   loading = false,
   onSubmit,
+  onCancel,
 }) {
   const form = useForm({
     resolver: zodResolver(academicYearSchema),
@@ -66,6 +67,8 @@ export default function AcademicYearForm({
       <FormActions
         loading={loading}
         submitLabel={defaultValues ? "Simpan Perubahan" : "Simpan"}
+        cancelLabel="Batal"
+        onCancel={onCancel ?? (() => form.reset())}
       />
     </FormWrapper>
   );

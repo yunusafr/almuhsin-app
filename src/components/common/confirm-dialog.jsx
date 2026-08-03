@@ -18,7 +18,7 @@ export default function ConfirmDialog({
 }) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
+      <AlertDialogTrigger render={trigger} />
 
       <AlertDialogContent>
         <AlertDialogHeader>

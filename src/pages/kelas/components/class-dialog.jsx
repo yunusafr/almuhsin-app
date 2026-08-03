@@ -72,6 +72,7 @@ export default function ClassDialog({ open, onOpenChange, data }) {
           defaultValues={data}
           loading={loading}
           onSubmit={handleSubmit}
+          onCancel={() => onOpenChange(false)}
         />
       </DialogContent>
     </Dialog>

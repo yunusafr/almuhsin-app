@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useThemeToggle } from "@/hooks/use-theme-toggle";
 
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +11,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useThemeToggle();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,9 +77,7 @@ export default function Navbar() {
                 variant="ghost"
                 size="icon"
                 className="rounded-xl"
-                onClick={() =>
-                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
-                }
+                onClick={toggleTheme}
                 aria-label="Ganti tema"
               >
                 {resolvedTheme === "dark" ? (
@@ -91,6 +89,7 @@ export default function Navbar() {
 
               <Button
                 className="h-10 rounded-2xl bg-slate-100 px-5 text-base font-semibold text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                nativeButton={false}
                 render={<NavLink to="/login" />}
               >
                 Login
@@ -98,6 +97,7 @@ export default function Navbar() {
 
               <Button
                 className="h-10 rounded-2xl bg-green-600 px-5 text-base font-semibold text-white hover:bg-green-700"
+                nativeButton={false}
                 render={<NavLink to="/login" />}
               >
                 Mulai Sekarang
@@ -111,9 +111,7 @@ export default function Navbar() {
                 variant="ghost"
                 size="icon"
                 className="rounded-xl"
-                onClick={() =>
-                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
-                }
+                onClick={toggleTheme}
                 aria-label="Ganti tema"
               >
                 {resolvedTheme === "dark" ? (

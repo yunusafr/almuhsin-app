@@ -131,6 +131,7 @@ export default function RekapBulananPage() {
     <div className="space-y-6">
       <PageHeader
         title="Rekap Bulanan"
+        back="/app"
         description="Ringkasan presensi santri per bulan."
         actions={
           <div className="flex flex-wrap items-center gap-2">

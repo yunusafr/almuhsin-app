@@ -83,6 +83,7 @@ export default function SantriDialog({
     defaultValues={data}
     loading={isLoading}
     onSubmit={handleSubmit}
+    onCancel={() => onOpenChange(false)}
 />
       </DialogContent>
     </Dialog>

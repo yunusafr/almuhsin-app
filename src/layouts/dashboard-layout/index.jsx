@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import Navbar from "@/components/dashboard/navbar";
 import Sidebar from "@/components/dashboard/sidebar";
@@ -6,6 +6,8 @@ import MobileBottomBar from "@/components/dashboard/mobile-bottom-bar";
 import PageBreadcrumb from "@/components/dashboard/page-breadcrumb";
 
 export default function DashboardLayout() {
+  const location = useLocation();
+
   return (
     <div className="flex h-screen overflow-hidden bg-muted/30">
       <>
@@ -15,7 +17,10 @@ export default function DashboardLayout() {
           <Navbar />
 
           <main className="flex-1 overflow-auto bg-slate-50 p-6 pb-24 lg:pb-6 dark:bg-slate-950">
-            <div className="w-full max-w-full">
+            <div
+              key={location.pathname}
+              className="page-enter w-full max-w-full"
+            >
               <PageBreadcrumb />
               <Outlet />
             </div>

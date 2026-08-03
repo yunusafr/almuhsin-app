@@ -131,6 +131,7 @@ export default function LaporanPage() {
     <div className="space-y-6">
       <PageHeader
         title="Laporan Keuangan"
+        back="/app"
         description="Ringkasan dan statistik keuangan pondok."
         actions={
           <Button variant="outline" onClick={refetch}>

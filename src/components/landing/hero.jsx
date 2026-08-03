@@ -65,6 +65,7 @@ export default function Hero() {
           <Button
             size="lg"
             className="h-14 rounded-2xl bg-green-600 px-8 text-base font-semibold text-white hover:bg-green-700"
+            nativeButton={false}
             render={<NavLink to="/login" />}
           >
             Mulai Sekarang

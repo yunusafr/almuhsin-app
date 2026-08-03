@@ -1,4 +1,5 @@
 import LoginForm from "./login-form";
+import BackButton from "@/components/common/back-button";
 
 export default function LoginPage() {
   return (
@@ -40,8 +41,11 @@ export default function LoginPage() {
       </div>
 
       {/* Right */}
+      <div className="relative flex flex-1 items-center justify-center p-8">
+        <div className="absolute left-6 top-6">
+          <BackButton to="/" label="Kembali ke Beranda" />
+        </div>
 
-      <div className="flex flex-1 items-center justify-center p-8">
         <div className="w-full max-w-md rounded-3xl border bg-white p-10 shadow-xl dark:border-slate-800 dark:bg-slate-900">
           <h2 className="text-3xl font-bold">Login</h2>
 

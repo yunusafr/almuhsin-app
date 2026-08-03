@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell, BellOff, Menu, Moon, Search, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +15,11 @@ import UserDropdown from "./user-dropdown";
 
 import { useSidebarStore } from "@/app/store/sidebar-store";
 import useAuthStore from "@/features/auth/stores/auth-store";
+import { useThemeToggle } from "@/hooks/use-theme-toggle";
 
 export default function Navbar() {
   const { toggle } = useSidebarStore();
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useThemeToggle();
 
   const navigate = useNavigate();
 
@@ -83,15 +83,17 @@ export default function Navbar() {
         {/* Right */}
         <div className="flex items-center gap-2">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative rounded-xl"
-                aria-label="Notifikasi"
-              >
-                <Bell size={18} />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative rounded-xl"
+                  aria-label="Notifikasi"
+                />
+              }
+            >
+              <Bell size={18} />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-72 p-0">
@@ -115,7 +117,7 @@ export default function Navbar() {
             variant="ghost"
             size="icon"
             className="rounded-xl"
-            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            onClick={toggleTheme}
             aria-label="Ganti tema"
           >
             {resolvedTheme === "dark" ? (

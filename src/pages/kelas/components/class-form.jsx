@@ -13,6 +13,7 @@ export default function ClassForm({
   defaultValues,
   loading = false,
   onSubmit,
+  onCancel,
 }) {
   const form = useForm({
     resolver: zodResolver(classSchema),
@@ -61,7 +62,7 @@ export default function ClassForm({
         loading={loading}
         submitLabel={defaultValues ? "Simpan Perubahan" : "Tambah Kelas"}
         cancelLabel="Batal"
-        onCancel={() => form.reset()}
+        onCancel={onCancel ?? (() => form.reset())}
       />
     </FormWrapper>
   );

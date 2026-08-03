@@ -106,6 +106,7 @@ export default function InvoicePage() {
     <div className="space-y-6">
       <PageHeader
         title="Tagihan (Invoice)"
+        back="/app"
         description="Kelola tagihan SPP dan pembayaran santri."
         actions={
           <div className="flex flex-wrap gap-2">

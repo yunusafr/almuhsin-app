@@ -63,6 +63,7 @@ export default function SantriForm({
   defaultValues,
   loading = false,
   onSubmit,
+  onCancel,
 }) {
   const form = useForm({
     resolver: zodResolver(santriSchema),
@@ -188,7 +189,10 @@ useEffect(() => {
             : "Tambah Santri"
         }
         cancelLabel="Batal"
-        onCancel={() => form.reset(defaultValues ?? INITIAL_VALUES)}
+        onCancel={
+          onCancel ??
+          (() => form.reset(defaultValues ?? INITIAL_VALUES))
+        }
       />
     </FormWrapper>
   );
