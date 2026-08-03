@@ -50,6 +50,7 @@ ${collapsed ? "w-20" : "w-72"}
             <NavLink
               key={menu.path}
               to={menu.path}
+              end
               className={({ isActive }) =>
                 `
                 group flex items-center gap-3

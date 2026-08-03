@@ -32,6 +32,7 @@ export default function MobileBottomBar() {
             <NavLink
               key={menu.path}
               to={menu.path}
+              end
               className={({ isActive }) =>
                 `
                 flex
