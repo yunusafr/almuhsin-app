@@ -27,7 +27,10 @@ export default function ClassDialog({ open, onOpenChange, data }) {
       updateMutation.mutate(
         {
           id: data.id,
-          payload: values,
+          payload: {
+            ...values,
+            level: values.level || undefined,
+          },
         },
         {
           onSuccess: () => {
@@ -39,11 +42,17 @@ export default function ClassDialog({ open, onOpenChange, data }) {
       return;
     }
 
-    createMutation.mutate(values, {
-      onSuccess: () => {
-        onOpenChange(false);
+    createMutation.mutate(
+      {
+        ...values,
+        level: values.level || undefined,
       },
-    });
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
+      },
+    );
   };
 
   useEffect(() => {

@@ -53,7 +53,7 @@ export default function ClassForm({
             control={form.control}
             name="level"
             label="Level"
-            placeholder="7"
+            placeholder="Tingkat 1 (opsional)"
           />
         </div>
       </FormSection>

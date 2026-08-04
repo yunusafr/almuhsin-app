@@ -16,7 +16,7 @@ export const STUDENT_LEAVES_QUERY_KEY = ["student-leaves"];
 
 export function useStudentLeaves(params = {}) {
   return useQuery({
-    queryKey: [STUDENT_LEAVES_QUERY_KEY, params],
+    queryKey: [...STUDENT_LEAVES_QUERY_KEY, params],
     queryFn: () => getStudentLeaves(params),
     placeholderData: (previous) => previous,
   });

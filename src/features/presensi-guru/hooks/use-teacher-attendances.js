@@ -16,7 +16,7 @@ export const TEACHER_ATTENDANCE_QUERY_KEY = ["teacher-attendances"];
 
 export function useTeacherAttendances(params = {}) {
   return useQuery({
-    queryKey: [TEACHER_ATTENDANCE_QUERY_KEY, params],
+    queryKey: [...TEACHER_ATTENDANCE_QUERY_KEY, params],
     queryFn: () => getTeacherAttendances(params),
     placeholderData: (previous) => previous,
   });

@@ -17,6 +17,7 @@ export const classColumns = ({ onEdit, onDelete }) => [
   {
     accessorKey: "level",
     header: "Level",
+    cell: ({ row }) => row.original.level || "-",
   },
   {
     accessorKey: "created_at",
