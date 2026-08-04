@@ -11,6 +11,7 @@ import {
   FileText,
   ReceiptText,
   HandCoins,
+  UserCheck,
 } from "lucide-react";
 
 export const sidebarMenus = {
@@ -49,6 +50,12 @@ export const sidebarMenus = {
       title: "Presensi",
       path: "/app/presensi",
       icon: ClipboardCheck,
+    },
+
+    {
+      title: "Presensi Guru",
+      path: "/app/presensi-guru",
+      icon: UserCheck,
     },
 
     {
@@ -113,6 +120,12 @@ export const sidebarMenus = {
       title: "Perizinan",
       path: "/app/perizinan",
       icon: Shield,
+    },
+
+    {
+      title: "Presensi Guru",
+      path: "/app/presensi-guru",
+      icon: UserCheck,
     },
   ],
 

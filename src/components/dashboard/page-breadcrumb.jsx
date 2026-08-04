@@ -18,6 +18,7 @@ const breadcrumbNameMap = {
   perizinan: "Perizinan",
   profil: "Profil",
   pengaturan: "Pengaturan",
+  "presensi-guru": "Presensi Guru",
   "tahun-pelajaran": "Tahun Pelajaran",
 };
 

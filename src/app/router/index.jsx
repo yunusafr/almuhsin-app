@@ -31,6 +31,8 @@ const PembayaranPage = lazy(() => import("@/pages/pembayaran/pembayaran-page"));
 const LaporanPage = lazy(() => import("@/pages/laporan/laporan-page"));
 const ProfilPage = lazy(() => import("@/pages/profil/profil-page"));
 const PengaturanPage = lazy(() => import("@/pages/pengaturan/pengaturan-page"));
+const PerizinanPage = lazy(() => import("@/pages/perizinan/perizinan-page"));
+const PresensiGuruPage = lazy(() => import("@/pages/presensi-guru/presensi-guru-page"));
 const ComingSoonPage = lazy(() => import("@/pages/misc/coming-soon-page"));
 const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
@@ -120,6 +122,10 @@ export const router = createBrowserRouter([
         element: <PresensiPage />,
       },
       {
+        path: "presensi-guru",
+        element: <PresensiGuruPage />,
+      },
+      {
         path: "rekap-harian",
         element: <RekapHarianPage />,
       },
@@ -158,12 +164,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "perizinan",
-        element: (
-          <ComingSoonPage
-            title="Perizinan"
-            description="Kelola izin keluar masuk santri."
-          />
-        ),
+        element: <PerizinanPage />,
       },
     ],
   },
