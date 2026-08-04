@@ -43,6 +43,13 @@ export default function ExternalStudentDialog({
 
   const pullMutation = usePullExternalStudents();
 
+  // Pilihan dari hasil pencarian lama tidak relevan dengan keyword
+  // baru — reset begitu user mulai mengetik ulang.
+  const handleKeywordChange = (value) => {
+    setKeyword(value);
+    setSelectedIds([]);
+  };
+
   /*
   |--------------------------------------------------------------------------
   | Normalisasi data eksternal
@@ -147,22 +154,17 @@ export default function ExternalStudentDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex gap-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
           <Input
             value={keyword}
             onChange={(e) =>
-              setKeyword(e.target.value)
+              handleKeywordChange(e.target.value)
             }
-            placeholder="Cari berdasarkan NIS atau Nama..."
+            placeholder="Cari berdasarkan NIS atau Nama (min. 3 karakter)..."
+            className="h-10 pl-9"
           />
-
-          <Button
-            variant="outline"
-            disabled
-          >
-            <Search className="mr-2 h-4 w-4" />
-            Cari
-          </Button>
         </div>
 
         <Separator />
@@ -170,6 +172,7 @@ export default function ExternalStudentDialog({
         <ExternalStudentTable
           data={normalizedData}
           loading={isLoading}
+          searching={keyword.trim().length < 3}
           selectedIds={selectedIds}
           onToggle={handleToggle}
           onToggleAll={handleToggleAll}

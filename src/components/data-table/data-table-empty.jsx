@@ -1,6 +1,6 @@
 import { Inbox } from "lucide-react";
 
-export default function DataTableEmpty() {
+export default function DataTableEmpty({ message }) {
   return (
     <div className="py-20">
       <div className="flex flex-col items-center text-center">
@@ -22,7 +22,7 @@ export default function DataTableEmpty() {
         <h3 className="font-semibold">Tidak ada data</h3>
 
         <p className="text-sm text-muted-foreground mt-1">
-          Data akan muncul di sini.
+          {message ?? "Data akan muncul di sini."}
         </p>
       </div>
     </div>

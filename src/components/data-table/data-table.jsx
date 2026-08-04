@@ -7,7 +7,7 @@ import {
 import DataTableEmpty from "./data-table-empty";
 import LoadingSkeleton from "@/components/common/loading-skeleton";
 
-export default function DataTable({ data, columns, loading = false }) {
+export default function DataTable({ data, columns, loading = false, emptyMessage }) {
   const table = useReactTable({
     data,
     columns,
@@ -53,7 +53,7 @@ export default function DataTable({ data, columns, loading = false }) {
           {data.length === 0 ? (
             <tr>
               <td colSpan={columns.length}>
-                <DataTableEmpty />
+                <DataTableEmpty message={emptyMessage} />
               </td>
             </tr>
           ) : (

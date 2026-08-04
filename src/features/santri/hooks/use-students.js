@@ -100,8 +100,6 @@ export function useExternalStudents(keyword) {
     enabled: keyword.trim().length >= 3,
 
     staleTime: 1000 * 60 * 5,
-
-    placeholderData: (previous) => previous ?? [],
   });
 }
 

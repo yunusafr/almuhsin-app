@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Check,
   CheckCheck,
+  Loader2,
   RotateCcw,
 } from "lucide-react";
 
@@ -16,6 +17,7 @@ import { externalStudentColumns } from "./external-student-columns";
 export default function ExternalStudentTable({
   data = [],
   loading = false,
+  searching = false,
   selectedIds = [],
   onToggle,
   onToggleAll,
@@ -28,11 +30,24 @@ export default function ExternalStudentTable({
     onToggleAll([]);
   };
 
+  const emptyMessage = searching
+    ? "Ketik minimal 3 karakter NIS atau nama untuk mencari santri."
+    : "Tidak ada data santri dari sistem pusat.";
+
   return (
     <TableContainer className="border-0 shadow-none">
       <DataTableHeader
         title="Hasil Pencarian"
-        description={`${data.length} data ditemukan`}
+        description={
+          loading ? (
+            <span className="inline-flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              Mencari data santri...
+            </span>
+          ) : (
+            `${data.length} data ditemukan`
+          )
+        }
         actions={
           <div className="flex flex-wrap items-center gap-2">
             <Badge
@@ -49,7 +64,7 @@ export default function ExternalStudentTable({
               size="sm"
               variant="outline"
               onClick={handleSelectAll}
-              disabled={!data.length}
+              disabled={!data.length || loading}
             >
               <CheckCheck className="mr-2 h-4 w-4" />
               Pilih Semua
@@ -76,7 +91,7 @@ export default function ExternalStudentTable({
           onToggle,
           onToggleAll,
         })}
-        emptyMessage="Tidak ada data santri dari sistem pusat."
+        emptyMessage={emptyMessage}
       />
 
       {selectedIds.length > 0 && (
