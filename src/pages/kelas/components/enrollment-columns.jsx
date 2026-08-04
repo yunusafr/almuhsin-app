@@ -71,6 +71,17 @@ export const enrollmentColumns = ({ onEdit, onDelete }) => [
     },
   },
   {
+    accessorKey: "created_at",
+    header: "Dibuat",
+    cell: ({ row }) => {
+      const date = row.original.created_at;
+
+      return date
+        ? new Date(date).toLocaleDateString("id-ID")
+        : "-";
+    },
+  },
+  {
     id: "actions",
     header: "",
     cell: ({ row }) => (
