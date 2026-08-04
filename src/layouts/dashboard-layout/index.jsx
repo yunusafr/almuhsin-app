@@ -6,12 +6,15 @@ import MobileBottomBar from "@/components/dashboard/mobile-bottom-bar";
 import PageBreadcrumb from "@/components/dashboard/page-breadcrumb";
 import ScrollToTop from "@/components/common/scroll-to-top";
 import BackToTop from "@/components/common/back-to-top";
+import IdleLogout from "@/components/common/idle-logout";
 
 export default function DashboardLayout() {
   const location = useLocation();
 
   return (
     <div className="flex h-screen overflow-hidden bg-muted/30">
+      <IdleLogout />
+
       <>
         <Sidebar />
 
