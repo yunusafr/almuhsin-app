@@ -75,8 +75,20 @@ export default function ClassPage() {
     return params;
   }, [classFilter, yearFilter]);
 
-  const { data: enrollmentsData } = useEnrollments(enrollmentParams);
+  const {
+    data: enrollmentsData,
+    isLoading: enrollmentsLoading,
+    refetch: refetchEnrollments,
+  } = useEnrollments(enrollmentParams);
   const enrollments = enrollmentsData?.data ?? [];
+
+  const handleRefresh = () => {
+    if (tab === "plotting") {
+      refetchEnrollments();
+    } else {
+      refetch();
+    }
+  };
 
   const filteredData = useMemo(() => {
     const keyword = search.toLowerCase();
@@ -145,7 +157,7 @@ export default function ClassPage() {
         description="Kelola daftar kelas dan plotting santri ke kelas."
         actions={
           <div className="flex gap-2">
-            <Button variant="outline" onClick={refetch}>
+            <Button variant="outline" onClick={handleRefresh}>
               <RefreshCw className="mr-2 h-4 w-4" />
               Refresh
             </Button>
@@ -309,7 +321,7 @@ export default function ClassPage() {
             <DataTable
               data={enrollments}
               columns={enrollmentCols}
-              loading={isLoading}
+              loading={enrollmentsLoading}
               emptyMessage="Belum ada data plotting santri."
             />
           </>

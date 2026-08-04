@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -9,6 +8,11 @@ import FormActions from "@/components/form/form-actions";
 
 import { classSchema } from "@/features/kelas/schemas/class-schema";
 
+const INITIAL_VALUES = {
+  name: "",
+  level: "",
+};
+
 export default function ClassForm({
   defaultValues,
   loading = false,
@@ -18,22 +22,13 @@ export default function ClassForm({
   const form = useForm({
     resolver: zodResolver(classSchema),
 
-    defaultValues: {
-      name: "",
-      level: "",
-    },
+    values: defaultValues
+      ? {
+          name: defaultValues.name ?? "",
+          level: defaultValues.level ?? "",
+        }
+      : INITIAL_VALUES,
   });
-
-  useEffect(() => {
-    if (defaultValues) {
-      form.reset(defaultValues);
-    } else {
-      form.reset({
-        name: "",
-        level: "",
-      });
-    }
-  }, [defaultValues, form]);
 
   return (
     <FormWrapper form={form} onSubmit={form.handleSubmit(onSubmit)}>
