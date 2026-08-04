@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -59,30 +59,20 @@ export default function EnrollmentForm({
     }));
   }, [academicYears]);
 
+  const getValues = (entry) =>
+    isEdit
+      ? {
+          student_id: entry?.student_id ?? "",
+          class_id: entry?.class_id ?? "",
+          academic_year_id: entry?.academic_year_id ?? "",
+          status: entry?.status ?? "aktif",
+        }
+      : INITIAL_VALUES;
+
   const form = useForm({
     resolver: zodResolver(enrollmentSchema),
-    defaultValues: isEdit
-      ? {
-          student_id: data.student_id ?? "",
-          class_id: data.class_id ?? "",
-          academic_year_id: data.academic_year_id ?? "",
-          status: data.status ?? "aktif",
-        }
-      : INITIAL_VALUES,
+    values: getValues(data),
   });
-
-  useEffect(() => {
-    if (isEdit) {
-      form.reset({
-        student_id: data.student_id ?? "",
-        class_id: data.class_id ?? "",
-        academic_year_id: data.academic_year_id ?? "",
-        status: data.status ?? "aktif",
-      });
-    } else {
-      form.reset(INITIAL_VALUES);
-    }
-  }, [data, isEdit, form]);
 
   return (
     <FormWrapper form={form} onSubmit={form.handleSubmit(onSubmit)}>

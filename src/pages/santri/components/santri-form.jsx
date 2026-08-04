@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -59,6 +58,13 @@ const TINGKAT_OPTIONS = [
   },
 ];
 
+const getFormValues = (data) => ({
+  ...INITIAL_VALUES,
+  ...data,
+  tingkat: String(data?.tingkat ?? ""),
+  status: String(data?.status ?? "aktif"),
+});
+
 export default function SantriForm({
   defaultValues,
   loading = false,
@@ -67,22 +73,8 @@ export default function SantriForm({
 }) {
   const form = useForm({
     resolver: zodResolver(santriSchema),
-    defaultValues: INITIAL_VALUES,
+    values: defaultValues ? getFormValues(defaultValues) : INITIAL_VALUES,
   });
-
-useEffect(() => {
-  if (!defaultValues) {
-    form.reset(INITIAL_VALUES);
-    return;
-  }
-
-  form.reset({
-    ...INITIAL_VALUES,
-    ...defaultValues,
-    tingkat: String(defaultValues.tingkat ?? ""),
-    status: String(defaultValues.status ?? "aktif"),
-  });
-}, [defaultValues]);
 
   return (
     <FormWrapper

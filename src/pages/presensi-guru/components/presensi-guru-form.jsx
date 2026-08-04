@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -47,28 +47,20 @@ export default function PresensiGuruForm({
     }));
   }, [teachers]);
 
+  const getValues = (entry) =>
+    isEdit
+      ? {
+          keterangan: entry?.keterangan ?? "",
+          keterangan_tambahan: entry?.keterangan_tambahan ?? "",
+        }
+      : INITIAL_VALUES;
+
   const form = useForm({
     resolver: zodResolver(
       isEdit ? teacherAttendanceEditSchema : teacherAttendanceSchema,
     ),
-    defaultValues: isEdit
-      ? {
-          keterangan: data.keterangan ?? "",
-          keterangan_tambahan: data.keterangan_tambahan ?? "",
-        }
-      : INITIAL_VALUES,
+    values: getValues(data),
   });
-
-  useEffect(() => {
-    if (isEdit) {
-      form.reset({
-        keterangan: data.keterangan ?? "",
-        keterangan_tambahan: data.keterangan_tambahan ?? "",
-      });
-    } else {
-      form.reset(INITIAL_VALUES);
-    }
-  }, [data, isEdit, form]);
 
   return (
     <FormWrapper form={form} onSubmit={form.handleSubmit(onSubmit)}>

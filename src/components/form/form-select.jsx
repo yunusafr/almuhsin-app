@@ -39,7 +39,10 @@ export default function FormSelect({
             >
               <FormControl>
                 <SelectTrigger className="h-11 w-full rounded-xl">
-                  <SelectValue placeholder={placeholder} />
+                  <SelectValue
+                    key={String(field.value ?? "")}
+                    placeholder={placeholder}
+                  />
                 </SelectTrigger>
               </FormControl>
 

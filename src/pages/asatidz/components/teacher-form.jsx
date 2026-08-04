@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -22,41 +21,20 @@ export default function TeacherForm({
 }) {
   const isEdit = !!defaultValues;
 
+  const getValues = (data) => ({
+    name: data?.name ?? "",
+    email: data?.email ?? "",
+    gender: data?.gender ?? "",
+    phone: data?.phone ?? "",
+    address: data?.address ?? "",
+    password: "",
+  });
+
   const form = useForm({
     resolver: zodResolver(isEdit ? updateTeacherSchema : createTeacherSchema),
 
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      gender: "",
-      phone: "",
-      address: "",
-    },
+    values: defaultValues ? getValues(defaultValues) : getValues(),
   });
-
-  useEffect(() => {
-    if (defaultValues) {
-      form.reset({
-        name: defaultValues.name,
-        gender: defaultValues.gender,
-        phone: defaultValues.phone,
-        address: defaultValues.address,
-        password: "",
-      });
-
-      return;
-    }
-
-    form.reset({
-      name: "",
-      email: "",
-      password: "",
-      gender: "",
-      phone: "",
-      address: "",
-    });
-  }, [defaultValues, form]);
 
   return (
     <FormWrapper form={form} onSubmit={form.handleSubmit(onSubmit)}>
