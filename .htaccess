@@ -1,0 +1,44 @@
+# ============================================================
+# Almuhsin App — Vite SPA (Apache / LiteSpeed / cPanel)
+# Fallback semua rute ke index.html supaya refresh/hard-reload
+# (Ctrl+F5) pada halaman dalam (mis. /app/laporan) TIDAK 404.
+# ============================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # File & direktori yang benar-benar ada tetap dilayani langsung
+    # (assets, favicon, dll)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Semua rute lain diarahkan ke index.html (SPA fallback)
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# ------------------------------------------------------------
+# Cache assets ber-hash (Vite menambahkan hash pada nama file,
+# jadi aman di-cache lama; index.html TIDAK di-cache)
+# ------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # index.html selalu segar
+    <FilesMatch "index\.html$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>
