@@ -31,6 +31,7 @@ export const enrollmentColumns = ({ onEdit, onDelete }) => [
           <p className="font-medium">{student?.name ?? "-"}</p>
 
           <p className="text-xs text-muted-foreground">
+            {student?.rombel ? `${student.rombel} · ` : ""}
             {student?.nis ?? ""}
           </p>
         </div>
@@ -39,7 +40,7 @@ export const enrollmentColumns = ({ onEdit, onDelete }) => [
   },
   {
     id: "class",
-    header: "Kelas",
+    header: "Kelas Pondok",
     cell: ({ row }) => (
       <span className="text-sm font-medium">
         {getClass(row.original)?.name ?? "-"}

@@ -34,14 +34,14 @@ export default function ClassForm({
     <FormWrapper form={form} onSubmit={form.handleSubmit(onSubmit)}>
       <FormSection
         title="Master Kelas"
-        description="Informasi kelas yang akan digunakan pada sistem."
+        description="Kelas pondok adalah kelompok belajar/asrama di lingkungan pondok — berbeda dengan tingkat/rombel (kelas sekolah) pada data santri."
       >
         <div className="grid gap-5 md:grid-cols-2">
           <FormInput
             control={form.control}
             name="name"
             label="Nama Kelas"
-            placeholder="VII-A"
+            placeholder="Kelas 1A"
           />
 
           <FormInput

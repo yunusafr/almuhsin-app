@@ -57,8 +57,8 @@ export default function EnrollmentDialog({ open, onOpenChange, data }) {
 
           <DialogDescription>
             {isEdit
-              ? "Perbarui penempatan santri pada kelas."
-              : "Plotting satu santri ke kelas pada tahun ajaran tertentu."}
+              ? "Perbarui penempatan santri pada kelas pondok."
+              : "Plotting satu santri ke kelas pondok pada tahun ajaran tertentu."}
           </DialogDescription>
         </DialogHeader>
 

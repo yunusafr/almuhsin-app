@@ -147,8 +147,8 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
               <FormSelect
                 control={form.control}
                 name="class_id"
-                label="Kelas"
-                placeholder="Pilih kelas..."
+                label="Kelas Pondok"
+                placeholder="Pilih kelas pondok..."
                 options={classOptions}
               />
 
@@ -201,14 +201,13 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
                         {student.name}
                       </span>
 
-                      {student.nis && (
-                        <span className="ml-auto text-xs text-muted-foreground">
-                          {student.nis}
-                        </span>
-                      )}
+                      <span className="text-xs text-muted-foreground">
+                        {student.rombel ? `${student.rombel} · ` : ""}
+                        {student.nis ?? ""}
+                      </span>
 
                       {plotted && (
-                        <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-medium text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200">
+                        <span className="ml-auto rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-medium text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200">
                           Sudah diplot
                         </span>
                       )}

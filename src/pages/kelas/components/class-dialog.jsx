@@ -72,8 +72,8 @@ export default function ClassDialog({ open, onOpenChange, data }) {
 
           <DialogDescription>
             {data
-              ? "Perbarui data master kelas."
-              : "Tambahkan master kelas baru."}
+              ? "Perbarui data kelas pondok."
+              : "Tambahkan kelas pondok baru."}
           </DialogDescription>
         </DialogHeader>
 

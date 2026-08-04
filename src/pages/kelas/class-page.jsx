@@ -159,7 +159,7 @@ export default function ClassPage() {
     <div className="space-y-6">
       <PageHeader
         title="Master Kelas"
-        description="Kelola daftar kelas dan plotting santri ke kelas."
+        description="Kelola daftar kelas pondok dan penempatan (plotting) santri ke kelas pondok."
         actions={
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleRefresh}>

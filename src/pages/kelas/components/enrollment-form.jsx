@@ -69,7 +69,11 @@ export default function EnrollmentForm({
 
   const studentOptions = useMemo(() => {
     return students.map((student) => ({
-      label: `${student.name}${student.nis ? ` (${student.nis})` : ""}`,
+      // Tampilkan rombel (kelas sekolah) untuk membedakan santri
+      // saat memilih plotting ke kelas pondok.
+      label: `${student.name}${student.rombel ? ` — ${student.rombel}` : ""}${
+        student.nis ? ` (${student.nis})` : ""
+      }`,
       value: student.id,
       // Santri yang sudah diplot pada tahun terpilih tidak bisa
       // dipilih lagi (kecuali santri yang sedang diedit).
@@ -116,8 +120,8 @@ export default function EnrollmentForm({
           <FormSelect
             control={form.control}
             name="class_id"
-            label="Kelas"
-            placeholder="Pilih kelas..."
+            label="Kelas Pondok"
+            placeholder="Pilih kelas pondok..."
             options={classOptions}
           />
         </FormGrid>
