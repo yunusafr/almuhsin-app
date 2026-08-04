@@ -1,0 +1,1 @@
+import{t as e}from"./axios-bbG4c36_.js";var t=`/invoices`,n=async(n={})=>{let{data:r}=await e.get(t,{params:n});return r},r=async n=>{let{data:r}=await e.post(t,n);return r};export{n,r as t};

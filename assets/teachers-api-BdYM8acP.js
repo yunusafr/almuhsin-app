@@ -1,1 +1,0 @@
-import{t as e}from"./axios-zM_vesTC.js";var t=async()=>{let{data:t}=await e.get(`/teachers`);return t.data},n=async t=>{let{data:n}=await e.post(`/teachers`,t);return n},r=async({id:t,payload:n})=>{let{data:r}=await e.put(`/teachers/${t}`,n);return r},i=async t=>{let{data:n}=await e.delete(`/teachers/${t}`);return n};export{r as i,i as n,t as r,n as t};
