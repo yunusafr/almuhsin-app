@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 import {
   Dialog,
@@ -22,37 +23,36 @@ export default function ClassDialog({ open, onOpenChange, data }) {
 
   const loading = createMutation.isPending || updateMutation.isPending;
 
-  const handleSubmit = (values) => {
-    if (data) {
-      updateMutation.mutate(
-        {
+  const handleSubmit = async (values) => {
+    try {
+      if (data) {
+        await updateMutation.mutateAsync({
           id: data.id,
           payload: {
             ...values,
             level: values.level || undefined,
           },
-        },
-        {
-          onSuccess: () => {
-            onOpenChange(false);
-          },
-        },
+        });
+
+        toast.success("Master kelas berhasil diperbarui");
+      } else {
+        await createMutation.mutateAsync({
+          ...values,
+          level: values.level || undefined,
+        });
+
+        toast.success("Master kelas berhasil ditambahkan");
+      }
+
+      onOpenChange(false);
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ??
+          (data
+            ? "Gagal memperbarui master kelas."
+            : "Gagal menambahkan master kelas."),
       );
-
-      return;
     }
-
-    createMutation.mutate(
-      {
-        ...values,
-        level: values.level || undefined,
-      },
-      {
-        onSuccess: () => {
-          onOpenChange(false);
-        },
-      },
-    );
   };
 
   useEffect(() => {

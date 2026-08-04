@@ -17,6 +17,7 @@ import {
 import { useStudents } from "@/features/santri/hooks/use-students";
 import { useClasses } from "@/features/kelas/hooks/use-classes";
 import { useAcademicYears } from "@/features/academic-year/hooks/use-academic-year";
+import { useEnrollments } from "@/features/enrollment/hooks/use-enrollments";
 
 const INITIAL_VALUES = {
   student_id: "",
@@ -38,27 +39,6 @@ export default function EnrollmentForm({
   const { data: academicYearResponse } = useAcademicYears();
   const academicYears = academicYearResponse?.data ?? [];
 
-  const studentOptions = useMemo(() => {
-    return students.map((student) => ({
-      label: `${student.name}${student.nis ? ` (${student.nis})` : ""}`,
-      value: student.id,
-    }));
-  }, [students]);
-
-  const classOptions = useMemo(() => {
-    return classes.map((klass) => ({
-      label: klass.name,
-      value: klass.id,
-    }));
-  }, [classes]);
-
-  const academicYearOptions = useMemo(() => {
-    return academicYears.map((year) => ({
-      label: year.name,
-      value: year.id,
-    }));
-  }, [academicYears]);
-
   const getValues = (entry) =>
     isEdit
       ? {
@@ -73,6 +53,46 @@ export default function EnrollmentForm({
     resolver: zodResolver(enrollmentSchema),
     values: getValues(data),
   });
+
+  const watchedYear = form.watch("academic_year_id");
+
+  // Data plotting pada tahun ajaran terpilih — untuk mencegah duplikat.
+  const { data: yearEnrollments } = useEnrollments(
+    watchedYear ? { academic_year_id: watchedYear } : {},
+  );
+
+  const plottedStudentIds = useMemo(() => {
+    return new Set(
+      (yearEnrollments?.data ?? []).map((item) => item.student_id),
+    );
+  }, [yearEnrollments]);
+
+  const studentOptions = useMemo(() => {
+    return students.map((student) => ({
+      label: `${student.name}${student.nis ? ` (${student.nis})` : ""}`,
+      value: student.id,
+      // Santri yang sudah diplot pada tahun terpilih tidak bisa
+      // dipilih lagi (kecuali santri yang sedang diedit).
+      disabled:
+        isEdit && student.id === data?.student_id
+          ? false
+          : plottedStudentIds.has(student.id),
+    }));
+  }, [students, plottedStudentIds, isEdit, data?.student_id]);
+
+  const classOptions = useMemo(() => {
+    return classes.map((klass) => ({
+      label: klass.name,
+      value: klass.id,
+    }));
+  }, [classes]);
+
+  const academicYearOptions = useMemo(() => {
+    return academicYears.map((year) => ({
+      label: year.name,
+      value: year.id,
+    }));
+  }, [academicYears]);
 
   return (
     <FormWrapper form={form} onSubmit={form.handleSubmit(onSubmit)}>

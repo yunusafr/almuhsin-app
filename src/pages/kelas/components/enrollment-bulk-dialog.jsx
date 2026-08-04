@@ -30,7 +30,7 @@ import {
 import { useStudents } from "@/features/santri/hooks/use-students";
 import { useClasses } from "@/features/kelas/hooks/use-classes";
 import { useAcademicYears } from "@/features/academic-year/hooks/use-academic-year";
-import { useCreateBulkEnrollment } from "@/features/enrollment/hooks/use-enrollments";
+import { useCreateBulkEnrollment, useEnrollments } from "@/features/enrollment/hooks/use-enrollments";
 
 const INITIAL_VALUES = {
   class_id: "",
@@ -79,6 +79,18 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
   });
 
   const selectedIds = form.watch("student_ids") ?? [];
+  const watchedYear = form.watch("academic_year_id");
+
+  // Data plotting pada tahun ajaran terpilih — untuk mencegah duplikat.
+  const { data: yearEnrollments } = useEnrollments(
+    watchedYear ? { academic_year_id: watchedYear } : {},
+  );
+
+  const plottedStudentIds = useMemo(() => {
+    return new Set(
+      (yearEnrollments?.data ?? []).map((item) => item.student_id),
+    );
+  }, [yearEnrollments]);
 
   useEffect(() => {
     if (open) {
@@ -170,14 +182,18 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
               ) : (
                 filteredStudents.map((student) => {
                   const checked = selectedIds.includes(student.id);
+                  const plotted = plottedStudentIds.has(student.id);
 
                   return (
                     <label
                       key={student.id}
-                      className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-muted/60"
+                      className={`flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-muted/60 ${
+                        plotted ? "cursor-not-allowed opacity-60" : ""
+                      }`}
                     >
                       <Checkbox
                         checked={checked}
+                        disabled={plotted}
                         onCheckedChange={() => toggleStudent(student.id)}
                       />
 
@@ -188,6 +204,12 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
                       {student.nis && (
                         <span className="ml-auto text-xs text-muted-foreground">
                           {student.nis}
+                        </span>
+                      )}
+
+                      {plotted && (
+                        <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-medium text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200">
+                          Sudah diplot
                         </span>
                       )}
                     </label>

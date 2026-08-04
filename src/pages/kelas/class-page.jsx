@@ -82,6 +82,11 @@ export default function ClassPage() {
   } = useEnrollments(enrollmentParams);
   const enrollments = enrollmentsData?.data ?? [];
 
+  // Statistik global — dihitung dari SEMUA data plotting (tidak ikut
+  // filter kelas/tahun) agar angka tidak berubah saat tabel difilter.
+  const { data: allEnrollmentsData } = useEnrollments({});
+  const allEnrollments = allEnrollmentsData?.data ?? [];
+
   const handleRefresh = () => {
     if (tab === "plotting") {
       refetchEnrollments();
@@ -102,7 +107,7 @@ export default function ClassPage() {
   }, [classes, search]);
 
   const enrollmentStats = useMemo(() => {
-    return enrollments.reduce(
+    return allEnrollments.reduce(
       (acc, item) => {
         acc.total++;
 
@@ -116,7 +121,7 @@ export default function ClassPage() {
       },
       { total: 0, aktif: 0, mutasi: 0, lulus: 0, keluar: 0 },
     );
-  }, [enrollments]);
+  }, [allEnrollments]);
 
   const columns = useMemo(
     () =>

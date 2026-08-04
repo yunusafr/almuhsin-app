@@ -10,20 +10,28 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { useDeleteClass } from "@/features/kelas/hooks/use-classes";
 
 export default function ClassDeleteDialog({ open, onOpenChange, data }) {
   const deleteMutation = useDeleteClass();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!data) return;
 
-    deleteMutation.mutate(data.id, {
-      onSuccess: () => {
-        onOpenChange(false);
-      },
-    });
+    try {
+      await deleteMutation.mutateAsync(data.id);
+
+      toast.success("Master kelas berhasil dihapus");
+
+      onOpenChange(false);
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ??
+          "Gagal menghapus master kelas.",
+      );
+    }
   };
 
   return (

@@ -51,6 +51,7 @@ export default function FormSelect({
                   <SelectItem
                     key={String(option.value)}
                     value={String(option.value)}
+                    disabled={option.disabled}
                   >
                     {option.label}
                   </SelectItem>
