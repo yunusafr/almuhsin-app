@@ -6,6 +6,7 @@ import PublicLayout from "@/layouts/public-layout";
 import DashboardLayout from "@/layouts/dashboard-layout";
 
 import ProtectedRoute from "@/app/router/protected-route";
+import RoleGuard from "@/app/router/role-guard";
 
 const LandingPage = lazy(() => import("@/pages/public/landing-page"));
 const TentangPage = lazy(() => import("@/pages/public/tentang-page"));
@@ -103,47 +104,47 @@ export const router = createBrowserRouter([
       },
       {
         path: "santri",
-        element: <SantriPage />,
+        element: <RoleGuard roles={["Super Admin"]}><SantriPage /></RoleGuard>,
       },
       {
         path: "tapel",
-        element: <AcademicYearPage />,
+        element: <RoleGuard roles={["Super Admin"]}><AcademicYearPage /></RoleGuard>,
       },
       {
         path: "kelas",
-        element: <ClassPage />,
+        element: <RoleGuard roles={["Super Admin"]}><ClassPage /></RoleGuard>,
       },
       {
         path: "asatidz",
-        element: <TeacherPage />,
+        element: <RoleGuard roles={["Super Admin"]}><TeacherPage /></RoleGuard>,
       },
       {
         path: "presensi",
-        element: <PresensiPage />,
+        element: <RoleGuard roles={["Super Admin", "Asatidz"]}><PresensiPage /></RoleGuard>,
       },
       {
         path: "presensi-guru",
-        element: <PresensiGuruPage />,
+        element: <RoleGuard roles={["Super Admin", "Keamanan"]}><PresensiGuruPage /></RoleGuard>,
       },
       {
         path: "rekap-harian",
-        element: <RekapHarianPage />,
+        element: <RoleGuard roles={["Super Admin", "Asatidz"]}><RekapHarianPage /></RoleGuard>,
       },
       {
         path: "rekap-bulanan",
-        element: <RekapBulananPage />,
+        element: <RoleGuard roles={["Super Admin", "Asatidz"]}><RekapBulananPage /></RoleGuard>,
       },
       {
         path: "invoice",
-        element: <InvoicePage />,
+        element: <RoleGuard roles={["Super Admin", "Bendahara"]}><InvoicePage /></RoleGuard>,
       },
       {
         path: "pembayaran",
-        element: <PembayaranPage />,
+        element: <RoleGuard roles={["Super Admin", "Bendahara"]}><PembayaranPage /></RoleGuard>,
       },
       {
         path: "laporan",
-        element: <LaporanPage />,
+        element: <RoleGuard roles={["Super Admin", "Bendahara"]}><LaporanPage /></RoleGuard>,
       },
       {
         path: "profil",
@@ -156,15 +157,17 @@ export const router = createBrowserRouter([
       {
         path: "hp",
         element: (
-          <ComingSoonPage
-            title="Pengumpulan HP"
-            description="Kelola pengumpulan dan pengembalian handphone santri."
-          />
+          <RoleGuard roles={["Super Admin", "Keamanan"]}>
+            <ComingSoonPage
+              title="Pengumpulan HP"
+              description="Kelola pengumpulan dan pengembalian handphone santri."
+            />
+          </RoleGuard>
         ),
       },
       {
         path: "perizinan",
-        element: <PerizinanPage />,
+        element: <RoleGuard roles={["Super Admin", "Keamanan"]}><PerizinanPage /></RoleGuard>,
       },
     ],
   },

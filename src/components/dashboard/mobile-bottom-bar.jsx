@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
 import useAuthStore from "@/features/auth/stores/auth-store";
 import { sidebarMenus } from "@/constants/sidebar-menu";
+import { getPrimaryRole } from "@/features/auth/lib/roles";
 
 export default function MobileBottomBar() {
   const roles = useAuthStore((s) => s.roles);
+  const user = useAuthStore((s) => s.user);
 
-  const role = roles?.[0] ?? "Super Admin";
+  const role = getPrimaryRole(user, roles);
 
   const menus = (sidebarMenus[role] ?? []).slice(0, 6);
 

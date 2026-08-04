@@ -13,6 +13,7 @@ import { LogOut, Settings, UserRound } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useAuthStore from "@/features/auth/stores/auth-store";
 import { removeToken } from "@/features/auth/lib/token";
+import { getPrimaryRole } from "@/features/auth/lib/roles";
 
 export default function UserDropdown() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function UserDropdown() {
     });
   };
 
-  const role = roles?.[0] ?? "Super Admin";
+  const role = getPrimaryRole(user, roles) ?? "Pengguna";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>

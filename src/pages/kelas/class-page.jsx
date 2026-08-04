@@ -139,7 +139,7 @@ export default function ClassPage() {
   );
 
   return (
-    <>
+    <div className="space-y-6">
       <PageHeader
         title="Master Kelas"
         description="Kelola daftar kelas dan plotting santri ke kelas."
@@ -184,8 +184,7 @@ export default function ClassPage() {
         }
       />
 
-      <div className="space-y-6">
-        {tab === "plotting" && (
+      {tab === "plotting" && (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           <StatCard
             title="Total Plotting"
@@ -316,7 +315,6 @@ export default function ClassPage() {
           </>
         )}
       </TableContainer>
-      </div>
 
       <ClassDialog
         open={dialogOpen}
@@ -346,6 +344,6 @@ export default function ClassPage() {
         onOpenChange={setEnrollDeleteOpen}
         data={enrollSelected}
       />
-    </>
+    </div>
   );
 }

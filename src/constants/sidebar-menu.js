@@ -101,6 +101,18 @@ export const sidebarMenus = {
       path: "/app/presensi",
       icon: ClipboardCheck,
     },
+
+    {
+      title: "Rekap Harian",
+      path: "/app/rekap-harian",
+      icon: CalendarCheck,
+    },
+
+    {
+      title: "Rekap Bulanan",
+      path: "/app/rekap-bulanan",
+      icon: CalendarRange,
+    },
   ],
 
   Keamanan: [

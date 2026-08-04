@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import { sidebarMenus } from "@/constants/sidebar-menu";
 import useAuthStore from "@/features/auth/stores/auth-store";
 import { useSidebarStore } from "@/app/store/sidebar-store";
+import { getPrimaryRole } from "@/features/auth/lib/roles";
 
 import AppLogo from "./app-logo";
 
@@ -22,7 +23,7 @@ export default function Sidebar() {
   const user = useAuthStore((s) => s.user);
   const roles = useAuthStore((s) => s.roles);
 
-  const role = roles?.[0] ?? "Super Admin";
+  const role = getPrimaryRole(user, roles);
 
   const menus = sidebarMenus[role] ?? [];
 
@@ -111,7 +112,9 @@ ${collapsed ? "w-20" : "w-72"}
 
             <h3 className="mt-1 truncate font-semibold">{user?.name}</h3>
 
-            <p className="text-xs capitalize text-green-100">{role}</p>
+            <p className="text-xs capitalize text-green-100">
+              {role ?? "Pengguna"}
+            </p>
           </div>
         )}
       </div>

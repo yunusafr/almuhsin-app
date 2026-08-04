@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+import { normalizeRoles } from "../lib/roles";
+
 const useAuthStore = create((set) => ({
   user: null,
   roles: [],
@@ -12,7 +14,7 @@ const useAuthStore = create((set) => ({
     set({
       user,
       token,
-      roles: user.roles ?? [],
+      roles: normalizeRoles(user),
       isAuthenticated: true,
       isLoading: false,
     });
@@ -21,7 +23,7 @@ const useAuthStore = create((set) => ({
   setUser(user) {
     set({
       user,
-      roles: user.roles ?? [],
+      roles: normalizeRoles(user),
       isAuthenticated: true,
       isLoading: false,
     });
