@@ -14,6 +14,17 @@ export const createTeacherSchema = z.object({
   ...baseSchema,
 
   email: z.email("Email tidak valid"),
+
+  password: z.string().min(8, "Password minimal 8 karakter"),
 });
 
-export const updateTeacherSchema = z.object(baseSchema);
+export const updateTeacherSchema = z.object({
+  ...baseSchema,
+
+  // opsional: kosongkan jika tidak ingin mengganti password
+  password: z
+    .string()
+    .min(8, "Password minimal 8 karakter")
+    .optional()
+    .or(z.literal("")),
+});

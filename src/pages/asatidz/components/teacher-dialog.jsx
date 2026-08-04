@@ -28,7 +28,11 @@ export default function TeacherDialog({ open, onOpenChange, data }) {
       if (isEdit) {
         await updateMutation.mutateAsync({
           id: data.id,
-          payload: values,
+          payload: {
+            ...values,
+            // jangan kirim password kosong saat edit (tidak diganti)
+            password: values.password || undefined,
+          },
         });
 
         toast.success("Data asatidz berhasil diperbarui");

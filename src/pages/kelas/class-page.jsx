@@ -149,7 +149,6 @@ export default function ClassPage() {
               <RefreshCw className="mr-2 h-4 w-4" />
               Refresh
             </Button>
-
             {tab === "kelas" ? (
               <Button
                 onClick={() => {
@@ -185,27 +184,63 @@ export default function ClassPage() {
         }
       />
 
-      <div className="inline-flex rounded-xl border bg-card p-1">
-        {TABS.map((t) => (
-          <button
-            key={t.value}
-            type="button"
-            onClick={() => setTab(t.value)}
-            className={cn(
-              "rounded-lg px-4 py-2 text-sm font-medium transition-colors",
-              tab === t.value
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+      <div className="space-y-6">
+        {tab === "plotting" && (
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+          <StatCard
+            title="Total Plotting"
+            value={enrollmentStats.total}
+            icon={Users}
+          />
 
-      {tab === "kelas" ? (
-        <div className="space-y-6">
-          <TableContainer>
+          <StatCard
+            title="Aktif"
+            value={enrollmentStats.aktif ?? 0}
+            icon={UserCheck}
+          />
+
+          <StatCard
+            title="Mutasi"
+            value={enrollmentStats.mutasi ?? 0}
+            icon={ArrowLeftRight}
+          />
+
+          <StatCard
+            title="Lulus"
+            value={enrollmentStats.lulus ?? 0}
+            icon={GraduationCap}
+          />
+
+          <StatCard
+            title="Keluar"
+            value={enrollmentStats.keluar ?? 0}
+            icon={DoorClosed}
+          />
+        </div>
+      )}
+
+      <TableContainer>
+        {/* Tab navigasi: Data Kelas | Plotting Santri */}
+        <div className="flex items-center gap-1 overflow-x-auto border-b px-4">
+          {TABS.map((t) => (
+            <button
+              key={t.value}
+              type="button"
+              onClick={() => setTab(t.value)}
+              className={cn(
+                "-mb-px border-b-2 pt-3 pb-3 text-sm font-medium transition-colors",
+                tab === t.value
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {tab === "kelas" ? (
+          <>
             <DataTableHeader
               title="Daftar Master Kelas"
               description={`${filteredData.length} kelas`}
@@ -224,43 +259,9 @@ export default function ClassPage() {
               loading={isLoading}
               emptyMessage="Belum ada data kelas."
             />
-          </TableContainer>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-            <StatCard
-              title="Total Plotting"
-              value={enrollmentStats.total}
-              icon={Users}
-            />
-
-            <StatCard
-              title="Aktif"
-              value={enrollmentStats.aktif ?? 0}
-              icon={UserCheck}
-            />
-
-            <StatCard
-              title="Mutasi"
-              value={enrollmentStats.mutasi ?? 0}
-              icon={ArrowLeftRight}
-            />
-
-            <StatCard
-              title="Lulus"
-              value={enrollmentStats.lulus ?? 0}
-              icon={GraduationCap}
-            />
-
-            <StatCard
-              title="Keluar"
-              value={enrollmentStats.keluar ?? 0}
-              icon={DoorClosed}
-            />
-          </div>
-
-          <TableContainer>
+          </>
+        ) : (
+          <>
             <DataTableHeader
               title="Daftar Plotting Santri"
               description={`${enrollments.length} data plotting`}
@@ -312,9 +313,10 @@ export default function ClassPage() {
               loading={isLoading}
               emptyMessage="Belum ada data plotting santri."
             />
-          </TableContainer>
-        </div>
-      )}
+          </>
+        )}
+      </TableContainer>
+      </div>
 
       <ClassDialog
         open={dialogOpen}

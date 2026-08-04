@@ -28,6 +28,7 @@ export default function TeacherForm({
     defaultValues: {
       name: "",
       email: "",
+      password: "",
       gender: "",
       phone: "",
       address: "",
@@ -41,6 +42,7 @@ export default function TeacherForm({
         gender: defaultValues.gender,
         phone: defaultValues.phone,
         address: defaultValues.address,
+        password: "",
       });
 
       return;
@@ -49,6 +51,7 @@ export default function TeacherForm({
     form.reset({
       name: "",
       email: "",
+      password: "",
       gender: "",
       phone: "",
       address: "",
@@ -110,6 +113,38 @@ export default function TeacherForm({
             label="Alamat"
             placeholder="Alamat lengkap"
             rows={4}
+          />
+        </div>
+      </FormSection>
+
+      <FormSection
+        title="Akun Login"
+        description={
+          isEdit
+            ? "Kosongkan password jika tidak ingin menggantinya."
+            : "Kredensial login untuk akun asatidz."
+        }
+      >
+        <div className="grid gap-5 md:grid-cols-2">
+          {!isEdit && (
+            <FormInput
+              control={form.control}
+              name="email"
+              label="Email Login"
+              placeholder="ustadz@almuhsin.app"
+            />
+          )}
+
+          <FormInput
+            control={form.control}
+            name="password"
+            label="Password"
+            type="password"
+            placeholder={
+              isEdit
+                ? "Kosongkan jika tidak diganti"
+                : "Minimal 8 karakter"
+            }
           />
         </div>
       </FormSection>
