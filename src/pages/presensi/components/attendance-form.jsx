@@ -17,6 +17,7 @@ import EmptyState from "@/components/common/empty-state";
 import { useAcademicYears } from "@/features/academic-year/hooks/use-academic-year";
 import { useClasses } from "@/features/kelas/hooks/use-classes";
 import { useStudents } from "@/features/santri/hooks/use-students";
+import { useEnrollments } from "@/features/enrollment/hooks/use-enrollments";
 
 import {
   attendanceSchema,
@@ -25,6 +26,10 @@ import {
 } from "@/features/presensi/schemas/attendance-schema";
 
 import { cn } from "@/lib/utils";
+
+// Referensi STABIL — default array literal baru per render membuat
+// useMemo/useEffect cascade & menggandakan loop (Maximum update depth).
+const EMPTY_ARRAY = [];
 
 const INITIAL_VALUES = {
   academic_year_id: "",
@@ -49,11 +54,14 @@ export default function AttendanceForm({
   onCancel,
 }) {
   const { data: academicYearResponse } = useAcademicYears();
-  const { data: classes = [] } = useClasses();
-  const { data: students = [] } = useStudents();
+  const { data: classes = EMPTY_ARRAY } = useClasses();
+  const { data: students = EMPTY_ARRAY } = useStudents();
+  const { data: enrollmentsResponse } = useEnrollments({});
 
-  const academicYears = academicYearResponse?.data ?? academicYearResponse ?? [];
+  const academicYears = academicYearResponse?.data ?? academicYearResponse ?? EMPTY_ARRAY;
   const activeYear = academicYears.find((item) => item.is_active);
+
+  const enrollments = enrollmentsResponse?.data ?? EMPTY_ARRAY;
 
   const [studentSearch, setStudentSearch] = useState("");
   const [selectedClassId, setSelectedClassId] = useState("");
@@ -72,8 +80,12 @@ export default function AttendanceForm({
 
   const watchedType = watch("type");
   const watchedStudents = watch("students");
+  const watchedYearId = watch("academic_year_id");
 
   const classId = watch("class_id") ?? selectedClassId;
+
+  // Tahun ajaran untuk daftar plotting: pilihan user, fallback tahun aktif.
+  const yearId = watchedYearId || activeYear?.id;
 
   useEffect(() => {
     if (selectedClassId !== classId) {
@@ -81,24 +93,42 @@ export default function AttendanceForm({
     }
   }, [classId, selectedClassId]);
 
+  // Sumber kebenaran daftar santri: RELASI PLOTTING (enrollment),
+  // bukan mencocokkan rombel/tingkat dengan nama kelas.
+  // Kelas di sini adalah kelas pondok — santri yang sudah diplot
+  // tidak selalu punya rombel yang mengandung nama kelas tersebut.
+  const classStudents = useMemo(() => {
+    if (!classId) return students;
+
+    return enrollments
+      .filter(
+        (item) =>
+          item.class_id === classId &&
+          (!yearId || item.academic_year_id === yearId),
+      )
+      .map((item) => {
+        const studentId = item.student_id ?? item.student?.id;
+        const local = students.find((s) => s.id === studentId);
+        const external =
+          item.student ?? {
+            name: item.student_name,
+            nis: item.student_nis,
+          };
+
+        return {
+          id: studentId,
+          name: local?.name ?? external?.name ?? "Tanpa nama",
+          nis: local?.nis ?? external?.nis ?? "",
+          rombel: local?.rombel ?? external?.rombel,
+          tingkat: local?.tingkat ?? external?.tingkat,
+        };
+      });
+  }, [classId, enrollments, yearId, students]);
+
   const filteredStudents = useMemo(() => {
     const keyword = studentSearch.trim().toLowerCase();
 
-    let list = students;
-
-    if (classId) {
-      const selectedClass = classes.find((item) => item.id === classId);
-
-      list = list.filter((student) => {
-        const matchRombel = student.rombel
-          ?.toLowerCase()
-          .includes(selectedClass?.name?.toLowerCase() ?? "");
-        const matchTingkat =
-          selectedClass?.level && student.tingkat === selectedClass.level;
-
-        return matchRombel || matchTingkat;
-      });
-    }
+    let list = classStudents;
 
     if (keyword) {
       list = list.filter(
@@ -109,7 +139,7 @@ export default function AttendanceForm({
     }
 
     return list;
-  }, [students, classId, classes, studentSearch]);
+  }, [classStudents, studentSearch]);
 
   const selectedStudentIds = useMemo(
     () => new Set((watchedStudents ?? []).map((item) => item.student_id)),
@@ -117,8 +147,6 @@ export default function AttendanceForm({
   );
 
   useEffect(() => {
-    if (!students.length) return;
-
     // Sinkronkan daftar santri ketika data dimuat / filter kelas berubah.
     const currentIds = new Set(
       (form.getValues("students") ?? []).map((item) => item.student_id),
@@ -137,6 +165,14 @@ export default function AttendanceForm({
             .find((item) => item.student_id === student.id)?.notes ?? ""
         : "",
     }));
+
+    // Hindari replace berulang dengan konten sama (mencegah re-render loop).
+    if (
+      JSON.stringify(merged) ===
+      JSON.stringify(form.getValues("students") ?? [])
+    ) {
+      return;
+    }
 
     replace(merged);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -239,7 +275,11 @@ export default function AttendanceForm({
         {filteredStudents.length === 0 ? (
           <EmptyState
             title="Tidak ada santri"
-            description="Tidak ada santri yang cocok dengan filter kelas / pencarian."
+            description={
+              classId && !studentSearch
+                ? "Belum ada santri yang diplot ke kelas ini pada tahun ajaran terpilih. Plotting dulu lewat menu Kelas → Plotting Santri."
+                : "Tidak ada santri yang cocok dengan filter kelas / pencarian."
+            }
           />
         ) : (
           <div className="space-y-2">
