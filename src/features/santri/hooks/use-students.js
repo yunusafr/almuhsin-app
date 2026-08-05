@@ -97,7 +97,7 @@ export function useExternalStudents(keyword, tingkat = "") {
     queryFn: () =>
       searchExternalStudents(keyword, tingkat),
 
-    enabled: keyword.trim().length >= 3,
+    enabled: keyword.trim().length >= 2,
 
     staleTime: 1000 * 60 * 5,
   });

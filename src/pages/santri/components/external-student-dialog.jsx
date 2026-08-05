@@ -4,6 +4,7 @@ import {
   Loader2,
   Download,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import {
   Dialog,
@@ -126,7 +127,7 @@ export default function ExternalStudentDialog({
       guardian_phone: student.guardian_phone,
       rombel: student.rombel,
       tingkat: student.tingkat,
-      status: student.status,
+      status: student.status ?? "aktif",
     }));
 
     pullMutation.mutate(
@@ -134,10 +135,24 @@ export default function ExternalStudentDialog({
         students,
       },
       {
-        onSuccess: () => {
+        onSuccess: (result) => {
+          const imported = result?.data?.imported ?? students.length;
+
+          toast.success(
+            `${imported} santri berhasil ditarik dari sistem pusat`,
+          );
+
           setSelectedIds([]);
           setKeyword("");
+          setTingkat("");
           onOpenChange(false);
+        },
+
+        onError: (error) => {
+          toast.error(
+            error?.response?.data?.message ??
+              "Gagal menarik data santri. Periksa koneksi ke sistem pusat.",
+          );
         },
       }
     );
@@ -146,6 +161,7 @@ export default function ExternalStudentDialog({
   function handleClose(value) {
     if (!value) {
       setKeyword("");
+      setTingkat("");
       setSelectedIds([]);
     }
 
@@ -178,7 +194,7 @@ export default function ExternalStudentDialog({
             onChange={(e) =>
               handleKeywordChange(e.target.value)
             }
-            placeholder="Cari berdasarkan NIS atau Nama (min. 3 karakter)..."
+            placeholder="Cari berdasarkan NIS atau Nama (min. 2 karakter)..."
             className="h-10 pl-9"
           />
 
@@ -211,7 +227,7 @@ export default function ExternalStudentDialog({
         <ExternalStudentTable
           data={normalizedData}
           loading={isLoading}
-          searching={keyword.trim().length < 3}
+          searching={keyword.trim().length < 2}
           selectedIds={selectedIds}
           onToggle={handleToggle}
           onToggleAll={handleToggleAll}

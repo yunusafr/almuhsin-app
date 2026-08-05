@@ -29,6 +29,7 @@ import {
 } from "@/features/santri/hooks/use-students";
 
 import { downloadCsv } from "@/lib/utils";
+import { toast } from "sonner";
 
 import { santriColumns } from "./components/santri-columns";
 
@@ -193,7 +194,22 @@ function handleEdit(student) {
   }
 
   function handleSync() {
-    syncMutation.mutate();
+    syncMutation.mutate(undefined, {
+      onSuccess: (result) => {
+        toast.success(
+          result?.data?.synced
+            ? `${result.data.synced} santri disinkronkan dari sistem pusat`
+            : "Sinkronisasi data santri berhasil",
+        );
+      },
+
+      onError: (error) => {
+        toast.error(
+          error?.response?.data?.message ??
+            "Gagal sinkronisasi. Periksa koneksi ke sistem pusat.",
+        );
+      },
+    });
   }
 
   return (

@@ -31,7 +31,7 @@ export default function ExternalStudentTable({
   };
 
   const emptyMessage = searching
-    ? "Ketik minimal 3 karakter NIS atau nama untuk mencari santri."
+    ? "Ketik minimal 2 karakter NIS atau nama untuk mencari santri."
     : "Tidak ada data santri dari sistem pusat.";
 
   return (
