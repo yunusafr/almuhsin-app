@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -29,7 +29,12 @@ const ACTIVITY_EVENTS = [
 
 /**
  * Otomatis logout ketika pengguna tidak aktif selama `idleLimit`.
- * Menampilkan peringatan `warningBefore` ms sebelum sesi berakhir.
+ *
+ * Timer `setTimeout` di-throttle oleh browser saat tab di-background —
+ * menunggu tanpa menyentuh tab bisa membuat logout tertunda tak tentu.
+ * Karena itu dipasang juga listener `visibilitychange`: saat tab kembali
+ * aktif, idle dihitung dari timestamp aktivitas terakhir, bukan dari
+ * timer — jika sudah melewati batas, logout langsung dijalankan.
  */
 export default function useIdleLogout({
   idleLimit = IDLE_LIMIT,
@@ -40,8 +45,16 @@ export default function useIdleLogout({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  // Timestamp aktivitas terakhir — sumber kebenaran untuk cek idle,
+  // tidak bergantung pada akurasi timer background.
+  const lastActivityRef = useRef(null);
+
+  const isAuthenticatedRef = useRef(isAuthenticated);
+
   useEffect(() => {
     if (!isAuthenticated) return undefined;
+
+    isAuthenticatedRef.current = isAuthenticated;
 
     let timer;
     let warningTimer;
@@ -52,6 +65,8 @@ export default function useIdleLogout({
     };
 
     const handleExpire = () => {
+      if (!isAuthenticatedRef.current) return;
+
       removeToken();
 
       logoutStore();
@@ -66,24 +81,73 @@ export default function useIdleLogout({
       navigate("/login", { replace: true });
     };
 
+    const showWarning = () => {
+      toast.warning(
+        "Anda tidak aktif. Sesi akan berakhir dalam 1 menit.",
+        { id: IDLE_TOAST_ID }
+      );
+    };
+
     const schedule = () => {
       clearAll();
+
+      lastActivityRef.current = Date.now();
 
       toast.dismiss(IDLE_TOAST_ID);
 
       timer = setTimeout(handleExpire, idleLimit);
 
-      warningTimer = setTimeout(() => {
-        toast.warning(
-          "Anda tidak aktif. Sesi akan berakhir dalam 1 menit.",
-          { id: IDLE_TOAST_ID }
+      warningTimer = setTimeout(
+        showWarning,
+        Math.max(0, idleLimit - warningBefore)
+      );
+    };
+
+    // Tab kembali aktif — hitung idle dari timestamp, bukan timer
+    // (timer background di-throttle browser).
+    const handleVisibility = () => {
+      if (document.visibilityState !== "visible") return;
+
+      if (lastActivityRef.current === null) {
+        lastActivityRef.current = Date.now();
+        return;
+      }
+
+      const idleMs = Date.now() - lastActivityRef.current;
+
+      if (idleMs >= idleLimit) {
+        clearAll();
+        handleExpire();
+        return;
+      }
+
+      // Sisa waktu yang tersisa sampai batas idle.
+      const remaining = idleLimit - idleMs;
+
+      if (remaining <= warningBefore) {
+        clearAll();
+        showWarning();
+
+        timer = setTimeout(handleExpire, remaining);
+      } else {
+        // Jadwalkan ulang timer dengan sisa waktu yang benar.
+        clearAll();
+        toast.dismiss(IDLE_TOAST_ID);
+
+        timer = setTimeout(handleExpire, remaining);
+
+        warningTimer = setTimeout(
+          showWarning,
+          Math.max(0, remaining - warningBefore)
         );
-      }, Math.max(0, idleLimit - warningBefore));
+      }
     };
 
     ACTIVITY_EVENTS.forEach((event) =>
       window.addEventListener(event, schedule, { passive: true })
     );
+
+    document.addEventListener("visibilitychange", handleVisibility);
 
     schedule();
 
@@ -91,6 +155,8 @@ export default function useIdleLogout({
       ACTIVITY_EVENTS.forEach((event) =>
         window.removeEventListener(event, schedule)
       );
+
+      document.removeEventListener("visibilitychange", handleVisibility);
 
       clearAll();
 
