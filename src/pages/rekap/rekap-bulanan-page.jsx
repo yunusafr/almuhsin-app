@@ -23,11 +23,7 @@ import DataTable from "@/components/data-table/data-table";
 import { useAttendances } from "@/features/presensi/hooks/use-attendances";
 import { ATTENDANCE_STATUSES } from "@/features/presensi/schemas/attendance-schema";
 
-function normalizeData(response) {
-  const list = response?.data ?? response ?? [];
-
-  return Array.isArray(list) ? list : [];
-}
+import { listData } from "@/lib/utils";
 
 function countStatuses(records) {
   return records.reduce(
@@ -45,9 +41,10 @@ function countStatuses(records) {
 }
 
 export default function RekapBulananPage() {
-  const { data, isLoading, refetch } = useAttendances();
+  const { data, isLoading, refetch } = useAttendances({ per_page: 1000 });
 
-  const attendances = normalizeData(data);
+  // API v2 paginated — normalisasi ke array.
+  const attendances = listData(data);
 
   const [month, setMonth] = useState(() => format(new Date(), "yyyy-MM"));
 

@@ -44,7 +44,7 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
 
   const createMutation = useCreateBulkEnrollment();
 
-  const { data: students = [] } = useStudents();
+  const { data: students = [] } = useStudents({ per_page: 1000 });
   const { data: classes = [] } = useClasses();
   const { data: academicYearResponse } = useAcademicYears();
   const academicYears = academicYearResponse?.data ?? [];

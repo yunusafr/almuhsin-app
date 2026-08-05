@@ -11,7 +11,6 @@ export const getAttendances = async (params = {}) => {
 
   return data;
 };
-
 /*
 |--------------------------------------------------------------------------
 | CREATE

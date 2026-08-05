@@ -28,7 +28,7 @@ import { useActiveAcademicYear } from "@/features/academic-year/hooks/use-academ
 import { useAttendances } from "@/features/presensi/hooks/use-attendances";
 import { useInvoices } from "@/features/keuangan/hooks/use-invoices";
 
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, listData } from "@/lib/utils";
 
 const STATUS_COLORS = {
   aktif: "#16a34a",
@@ -37,23 +37,18 @@ const STATUS_COLORS = {
   mutasi: "#f59e0b",
 };
 
-function normalizeList(response) {
-  const list = response?.data ?? response ?? [];
-
-  return Array.isArray(list) ? list : [];
-}
-
 export default function DashboardPage() {
-  const studentsQuery = useStudents();
+  const studentsQuery = useStudents({ per_page: 1000 });
   const teachersQuery = useTeachers();
   const activeYearQuery = useActiveAcademicYear();
-  const attendancesQuery = useAttendances();
+  const attendancesQuery = useAttendances({ per_page: 1000 });
   const invoicesQuery = useInvoices();
 
-  const students = normalizeList(studentsQuery.data);
-  const teachers = normalizeList(teachersQuery.data);
-  const attendances = normalizeList(attendancesQuery.data);
-  const invoices = normalizeList(invoicesQuery.data);
+  // API v2 paginated — normalisasi ke array.
+  const students = listData(studentsQuery.data);
+  const teachers = listData(teachersQuery.data);
+  const attendances = listData(attendancesQuery.data);
+  const invoices = listData(invoicesQuery.data);
 
   const activeYear = activeYearQuery.data?.data ?? activeYearQuery.data;
 

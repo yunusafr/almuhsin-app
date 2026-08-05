@@ -32,7 +32,7 @@ export default function PerizinanForm({
   onSubmit,
   onCancel,
 }) {
-  const { data: students = [] } = useStudents();
+  const { data: students = [] } = useStudents({ per_page: 1000 });
 
   const studentOptions = useMemo(() => {
     return students.map((student) => ({

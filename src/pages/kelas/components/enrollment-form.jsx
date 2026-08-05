@@ -34,7 +34,7 @@ export default function EnrollmentForm({
 }) {
   const isEdit = !!data;
 
-  const { data: students = [] } = useStudents();
+  const { data: students = [] } = useStudents({ per_page: 1000 });
   const { data: classes = [] } = useClasses();
   const { data: academicYearResponse } = useAcademicYears();
   const academicYears = academicYearResponse?.data ?? [];

@@ -28,7 +28,7 @@ import {
   useSyncStudents,
 } from "@/features/santri/hooks/use-students";
 
-import { downloadCsv } from "@/lib/utils";
+import { downloadCsv, listData } from "@/lib/utils";
 import { toast } from "sonner";
 
 import { santriColumns } from "./components/santri-columns";
@@ -40,10 +40,13 @@ import ExternalStudentDialog from "./components/external-student-dialog";
 
 export default function SantriPage() {
   const {
-    data = [],
+    data: studentsResponse,
     isLoading,
     refetch,
-  } = useStudents();
+  } = useStudents({ per_page: 1000 });
+
+  // API v2 paginated — normalisasi ke array.
+  const data = listData(studentsResponse);
 
   const syncMutation = useSyncStudents();
 
@@ -196,11 +199,18 @@ function handleEdit(student) {
   function handleSync() {
     syncMutation.mutate(undefined, {
       onSuccess: (result) => {
-        toast.success(
-          result?.data?.synced
-            ? `${result.data.synced} santri disinkronkan dari sistem pusat`
-            : "Sinkronisasi data santri berhasil",
-        );
+        // API v2: { total, updated, failed }
+        const { total, updated, failed } = result?.data ?? {};
+
+        if (total !== undefined) {
+          toast.success(
+            failed > 0
+              ? `Sinkronisasi selesai: ${updated} dari ${total} siswa diperbarui (gagal: ${failed}).`
+              : `Sinkronisasi selesai: ${updated} dari ${total} siswa diperbarui.`,
+          );
+        } else {
+          toast.success("Sinkronisasi data santri berhasil");
+        }
       },
 
       onError: (error) => {

@@ -55,7 +55,7 @@ export default function AttendanceForm({
 }) {
   const { data: academicYearResponse } = useAcademicYears();
   const { data: classes = EMPTY_ARRAY } = useClasses();
-  const { data: students = EMPTY_ARRAY } = useStudents();
+  const { data: students = EMPTY_ARRAY } = useStudents({ per_page: 1000 });
   const { data: enrollmentsResponse } = useEnrollments({});
 
   const academicYears = academicYearResponse?.data ?? academicYearResponse ?? EMPTY_ARRAY;

@@ -20,6 +20,8 @@ import DataTable from "@/components/data-table/data-table";
 import { useDebounce } from "@/features/santri/hooks/use-debounce";
 import { useStudentLeaves } from "@/features/perizinan/hooks/use-student-leaves";
 
+import { listData } from "@/lib/utils";
+
 import { perizinanColumns } from "./components/perizinan-columns";
 import PerizinanDialog from "./components/perizinan-dialog";
 import KembaliDialog from "./components/kembali-dialog";
@@ -38,13 +40,16 @@ export default function PerizinanPage() {
     page,
   });
 
-  // Respons API: { success, message, data: { current_page, data: [], total, per_page } }
+  // API v2: { success, data: { items, pagination } } —
+  // kompatibel dengan format lama { current_page, data, total, per_page }.
   const paginated = data?.data ?? data ?? {};
 
-  const leaves = paginated.data ?? [];
-  const total = paginated.total ?? 0;
-  const perPage = paginated.per_page ?? 10;
-  const currentPage = paginated.current_page ?? 1;
+  const leaves = listData(data);
+  const pagination = paginated.pagination ?? {};
+
+  const total = pagination.total ?? paginated.total ?? 0;
+  const perPage = pagination.per_page ?? paginated.per_page ?? 10;
+  const currentPage = pagination.current_page ?? paginated.current_page ?? 1;
   const totalPages = Math.max(1, Math.ceil(total / perPage));
 
   const statistics = useMemo(() => {

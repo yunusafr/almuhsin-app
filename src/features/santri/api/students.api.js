@@ -1,9 +1,11 @@
 import api from "@/services/api/axios";
 
-export const getStudents = async () => {
-  const { data } = await api.get("/students");
+export const getStudents = async (params = {}) => {
+  const { data } = await api.get("/students", { params });
 
-  return data.data;
+  // API v2 paginated: { success, data: { items, pagination } } —
+  // dibiarkan utuh agar halaman memakai listData/listPagination.
+  return data;
 };
 
 export const getStudent = async (id) => {

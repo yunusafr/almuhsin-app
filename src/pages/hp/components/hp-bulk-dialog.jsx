@@ -46,7 +46,7 @@ export default function HpBulkDialog({ open, onOpenChange }) {
 
   const createMutation = useCreateBulkPhoneCollection();
 
-  const { data: students = [] } = useStudents();
+  const { data: students = [] } = useStudents({ per_page: 1000 });
 
   const filteredStudents = useMemo(() => {
     const keyword = studentKeyword.toLowerCase();

@@ -11,7 +11,6 @@ export const getPhoneCollections = async (params = {}) => {
 
   return data;
 };
-
 /*
 ||--------------------------------------------------------------------------
 || CREATE (bulk) — kegiatan rutin pengumpulan HP

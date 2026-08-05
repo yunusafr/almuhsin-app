@@ -11,7 +11,6 @@ export const getStudentLeaves = async (params = {}) => {
 
   return data;
 };
-
 /*
 |--------------------------------------------------------------------------
 | CREATE

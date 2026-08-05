@@ -22,6 +22,8 @@ import DataTable from "@/components/data-table/data-table";
 import { useDebounce } from "@/features/santri/hooks/use-debounce";
 import { useTeacherAttendances } from "@/features/presensi-guru/hooks/use-teacher-attendances";
 
+import { listData } from "@/lib/utils";
+
 import { presensiGuruColumns } from "./components/presensi-guru-columns";
 import PresensiGuruDialog from "./components/presensi-guru-dialog";
 
@@ -38,13 +40,16 @@ export default function PresensiGuruPage() {
     page,
   });
 
-  // Respons API: { success, message, data: { current_page, data: [], total, per_page } }
+  // API v2: { success, data: { items, pagination } } —
+  // kompatibel dengan format lama { current_page, data, total, per_page }.
   const paginated = data?.data ?? data ?? {};
 
-  const attendances = paginated.data ?? [];
-  const total = paginated.total ?? 0;
-  const perPage = paginated.per_page ?? 10;
-  const currentPage = paginated.current_page ?? 1;
+  const attendances = listData(data);
+  const pagination = paginated.pagination ?? {};
+
+  const total = pagination.total ?? paginated.total ?? 0;
+  const perPage = pagination.per_page ?? paginated.per_page ?? 10;
+  const currentPage = pagination.current_page ?? paginated.current_page ?? 1;
   const totalPages = Math.max(1, Math.ceil(total / perPage));
 
   const statistics = useMemo(() => {

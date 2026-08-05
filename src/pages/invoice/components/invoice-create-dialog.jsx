@@ -49,7 +49,7 @@ const INITIAL_VALUES = {
 };
 
 export default function InvoiceCreateDialog({ open, onOpenChange }) {
-  const { data: students = [] } = useStudents();
+  const { data: students = [] } = useStudents({ per_page: 1000 });
 
   const createMutation = useCreateInvoices();
 

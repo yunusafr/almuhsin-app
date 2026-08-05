@@ -4,6 +4,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
+import { listData } from "@/lib/utils";
+
 import {
   getStudents,
   getStudent,
@@ -21,10 +23,13 @@ import {
 |--------------------------------------------------------------------------
 */
 
-export function useStudents() {
+export function useStudents(params = {}) {
   return useQuery({
-    queryKey: ["students"],
-    queryFn: getStudents,
+    queryKey: ["students", params],
+
+    // Normalisasi API v2 paginated ({ items, pagination }) ke ARRAY
+    // agar pemakaian langsung (students.map dst.) tetap aman.
+    queryFn: async () => listData(await getStudents(params)),
   });
 }
 

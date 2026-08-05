@@ -25,6 +25,8 @@ import DataTable from "@/components/data-table/data-table";
 
 import { usePhoneCollections } from "@/features/hp/hooks/use-phone-collections";
 
+import { listData } from "@/lib/utils";
+
 import { hpColumns } from "./components/hp-columns";
 import HpBulkDialog from "./components/hp-bulk-dialog";
 import HpReturnDialog from "./components/hp-return-dialog";
@@ -44,7 +46,9 @@ export default function HpPage() {
   }, [statusFilter]);
 
   const { data: response, isLoading, refetch } = usePhoneCollections(params);
-  const collections = response?.data ?? [];
+
+  // API v2 paginated — normalisasi ke array.
+  const collections = listData(response);
 
   const stats = useMemo(() => {
     return collections.reduce(

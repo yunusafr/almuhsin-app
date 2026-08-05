@@ -24,16 +24,13 @@ import { ATTENDANCE_TYPES } from "@/features/presensi/schemas/attendance-schema"
 import { attendanceColumns } from "./components/attendance-columns";
 import AttendanceDialog from "./components/attendance-dialog";
 
-function normalizeData(response) {
-  const list = response?.data ?? response ?? [];
-
-  return Array.isArray(list) ? list : [];
-}
+import { listData } from "@/lib/utils";
 
 export default function PresensiPage() {
   const { data, isLoading, refetch } = useAttendances();
 
-  const attendances = normalizeData(data);
+  // API v2 paginated — normalisasi ke array.
+  const attendances = listData(data);
 
   const [search, setSearch] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);

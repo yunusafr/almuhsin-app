@@ -26,16 +26,13 @@ import {
   ATTENDANCE_STATUSES,
 } from "@/features/presensi/schemas/attendance-schema";
 
-function normalizeData(response) {
-  const list = response?.data ?? response ?? [];
-
-  return Array.isArray(list) ? list : [];
-}
+import { listData } from "@/lib/utils";
 
 export default function RekapHarianPage() {
-  const { data, isLoading, refetch } = useAttendances();
+  const { data, isLoading, refetch } = useAttendances({ per_page: 1000 });
 
-  const attendances = normalizeData(data);
+  // API v2 paginated — normalisasi ke array.
+  const attendances = listData(data);
 
   const [date, setDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
 

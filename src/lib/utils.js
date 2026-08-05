@@ -17,6 +17,35 @@ export function formatCurrency(value) {
   }).format(number);
 }
 
+/**
+ * Normalisasi data list dari respons API (API v2).
+ *
+ * Menerima tiga bentuk:
+ *  - `{ success, data: { items: [...], pagination } }` (baru, paginated)
+ *  - `{ success, data: [...] }` (lama, array langsung)
+ *  - array langsung
+ */
+export function listData(response) {
+  if (Array.isArray(response)) return response;
+
+  const data = response?.data;
+
+  if (Array.isArray(data)) return data;
+
+  if (Array.isArray(data?.items)) return data.items;
+
+  return [];
+}
+
+/**
+ * Metadata pagination dari respons API v2 — `null` bila tidak ada.
+ */
+export function listPagination(response) {
+  const data = response?.data;
+
+  return data?.pagination ?? null;
+}
+
 export function formatDate(value, locale = "id-ID") {
   if (!value) return "-";
 

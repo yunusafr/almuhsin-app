@@ -11,7 +11,6 @@ export const getTeacherAttendances = async (params = {}) => {
 
   return data;
 };
-
 /*
 |--------------------------------------------------------------------------
 | CREATE
