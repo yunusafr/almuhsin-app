@@ -99,7 +99,9 @@ export function useExternalStudents(keyword, tingkat = "") {
 
     enabled: keyword.trim().length >= 2,
 
-    staleTime: 1000 * 60 * 5,
+    // Data santri jarang berubah — cache 1 jam agar pencarian
+    // keyword yang sama tidak memanggil sistem pusat lagi.
+    staleTime: 1000 * 60 * 60,
   });
 }
 

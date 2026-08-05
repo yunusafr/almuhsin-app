@@ -33,8 +33,6 @@ import {
   usePullExternalStudents,
 } from "@/features/santri/hooks/use-students";
 
-import { useDebounce } from "@/features/santri/hooks/use-debounce";
-
 const TINGKAT_OPTIONS = [
   { label: "Semua Tingkat", value: "" },
   { label: "Tingkat 10", value: "10" },
@@ -46,26 +44,38 @@ export default function ExternalStudentDialog({
   open,
   onOpenChange,
 }) {
+  // `keyword` = nilai input; `submittedKeyword` = yang benar-benar
+  // dicari. Pencarian EKSPLISIT (Enter/tombol Cari) agar request ke
+  // sistem pusat hanya 1x per pencarian — bukan per keystroke.
   const [keyword, setKeyword] = useState("");
+  const [submittedKeyword, setSubmittedKeyword] = useState("");
   const [tingkat, setTingkat] = useState("");
-
-  const debouncedKeyword = useDebounce(keyword, 500);
 
   const [selectedIds, setSelectedIds] = useState([]);
 
   const {
     data = [],
     isLoading,
-  } = useExternalStudents(debouncedKeyword, tingkat);
+  } = useExternalStudents(submittedKeyword, tingkat);
 
   const pullMutation = usePullExternalStudents();
 
-  // Pilihan dari hasil pencarian lama tidak relevan dengan keyword
-  // baru — reset begitu user mulai mengetik ulang.
-  const handleKeywordChange = (value) => {
-    setKeyword(value);
+  const searching = submittedKeyword.trim().length < 2;
+
+  function handleSearch() {
+    setSubmittedKeyword(keyword.trim());
     setSelectedIds([]);
-  };
+  }
+
+  function handleTingkatChange(value) {
+    setTingkat(value);
+    setSelectedIds([]);
+
+    // Filter tingkat hanya berlaku jika pencarian sudah dilakukan
+    if (submittedKeyword.trim().length >= 2) {
+      setSubmittedKeyword(submittedKeyword);
+    }
+  }
 
   /*
   |--------------------------------------------------------------------------
@@ -161,6 +171,7 @@ export default function ExternalStudentDialog({
   function handleClose(value) {
     if (!value) {
       setKeyword("");
+      setSubmittedKeyword("");
       setTingkat("");
       setSelectedIds([]);
     }
@@ -186,26 +197,46 @@ export default function ExternalStudentDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
-          <Input
-            value={keyword}
-            onChange={(e) =>
-              handleKeywordChange(e.target.value)
-            }
-            placeholder="Cari berdasarkan NIS atau Nama (min. 2 karakter)..."
-            className="h-10 pl-9"
-          />
+              <Input
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+                placeholder="Cari berdasarkan NIS atau Nama (min. 2 karakter)..."
+                className="h-10 pl-9"
+              />
+            </div>
+
+            <Button
+              onClick={handleSearch}
+              disabled={
+                keyword.trim().length < 2 ||
+                (keyword.trim() === submittedKeyword &&
+                  !isLoading)
+              }
+            >
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="mr-2 h-4 w-4" />
+              )}
+              Cari
+            </Button>
+          </div>
 
           <Select
             value={tingkat}
-            onValueChange={(value) => {
-              setTingkat(value);
-              setSelectedIds([]);
-            }}
+            onValueChange={handleTingkatChange}
           >
-            <SelectTrigger className="mt-2 h-10 w-full rounded-xl">
+            <SelectTrigger className="h-10 w-full rounded-xl">
               <SelectValue placeholder="Semua Tingkat" />
             </SelectTrigger>
 
@@ -227,7 +258,7 @@ export default function ExternalStudentDialog({
         <ExternalStudentTable
           data={normalizedData}
           loading={isLoading}
-          searching={keyword.trim().length < 2}
+          searching={searching}
           selectedIds={selectedIds}
           onToggle={handleToggle}
           onToggleAll={handleToggleAll}
