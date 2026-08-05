@@ -84,35 +84,22 @@ export const externalStudentColumns = ({
   },
 
   {
-    accessorKey: "status",
+    accessorKey: "tingkat",
 
-    header: "Status",
+    header: "Tingkat",
 
     cell: ({ row }) => {
-      const status = row.original.status;
-
-      const color = {
-        aktif:
-          "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-300",
-
-        lulus:
-          "bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300",
-
-        keluar:
-          "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-300",
-
-        mutasi:
-          "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-300",
-      };
+      const tingkat = row.original.tingkat;
 
       return (
         <span
           className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${
-            color[status] ??
-            "bg-muted text-muted-foreground"
+            tingkat
+              ? "bg-primary/10 text-primary"
+              : "bg-muted text-muted-foreground"
           }`}
         >
-          {status ?? "-"}
+          {tingkat ? `Tingkat ${tingkat}` : "-"}
         </span>
       );
     },

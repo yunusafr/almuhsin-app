@@ -34,7 +34,7 @@ const ProfilPage = lazy(() => import("@/pages/profil/profil-page"));
 const PengaturanPage = lazy(() => import("@/pages/pengaturan/pengaturan-page"));
 const PerizinanPage = lazy(() => import("@/pages/perizinan/perizinan-page"));
 const PresensiGuruPage = lazy(() => import("@/pages/presensi-guru/presensi-guru-page"));
-const ComingSoonPage = lazy(() => import("@/pages/misc/coming-soon-page"));
+const HpPage = lazy(() => import("@/pages/hp/hp-page"));
 const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
 export const router = createBrowserRouter([
@@ -158,10 +158,7 @@ export const router = createBrowserRouter([
         path: "hp",
         element: (
           <RoleGuard roles={["Super Admin", "Keamanan"]}>
-            <ComingSoonPage
-              title="Pengumpulan HP"
-              description="Kelola pengumpulan dan pengembalian handphone santri."
-            />
+            <HpPage />
           </RoleGuard>
         ),
       },

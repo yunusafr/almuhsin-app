@@ -90,12 +90,12 @@ export function useDeleteStudent() {
 |--------------------------------------------------------------------------
 */
 
-export function useExternalStudents(keyword) {
+export function useExternalStudents(keyword, tingkat = "") {
   return useQuery({
-    queryKey: ["external-students", keyword],
+    queryKey: ["external-students", keyword, tingkat],
 
     queryFn: () =>
-      searchExternalStudents(keyword),
+      searchExternalStudents(keyword, tingkat),
 
     enabled: keyword.trim().length >= 3,
 

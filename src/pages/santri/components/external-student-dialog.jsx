@@ -17,6 +17,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import ExternalStudentTable from "./external-student-table";
 
 import {
@@ -26,11 +34,19 @@ import {
 
 import { useDebounce } from "@/features/santri/hooks/use-debounce";
 
+const TINGKAT_OPTIONS = [
+  { label: "Semua Tingkat", value: "" },
+  { label: "Tingkat 10", value: "10" },
+  { label: "Tingkat 11", value: "11" },
+  { label: "Tingkat 12", value: "12" },
+];
+
 export default function ExternalStudentDialog({
   open,
   onOpenChange,
 }) {
   const [keyword, setKeyword] = useState("");
+  const [tingkat, setTingkat] = useState("");
 
   const debouncedKeyword = useDebounce(keyword, 500);
 
@@ -39,7 +55,7 @@ export default function ExternalStudentDialog({
   const {
     data = [],
     isLoading,
-  } = useExternalStudents(debouncedKeyword);
+  } = useExternalStudents(debouncedKeyword, tingkat);
 
   const pullMutation = usePullExternalStudents();
 
@@ -165,6 +181,29 @@ export default function ExternalStudentDialog({
             placeholder="Cari berdasarkan NIS atau Nama (min. 3 karakter)..."
             className="h-10 pl-9"
           />
+
+          <Select
+            value={tingkat}
+            onValueChange={(value) => {
+              setTingkat(value);
+              setSelectedIds([]);
+            }}
+          >
+            <SelectTrigger className="mt-2 h-10 w-full rounded-xl">
+              <SelectValue placeholder="Semua Tingkat" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {TINGKAT_OPTIONS.map((option) => (
+                <SelectItem
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <Separator />

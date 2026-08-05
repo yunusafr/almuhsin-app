@@ -12,19 +12,32 @@ import {
 
 import { ENROLLMENT_STATUSES } from "@/features/enrollment/schemas/enrollment-schema";
 
-// Docs API memakai key `class_room` pada daftar & `classRoom` pada detail
+// Docs API punya dua bentuk respons:
+//  - nested: student.{name,nis}, class_room/academic_year (daftar lama)
+//  - flat:   student_name, student_nis, class_name, academic_year_name
+const getStudent = (row) =>
+  row.student ?? {
+    name: row.student_name,
+    nis: row.student_nis,
+    rombel: row.student_rombel,
+  };
+
 const getClass = (row) =>
-  row.class_room ?? row.classRoom ?? null;
+  row.class_room ??
+  row.classRoom ??
+  (row.class_name ? { name: row.class_name } : null);
 
 const getAcademicYear = (row) =>
-  row.academic_year ?? row.academicYear ?? null;
+  row.academic_year ??
+  row.academicYear ??
+  (row.academic_year_name ? { name: row.academic_year_name } : null);
 
 export const enrollmentColumns = ({ onEdit, onDelete }) => [
   {
     accessorKey: "student",
     header: "Santri",
     cell: ({ row }) => {
-      const student = row.original.student;
+      const student = getStudent(row.original);
 
       return (
         <div>

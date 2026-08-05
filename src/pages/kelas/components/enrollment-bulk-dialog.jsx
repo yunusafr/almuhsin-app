@@ -109,22 +109,33 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
 
   const handleSubmit = async (values) => {
     try {
-      await createMutation.mutateAsync({
+      const result = await createMutation.mutateAsync({
         class_id: values.class_id,
         academic_year_id: values.academic_year_id,
         student_ids: values.student_ids,
         status: values.status,
       });
 
-      toast.success(
-        `${values.student_ids.length} santri berhasil diploting ke kelas`
-      );
+      // Respons bulk: {total_requested, total_inserted, total_skipped,
+      // skipped_student_ids} — santri yang sudah diplot di tahun ajaran
+      // sama otomatis dilewati backend.
+      const skipped = result?.data?.total_skipped ?? 0;
+
+      if (skipped > 0) {
+        toast.success(
+          `${values.student_ids.length} santri diproses, ${skipped} dilewati (sudah diplot di tahun ajaran ini)`,
+        );
+      } else {
+        toast.success(
+          `${values.student_ids.length} santri berhasil diploting ke kelas`,
+        );
+      }
 
       onOpenChange(false);
     } catch (error) {
       toast.error(
         error?.response?.data?.message ??
-          "Gagal melakukan plotting massal."
+          "Gagal melakukan plotting massal.",
       );
     }
   };

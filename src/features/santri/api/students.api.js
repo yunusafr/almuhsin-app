@@ -36,10 +36,12 @@ export const deleteStudent = async (id) => {
 |--------------------------------------------------------------------------
 */
 
-export const searchExternalStudents = async (keyword) => {
+export const searchExternalStudents = async (keyword, tingkat) => {
   const { data } = await api.get("/students/external-search", {
     params: {
       q: keyword,
+      // Filter tingkat opsional (10/11/12) — kosongkan untuk global
+      ...(tingkat ? { tingkat } : {}),
     },
   });
 
