@@ -24,17 +24,25 @@ export const presensiGuruColumns = ({ onEdit }) => [
   {
     accessorKey: "teacher",
     header: "Guru",
-    cell: ({ row }) => (
-      <div>
-        <p className="font-medium">
-          {row.original.teacher?.name ?? "-"}
-        </p>
+    cell: ({ row }) => {
+      const teacher = row.original.teacher;
 
-        <p className="text-xs text-muted-foreground">
-          {row.original.user?.name ?? ""}
-        </p>
-      </div>
-    ),
+      return (
+        <div>
+          <p className="font-medium">
+            {teacher?.name ?? (
+              <span className="italic text-muted-foreground">
+                Guru dihapus
+              </span>
+            )}
+          </p>
+
+          <p className="text-xs text-muted-foreground">
+            {row.original.user?.name ?? ""}
+          </p>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "tanggal",

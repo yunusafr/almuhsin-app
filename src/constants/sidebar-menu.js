@@ -7,6 +7,7 @@ import {
   CalendarCheck,
   CalendarRange,
   Shield,
+  ShieldCheck,
   Wallet,
   FileText,
   ReceiptText,
@@ -44,6 +45,12 @@ export const sidebarMenus = {
       title: "Asatidz",
       path: "/app/asatidz",
       icon: UserCog,
+    },
+
+    {
+      title: "Data Keamanan",
+      path: "/app/keamanan",
+      icon: ShieldCheck,
     },
 
     {

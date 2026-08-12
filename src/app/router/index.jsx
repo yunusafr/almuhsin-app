@@ -35,6 +35,7 @@ const PengaturanPage = lazy(() => import("@/pages/pengaturan/pengaturan-page"));
 const PerizinanPage = lazy(() => import("@/pages/perizinan/perizinan-page"));
 const PresensiGuruPage = lazy(() => import("@/pages/presensi-guru/presensi-guru-page"));
 const HpPage = lazy(() => import("@/pages/hp/hp-page"));
+const SecurityGuardsPage = lazy(() => import("@/pages/security-guards/security-guards-page"));
 const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
 export const router = createBrowserRouter([
@@ -153,6 +154,14 @@ export const router = createBrowserRouter([
       {
         path: "pengaturan",
         element: <PengaturanPage />,
+      },
+      {
+        path: "keamanan",
+        element: (
+          <RoleGuard roles={["Super Admin"]}>
+            <SecurityGuardsPage />
+          </RoleGuard>
+        ),
       },
       {
         path: "hp",

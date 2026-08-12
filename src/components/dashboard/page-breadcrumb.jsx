@@ -16,6 +16,7 @@ const breadcrumbNameMap = {
   "rekap-bulanan": "Rekap Bulanan",
   hp: "Pengumpulan HP",
   perizinan: "Perizinan",
+  keamanan: "Data Keamanan",
   profil: "Profil",
   pengaturan: "Pengaturan",
   "presensi-guru": "Presensi Guru",

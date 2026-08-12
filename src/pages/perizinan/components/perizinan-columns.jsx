@@ -94,7 +94,7 @@ export const perizinanColumns = ({ onKembali }) => [
       row.original.tgl_kembali ? (
         <StatusBadge color="green">Sudah Kembali</StatusBadge>
       ) : (
-        <StatusBadge color="yellow">Keluar</StatusBadge>
+        <StatusBadge color="yellow">Belum Kembali</StatusBadge>
       ),
   },
   {
