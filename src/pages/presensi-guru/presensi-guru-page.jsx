@@ -26,12 +26,14 @@ import { listData } from "@/lib/utils";
 
 import { presensiGuruColumns } from "./components/presensi-guru-columns";
 import PresensiGuruDialog from "./components/presensi-guru-dialog";
+import PresensiGuruDeleteDialog from "./components/presensi-guru-delete-dialog";
 
 export default function PresensiGuruPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const debouncedSearch = useDebounce(search, 400);
 
@@ -75,6 +77,11 @@ export default function PresensiGuruPage() {
         onEdit: (row) => {
           setSelected(row);
           setDialogOpen(true);
+        },
+
+        onDelete: (row) => {
+          setSelected(row);
+          setDeleteOpen(true);
         },
       }),
     [],
@@ -191,6 +198,12 @@ export default function PresensiGuruPage() {
       <PresensiGuruDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
+        data={selected}
+      />
+
+      <PresensiGuruDeleteDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
         data={selected}
       />
     </div>

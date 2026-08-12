@@ -4,6 +4,7 @@ import {
   getTeacherAttendances,
   createTeacherAttendance,
   updateTeacherAttendance,
+  deleteTeacherAttendance,
 } from "../api/teacher-attendances-api";
 
 export const TEACHER_ATTENDANCE_QUERY_KEY = ["teacher-attendances"];
@@ -54,6 +55,26 @@ export function useUpdateTeacherAttendance() {
   return useMutation({
     mutationFn: ({ id, ...payload }) =>
       updateTeacherAttendance(id, payload),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: TEACHER_ATTENDANCE_QUERY_KEY,
+      });
+    },
+  });
+}
+
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
+export function useDeleteTeacherAttendance() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteTeacherAttendance,
 
     onSuccess: () => {
       queryClient.invalidateQueries({

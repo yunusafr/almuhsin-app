@@ -25,6 +25,7 @@ import { listData } from "@/lib/utils";
 import { perizinanColumns } from "./components/perizinan-columns";
 import PerizinanDialog from "./components/perizinan-dialog";
 import KembaliDialog from "./components/kembali-dialog";
+import PerizinanDeleteDialog from "./components/perizinan-delete-dialog";
 
 export default function PerizinanPage() {
   const [search, setSearch] = useState("");
@@ -32,6 +33,7 @@ export default function PerizinanPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const [kembaliOpen, setKembaliOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const debouncedSearch = useDebounce(search, 400);
 
@@ -75,6 +77,11 @@ export default function PerizinanPage() {
         onKembali: (row) => {
           setSelected(row);
           setKembaliOpen(true);
+        },
+
+        onDelete: (row) => {
+          setSelected(row);
+          setDeleteOpen(true);
         },
       }),
     [],
@@ -184,6 +191,12 @@ export default function PerizinanPage() {
       <KembaliDialog
         open={kembaliOpen}
         onOpenChange={setKembaliOpen}
+        data={selected}
+      />
+
+      <PerizinanDeleteDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
         data={selected}
       />
     </div>

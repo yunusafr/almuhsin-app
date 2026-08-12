@@ -34,3 +34,15 @@ export const updateStudentLeave = async (id, payload) => {
 
   return data;
 };
+
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
+export const deleteStudentLeave = async (id) => {
+  const { data } = await api.delete(`/student-leaves/${id}`);
+
+  return data;
+};

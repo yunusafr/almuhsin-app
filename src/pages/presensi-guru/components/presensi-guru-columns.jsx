@@ -1,7 +1,15 @@
-import { Pencil } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/common/status-badge";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { TEACHER_ATTENDANCE_STATUSES } from "@/features/presensi-guru/schemas/teacher-attendance-schema";
 
 function formatDate(value) {
@@ -20,7 +28,7 @@ function formatJam(value) {
   return String(value).slice(0, 5);
 }
 
-export const presensiGuruColumns = ({ onEdit }) => [
+export const presensiGuruColumns = ({ onEdit, onDelete }) => [
   {
     accessorKey: "teacher",
     header: "Guru",
@@ -97,14 +105,26 @@ export const presensiGuruColumns = ({ onEdit }) => [
     id: "actions",
     header: "",
     cell: ({ row }) => (
-      <Button
-        size="icon"
-        variant="ghost"
-        onClick={() => onEdit(row.original)}
-        aria-label="Edit presensi"
-      >
-        <Pencil className="h-4 w-4" />
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button size="icon" variant="ghost" />}>
+          <MoreHorizontal className="h-4 w-4" />
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => onEdit(row.original)}>
+            <Pencil className="mr-2 h-4 w-4" />
+            Edit
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            className="text-red-600"
+            onClick={() => onDelete(row.original)}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Hapus
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     ),
   },
 ];

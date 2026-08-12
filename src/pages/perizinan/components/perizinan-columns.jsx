@@ -1,7 +1,14 @@
-import { CalendarCheck, DoorOpen, Undo2 } from "lucide-react";
+import { CalendarCheck, DoorOpen, MoreHorizontal, Trash2, Undo2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/common/status-badge";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function formatDate(value) {
   if (!value) return "-";
@@ -19,7 +26,7 @@ function formatJam(value) {
   return String(value).slice(0, 5);
 }
 
-export const perizinanColumns = ({ onKembali }) => [
+export const perizinanColumns = ({ onKembali, onDelete }) => [
   {
     accessorKey: "student",
     header: "Santri",
@@ -100,16 +107,33 @@ export const perizinanColumns = ({ onKembali }) => [
   {
     id: "actions",
     header: "",
-    cell: ({ row }) =>
-      !row.original.tgl_kembali ? (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => onKembali(row.original)}
-        >
-          <Undo2 className="mr-1.5 h-3.5 w-3.5" />
-          Santri Kembali
-        </Button>
-      ) : null,
+    cell: ({ row }) => {
+      const sudahKembali = !!row.original.tgl_kembali;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button size="icon" variant="ghost" />}>
+            <MoreHorizontal className="h-4 w-4" />
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end">
+            {!sudahKembali && (
+              <DropdownMenuItem onClick={() => onKembali(row.original)}>
+                <Undo2 className="mr-2 h-4 w-4" />
+                Santri Kembali
+              </DropdownMenuItem>
+            )}
+
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => onDelete(row.original)}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Hapus
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];

@@ -4,6 +4,7 @@ import {
   getStudentLeaves,
   createStudentLeave,
   updateStudentLeave,
+  deleteStudentLeave,
 } from "../api/student-leaves-api";
 
 export const STUDENT_LEAVES_QUERY_KEY = ["student-leaves"];
@@ -54,6 +55,26 @@ export function useUpdateStudentLeave() {
   return useMutation({
     mutationFn: ({ id, ...payload }) =>
       updateStudentLeave(id, payload),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: STUDENT_LEAVES_QUERY_KEY,
+      });
+    },
+  });
+}
+
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
+export function useDeleteStudentLeave() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteStudentLeave,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
