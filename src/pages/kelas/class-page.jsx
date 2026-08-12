@@ -20,7 +20,7 @@ import {
 
 import PageHeader from "@/components/common/page-header";
 import StatCard from "@/components/common/stat-card";
-import { cn } from "@/lib/utils";
+import { cn, listData } from "@/lib/utils";
 
 import TableContainer from "@/components/data-table/table-container";
 import DataTableHeader from "@/components/data-table/data-table-header";
@@ -80,12 +80,14 @@ export default function ClassPage() {
     isLoading: enrollmentsLoading,
     refetch: refetchEnrollments,
   } = useEnrollments(enrollmentParams);
-  const enrollments = enrollmentsData?.data ?? [];
+
+  // API v2 — normalisasi (array | {items,pagination}) ke array.
+  const enrollments = listData(enrollmentsData);
 
   // Statistik global — dihitung dari SEMUA data plotting (tidak ikut
   // filter kelas/tahun) agar angka tidak berubah saat tabel difilter.
   const { data: allEnrollmentsData } = useEnrollments({});
-  const allEnrollments = allEnrollmentsData?.data ?? [];
+  const allEnrollments = listData(allEnrollmentsData);
 
   const handleRefresh = () => {
     if (tab === "plotting") {

@@ -25,7 +25,7 @@ import {
   ATTENDANCE_STATUSES,
 } from "@/features/presensi/schemas/attendance-schema";
 
-import { cn } from "@/lib/utils";
+import { cn, listData } from "@/lib/utils";
 
 // Referensi STABIL — default array literal baru per render membuat
 // useMemo/useEffect cascade & menggandakan loop (Maximum update depth).
@@ -61,7 +61,8 @@ export default function AttendanceForm({
   const academicYears = academicYearResponse?.data ?? academicYearResponse ?? EMPTY_ARRAY;
   const activeYear = academicYears.find((item) => item.is_active);
 
-  const enrollments = enrollmentsResponse?.data ?? EMPTY_ARRAY;
+  // API v2 — normalisasi (array | {items,pagination}) ke array.
+  const enrollments = listData(enrollmentsResponse);
 
   const [studentSearch, setStudentSearch] = useState("");
   const [selectedClassId, setSelectedClassId] = useState("");

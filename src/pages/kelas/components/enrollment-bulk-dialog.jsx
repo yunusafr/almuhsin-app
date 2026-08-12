@@ -32,6 +32,8 @@ import { useClasses } from "@/features/kelas/hooks/use-classes";
 import { useAcademicYears } from "@/features/academic-year/hooks/use-academic-year";
 import { useCreateBulkEnrollment, useEnrollments } from "@/features/enrollment/hooks/use-enrollments";
 
+import { listData } from "@/lib/utils";
+
 const INITIAL_VALUES = {
   class_id: "",
   academic_year_id: "",
@@ -87,8 +89,9 @@ export default function EnrollmentBulkDialog({ open, onOpenChange }) {
   );
 
   const plottedStudentIds = useMemo(() => {
+    // API v2 — normalisasi (array | {items,pagination}) ke array.
     return new Set(
-      (yearEnrollments?.data ?? []).map((item) => item.student_id),
+      listData(yearEnrollments).map((item) => item.student_id),
     );
   }, [yearEnrollments]);
 
