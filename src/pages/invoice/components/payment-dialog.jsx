@@ -46,7 +46,7 @@ export default function PaymentDialog({ open, onOpenChange, invoice }) {
       invoice_id: "",
       amount: "",
       payment_date: format(new Date(), "yyyy-MM-dd"),
-      payment_method: "Tunai",
+      payment_method: "TUNAI",
       reference_number: "",
       notes: "",
     },
@@ -58,7 +58,7 @@ export default function PaymentDialog({ open, onOpenChange, invoice }) {
         invoice_id: invoice.id,
         amount: remaining,
         payment_date: format(new Date(), "yyyy-MM-dd"),
-        payment_method: "Tunai",
+        payment_method: "TUNAI",
         reference_number: "",
         notes: "",
       });

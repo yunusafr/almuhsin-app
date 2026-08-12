@@ -25,18 +25,13 @@ import InvoiceCreateDialog from "./components/invoice-create-dialog";
 import InvoiceDetailDialog from "./components/invoice-detail-dialog";
 import PaymentDialog from "./components/payment-dialog";
 
-import { formatCurrency } from "@/lib/utils";
-
-function normalizeData(response) {
-  const list = response?.data ?? response ?? [];
-
-  return Array.isArray(list) ? list : [];
-}
+import { formatCurrency, listData } from "@/lib/utils";
 
 export default function InvoicePage() {
   const { data, isLoading, refetch } = useInvoices();
 
-  const invoices = normalizeData(data);
+  // API v2 paginated — normalisasi ke array (kompatibel array lama).
+  const invoices = listData(data);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");

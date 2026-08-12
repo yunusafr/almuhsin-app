@@ -32,13 +32,7 @@ import { useInvoices } from "@/features/keuangan/hooks/use-invoices";
 
 import { getInvoiceStatus } from "../invoice/components/invoice-columns";
 
-import { formatCurrency } from "@/lib/utils";
-
-function normalizeData(response) {
-  const list = response?.data ?? response ?? [];
-
-  return Array.isArray(list) ? list : [];
-}
+import { formatCurrency, listData } from "@/lib/utils";
 
 const STATUS_COLORS = {
   Lunas: "#16a34a",
@@ -51,7 +45,8 @@ const STATUS_COLORS = {
 export default function LaporanPage() {
   const { data, isLoading, refetch } = useInvoices();
 
-  const invoices = normalizeData(data);
+  // API v2 paginated — normalisasi ke array (kompatibel array lama).
+  const invoices = listData(data);
 
   const statistics = useMemo(() => {
     return invoices.reduce(

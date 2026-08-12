@@ -22,18 +22,13 @@ import { useInvoices } from "@/features/keuangan/hooks/use-invoices";
 import { getInvoiceStatus } from "../invoice/components/invoice-columns";
 import PaymentDialog from "../invoice/components/payment-dialog";
 
-import { formatCurrency, formatDate } from "@/lib/utils";
-
-function normalizeData(response) {
-  const list = response?.data ?? response ?? [];
-
-  return Array.isArray(list) ? list : [];
-}
+import { formatCurrency, formatDate, listData } from "@/lib/utils";
 
 export default function PembayaranPage() {
   const { data, isLoading, refetch } = useInvoices();
 
-  const invoices = normalizeData(data);
+  // API v2 paginated — normalisasi ke array (kompatibel array lama).
+  const invoices = listData(data);
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");

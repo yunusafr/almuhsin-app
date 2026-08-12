@@ -11,10 +11,9 @@ export const INVOICE_ITEM_TYPES = [
 ];
 
 export const PAYMENT_METHODS = [
-  { label: "Tunai", value: "Tunai" },
-  { label: "Transfer Bank", value: "Transfer Bank" },
-  { label: "Transfer E-Wallet", value: "E-Wallet" },
-  { label: "Virtual Account", value: "Virtual Account" },
+  { label: "Tunai", value: "TUNAI" },
+  { label: "Transfer", value: "TRANSFER" },
+  { label: "Saldo Santri", value: "SALDO" },
 ];
 
 const invoiceItemSchema = z.object({
