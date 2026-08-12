@@ -15,3 +15,9 @@ export const me = async () => {
 export const logout = async () => {
   await api.post("/logout");
 };
+
+export const refreshToken = async () => {
+  const { data } = await api.post("/refresh");
+
+  return data.data;
+};
