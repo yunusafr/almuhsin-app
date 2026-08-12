@@ -8,6 +8,8 @@ import { getAttendances } from "@/features/presensi/api/attendances-api";
 import { getInvoices } from "@/features/keuangan/api/invoices-api";
 import { getToken } from "@/features/auth/lib/token";
 
+import { listData } from "@/lib/utils";
+
 /**
  * Statistik untuk halaman publik (landing).
  *
@@ -56,10 +58,11 @@ export function useLandingStats() {
 
     if (!enabled) return defaults;
 
-    const students = studentsQuery.data?.data ?? studentsQuery.data ?? [];
-    const teachers = teachersQuery.data?.data ?? teachersQuery.data ?? [];
-    const attendances = attendancesQuery.data?.data ?? attendancesQuery.data ?? [];
-    const invoices = invoicesQuery.data?.data ?? invoicesQuery.data ?? [];
+    // API v2 paginated ({ items, pagination }) — normalisasi ke array.
+    const students = listData(studentsQuery.data);
+    const teachers = listData(teachersQuery.data);
+    const attendances = listData(attendancesQuery.data);
+    const invoices = listData(invoicesQuery.data);
 
     const isLoading =
       studentsQuery.isLoading ||
@@ -80,7 +83,7 @@ export function useLandingStats() {
     const todayEntries = attendances
       .filter((item) => item.date === today)
       .reduce((acc, item) => {
-        const entries = item.students ?? item.details ?? [];
+        const entries = item.records ?? item.students ?? item.details ?? [];
         return acc + entries.length;
       }, 0);
 
