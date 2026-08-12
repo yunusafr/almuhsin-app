@@ -1,0 +1,1 @@
+import{t as e}from"./axios-C8Y9jK9Z.js";var t=async(t={})=>{let{data:n}=await e.get(`/attendances`,{params:t});return n},n=async t=>{let{data:n}=await e.post(`/attendances`,t);return n};export{t as n,n as t};
