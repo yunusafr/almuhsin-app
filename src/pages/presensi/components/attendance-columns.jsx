@@ -11,7 +11,8 @@ const TYPE_META = {
 };
 
 function summarize(attendance) {
-  const students = attendance?.students ?? attendance?.details ?? [];
+  const students =
+    attendance?.records ?? attendance?.students ?? attendance?.details ?? [];
 
   return students.reduce(
     (acc, item) => {

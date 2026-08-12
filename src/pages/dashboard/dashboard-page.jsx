@@ -71,7 +71,7 @@ export default function DashboardPage() {
     return attendances
       .filter((item) => item.date === today)
       .reduce((acc, item) => {
-        const entries = item.students ?? item.details ?? [];
+        const entries = item.records ?? item.students ?? item.details ?? [];
 
         return acc + entries.length;
       }, 0);

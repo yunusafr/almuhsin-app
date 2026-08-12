@@ -28,7 +28,7 @@ import { listData } from "@/lib/utils";
 function countStatuses(records) {
   return records.reduce(
     (acc, item) => {
-      const students = item.students ?? item.details ?? [];
+      const students = item.records ?? item.students ?? item.details ?? [];
 
       students.forEach((entry) => {
         acc[entry.status] = (acc[entry.status] ?? 0) + 1;

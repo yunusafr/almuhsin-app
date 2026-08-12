@@ -57,7 +57,7 @@ export default function PresensiPage() {
       (acc, item) => {
         acc.total++;
 
-        const students = item.students ?? item.details ?? [];
+        const students = item.records ?? item.students ?? item.details ?? [];
 
         students.forEach((entry) => {
           acc[entry.status] = (acc[entry.status] ?? 0) + 1;
