@@ -9,8 +9,14 @@ lerna-debug.log*
 
 node_modules
 dist
+
+# Backup lokal sebelum perubahan file (rollback)
+backups/
 dist-ssr
 *.local
+
+# Environment (jangan commit file .env — pakai .env.example sebagai template)
+.env
 
 # Editor directories and files
 .vscode/*
