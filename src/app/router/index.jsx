@@ -7,6 +7,7 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 
 import ProtectedRoute from "@/app/router/protected-route";
 import RoleGuard from "@/app/router/role-guard";
+import RouteError from "@/components/shared/route-error";
 
 const LandingPage = lazy(() => import("@/pages/public/landing-page"));
 const TentangPage = lazy(() => import("@/pages/public/tentang-page"));
@@ -40,9 +41,14 @@ const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <PublicLayout />,
+    // Error boundary level route — render error apa pun menampilkan layar
+    // ramah, bukan stack trace mentah React Router.
+    errorElement: <RouteError />,
     children: [
+      {
+        path: "/",
+        element: <PublicLayout />,
+        children: [
       {
         index: true,
         element: <LandingPage />,
@@ -181,5 +187,7 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFoundPage />,
+  },
+    ],
   },
 ]);

@@ -10,20 +10,23 @@ import AuthProvider from "@/features/auth/components/auth-provider";
 import QueryProvider from "@/app/providers/query-provider";
 import { ThemeProvider } from "@/app/providers/theme-provider";
 import PageLoader from "@/components/common/page-loader";
+import AppErrorBoundary from "@/components/shared/app-error-boundary";
 
 import { router } from "@/app/router";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <QueryProvider>
-      <AuthProvider>
-        <ThemeProvider>
-          <Suspense fallback={<PageLoader />}>
-            <RouterProvider router={router} />
-          </Suspense>
-        </ThemeProvider>
-      </AuthProvider>
-    </QueryProvider>
+    <AppErrorBoundary>
+      <QueryProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <Suspense fallback={<PageLoader />}>
+              <RouterProvider router={router} />
+            </Suspense>
+          </ThemeProvider>
+        </AuthProvider>
+      </QueryProvider>
+    </AppErrorBoundary>
 
     <Toaster
       position="top-right"

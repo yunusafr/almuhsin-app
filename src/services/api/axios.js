@@ -2,7 +2,8 @@ import axios from "axios";
 import { toast } from "sonner";
 import { getToken, setToken, removeToken } from "./token";
 
-const BASE_URL = "https://api-almuhsin.ingintau.my.id/api/v1";
+const BASE_URL =
+  import.meta.env.VITE_API_URL || "https://api-almuhsin.ingintau.my.id/api/v1";
 
 const api = axios.create({
   baseURL: BASE_URL,
