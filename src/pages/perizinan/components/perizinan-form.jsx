@@ -24,6 +24,7 @@ const INITIAL_VALUES = {
   tgl_kembali: "",
   jam_kembali: "",
   alasan_keluar: "",
+  penjemput: "",
 };
 
 export default function PerizinanForm({
@@ -63,6 +64,13 @@ export default function PerizinanForm({
             name="alasan_keluar"
             label="Alasan Keluar"
             placeholder="Misal: Izin keluarga"
+          />
+
+          <FormInput
+            control={form.control}
+            name="penjemput"
+            label="Penjemput (Opsional)"
+            placeholder="Nama penjemput"
           />
         </FormGrid>
 

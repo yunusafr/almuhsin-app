@@ -50,14 +50,12 @@ export default function TeacherForm({
             placeholder="Muchammad Ma'sum, M.Pd.I."
           />
 
-          {!isEdit && (
-            <FormInput
-              control={form.control}
-              name="email"
-              label="Email Login"
-              placeholder="ustadz@almuhsin.app"
-            />
-          )}
+          <FormInput
+            control={form.control}
+            name="email"
+            label="Email Login"
+            placeholder="ustadz@almuhsin.app"
+          />
 
           <FormSelect
             control={form.control}
@@ -104,15 +102,6 @@ export default function TeacherForm({
         }
       >
         <div className="grid gap-5 md:grid-cols-2">
-          {!isEdit && (
-            <FormInput
-              control={form.control}
-              name="email"
-              label="Email Login"
-              placeholder="ustadz@almuhsin.app"
-            />
-          )}
-
           <FormInput
             control={form.control}
             name="password"

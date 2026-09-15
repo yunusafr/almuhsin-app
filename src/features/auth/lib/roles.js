@@ -8,8 +8,8 @@
  */
 
 const ROLE_ALIASES = {
-  ustadz: "Asatidz",
-  asatidz: "Asatidz",
+  ustadz: "Ustadz",
+  asatidz: "Ustadz",
 };
 
 export function normalizeRole(role) {

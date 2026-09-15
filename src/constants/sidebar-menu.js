@@ -42,7 +42,7 @@ export const sidebarMenus = {
     },
 
     {
-      title: "Asatidz",
+      title: "Ustadz",
       path: "/app/asatidz",
       icon: UserCog,
     },
@@ -51,6 +51,12 @@ export const sidebarMenus = {
       title: "Data Keamanan",
       path: "/app/keamanan",
       icon: ShieldCheck,
+    },
+
+    {
+      title: "Pengguna",
+      path: "/app/pengguna",
+      icon: UserCog,
     },
 
     {
@@ -96,7 +102,7 @@ export const sidebarMenus = {
     },
   ],
 
-  Asatidz: [
+  Ustadz: [
     {
       title: "Dashboard",
       path: "/app",

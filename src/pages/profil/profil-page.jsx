@@ -1,15 +1,26 @@
-import { BadgeCheck, Mail, ShieldCheck, UserRound } from "lucide-react";
+import { useState } from "react";
+import { BadgeCheck, KeyRound, Mail, ShieldCheck, UserRound } from "lucide-react";
+import { toast } from "sonner";
 
 import PageHeader from "@/components/common/page-header";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 import useAuthStore from "@/features/auth/stores/auth-store";
+import { changePassword } from "@/features/auth/services/auth.service";
 
 export default function ProfilPage() {
   const user = useAuthStore((s) => s.user);
   const roles = useAuthStore((s) => s.roles);
+
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const role = roles?.[0] ?? "Super Admin";
 
@@ -26,6 +37,46 @@ export default function ProfilPage() {
     { icon: Mail, label: "Email", value: user?.email ?? "-" },
     { icon: ShieldCheck, label: "Role", value: role },
   ];
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("Lengkapi semua kolom password.");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error("Password baru minimal 6 karakter.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Konfirmasi password baru tidak cocok.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      await changePassword({
+        current_password: currentPassword,
+        new_password: newPassword,
+        new_password_confirmation: confirmPassword,
+      });
+
+      toast.success("Password berhasil diperbarui.");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message ?? "Gagal memperbarui password.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -84,12 +135,67 @@ export default function ProfilPage() {
             ))}
 
             <p className="text-xs leading-6 text-muted-foreground">
-              Data akun dikelola oleh administrator pondok. Jika ada
-              perubahan data yang perlu dilakukan, hubungi Super Admin.
+              Data akun dikelola oleh administrator pondok. Anda tetap dapat
+              mengganti password sendiri di bawah ini.
             </p>
           </CardContent>
         </Card>
       </div>
+
+      {/* Ubah password */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <KeyRound className="h-5 w-5 text-green-600" />
+            Ubah Password
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent>
+          <form onSubmit={handleChangePassword} className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-2">
+                <Label htmlFor="current_password">Password Saat Ini</Label>
+                <Input
+                  id="current_password"
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="new_password">Password Baru</Label>
+                <Input
+                  id="new_password"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Minimal 6 karakter"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirm_password">Konfirmasi Password Baru</Label>
+                <Input
+                  id="confirm_password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Ulangi password baru"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <Button type="submit" disabled={submitting}>
+                {submitting ? "Menyimpan..." : "Simpan Password"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

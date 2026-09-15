@@ -15,6 +15,8 @@ import {
   syncStudents,
   searchExternalStudents,
   pullExternalStudents,
+  getTrashedStudents,
+  restoreStudent,
 } from "../api/students.api";
 
 /*
@@ -85,6 +87,25 @@ export function useDeleteStudent() {
       queryClient.invalidateQueries({
         queryKey: ["students"],
       });
+    },
+  });
+}
+
+export function useTrashedStudents() {
+  return useQuery({
+    queryKey: ["students", "trashed"],
+    queryFn: getTrashedStudents,
+  });
+}
+
+export function useRestoreStudent() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: restoreStudent,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["students"] });
     },
   });
 }

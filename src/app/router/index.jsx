@@ -37,6 +37,7 @@ const PerizinanPage = lazy(() => import("@/pages/perizinan/perizinan-page"));
 const PresensiGuruPage = lazy(() => import("@/pages/presensi-guru/presensi-guru-page"));
 const HpPage = lazy(() => import("@/pages/hp/hp-page"));
 const SecurityGuardsPage = lazy(() => import("@/pages/security-guards/security-guards-page"));
+const UsersPage = lazy(() => import("@/pages/users/users-page"));
 const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
 export const router = createBrowserRouter([
@@ -127,7 +128,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "presensi",
-        element: <RoleGuard roles={["Super Admin", "Asatidz"]}><PresensiPage /></RoleGuard>,
+        element: <RoleGuard roles={["Super Admin", "Ustadz"]}><PresensiPage /></RoleGuard>,
       },
       {
         path: "presensi-guru",
@@ -135,11 +136,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "rekap-harian",
-        element: <RoleGuard roles={["Super Admin", "Asatidz"]}><RekapHarianPage /></RoleGuard>,
+        element: <RoleGuard roles={["Super Admin", "Ustadz"]}><RekapHarianPage /></RoleGuard>,
       },
       {
         path: "rekap-bulanan",
-        element: <RoleGuard roles={["Super Admin", "Asatidz"]}><RekapBulananPage /></RoleGuard>,
+        element: <RoleGuard roles={["Super Admin", "Ustadz"]}><RekapBulananPage /></RoleGuard>,
       },
       {
         path: "invoice",
@@ -166,6 +167,14 @@ export const router = createBrowserRouter([
         element: (
           <RoleGuard roles={["Super Admin"]}>
             <SecurityGuardsPage />
+          </RoleGuard>
+        ),
+      },
+      {
+        path: "pengguna",
+        element: (
+          <RoleGuard roles={["Super Admin"]}>
+            <UsersPage />
           </RoleGuard>
         ),
       },

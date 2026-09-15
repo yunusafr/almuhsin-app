@@ -21,3 +21,9 @@ export const refreshToken = async () => {
 
   return data.data;
 };
+
+export const changePassword = async (payload) => {
+  const { data } = await api.post("/change-password", payload);
+
+  return data;
+};

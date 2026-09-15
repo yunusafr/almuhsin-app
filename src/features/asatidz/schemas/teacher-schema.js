@@ -21,6 +21,8 @@ export const createTeacherSchema = z.object({
 export const updateTeacherSchema = z.object({
   ...baseSchema,
 
+  email: z.email("Email tidak valid").optional().or(z.literal("")),
+
   // opsional: kosongkan jika tidak ingin mengganti password
   password: z
     .string()

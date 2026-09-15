@@ -7,6 +7,7 @@ export const studentLeaveSchema = z.object({
   tgl_kembali: z.string().optional(),
   jam_kembali: z.string().optional(),
   alasan_keluar: z.string().min(1, "Alasan keluar wajib diisi"),
+  penjemput: z.string().optional(),
 });
 
 export const kembaliSchema = z.object({

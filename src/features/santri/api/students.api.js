@@ -32,6 +32,24 @@ export const deleteStudent = async (id) => {
   return data;
 };
 
+export const getStudentSummary = async (id) => {
+  const { data } = await api.get(`/students/${id}/summary`);
+
+  return data.data;
+};
+
+export const getTrashedStudents = async () => {
+  const { data } = await api.get("/students/trashed");
+
+  return data.data;
+};
+
+export const restoreStudent = async (id) => {
+  const { data } = await api.post(`/students/${id}/restore`);
+
+  return data;
+};
+
 /*
 |--------------------------------------------------------------------------
 | External System

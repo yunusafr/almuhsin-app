@@ -28,7 +28,13 @@ import PaymentDialog from "./components/payment-dialog";
 import { formatCurrency, listData } from "@/lib/utils";
 
 export default function InvoicePage() {
-  const { data, isLoading, refetch } = useInvoices();
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+
+  const { data, isLoading, refetch } = useInvoices({
+    month: month || undefined,
+    year: year || undefined,
+  });
 
   // API v2 paginated — normalisasi ke array (kompatibel array lama).
   const invoices = listData(data);
@@ -156,18 +162,52 @@ export default function InvoicePage() {
             />
           }
           actions={
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="h-10 rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-ring"
-            >
-              <option value="all">Semua Status</option>
-              <option value="Lunas">Lunas</option>
-              <option value="Belum Bayar">Belum Bayar</option>
-              <option value="Angsuran">Angsuran</option>
-              <option value="Jatuh Tempo">Jatuh Tempo</option>
-              <option value="Tunggakan">Tunggakan</option>
-            </select>
+            <div className="flex flex-wrap items-center gap-2">
+              <select
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+                className="h-10 rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-ring"
+              >
+                <option value="">Semua Bulan</option>
+                {[
+                  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                  "Juli", "Agustus", "September", "Oktober", "November", "Desember",
+                ].map((nama, i) => (
+                  <option key={nama} value={String(i + 1)}>
+                    {nama}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="h-10 rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-ring"
+              >
+                <option value="">Semua Tahun</option>
+                {[0, 1, 2, 3].map((n) => {
+                  const y = new Date().getFullYear() - n;
+                  return (
+                    <option key={y} value={String(y)}>
+                      {y}
+                    </option>
+                  );
+                })}
+              </select>
+
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="h-10 rounded-xl border bg-background px-3 text-sm outline-none transition focus:border-ring"
+              >
+                <option value="all">Semua Status</option>
+                <option value="Lunas">Lunas</option>
+                <option value="Belum Bayar">Belum Bayar</option>
+                <option value="Angsuran">Angsuran</option>
+                <option value="Jatuh Tempo">Jatuh Tempo</option>
+                <option value="Tunggakan">Tunggakan</option>
+              </select>
+            </div>
           }
         />
 

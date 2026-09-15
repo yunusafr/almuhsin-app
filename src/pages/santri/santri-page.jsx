@@ -11,6 +11,7 @@ import {
   Users,
   Download,
   Database,
+  Trash2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,8 @@ import DataTableSearch from "@/components/data-table/data-table-search";
 import {
   useStudents,
   useSyncStudents,
+  useTrashedStudents,
+  useRestoreStudent,
 } from "@/features/santri/hooks/use-students";
 
 import { downloadCsv, listData } from "@/lib/utils";
@@ -49,6 +52,11 @@ export default function SantriPage() {
   const data = listData(studentsResponse);
 
   const syncMutation = useSyncStudents();
+
+  const { data: trashed = [] } = useTrashedStudents();
+  const restoreMutation = useRestoreStudent();
+
+  const [showTrash, setShowTrash] = useState(false);
 
   /*
   |--------------------------------------------------------------------------
@@ -274,6 +282,14 @@ function handleEdit(student) {
               <RefreshCw className="mr-2 h-4 w-4" />
               Refresh
             </Button>
+
+            <Button
+              variant={showTrash ? "default" : "outline"}
+              onClick={() => setShowTrash((v) => !v)}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              {showTrash ? "Kembali" : "Sampah"}
+            </Button>
           </div>
         }
       />
@@ -310,29 +326,79 @@ function handleEdit(student) {
         />
       </div>
 
-      <TableContainer>
-        <DataTableHeader
-          title="Daftar Santri"
-          description={`Total ${filteredData.length} santri`}
-          search={
-            <DataTableSearch
-              value={search}
-              onChange={handleSearchChange}
-              placeholder="Cari NIS, Nama, Rombel..."
-            />
-          }
-        />
+      {showTrash ? (
+        <TableContainer>
+          <DataTableHeader
+            title="Sampah (Santri Terhapus)"
+            description={`${trashed.length} santri terhapus — dapat dipulihkan`}
+          />
 
-        <DataTable
-          loading={isLoading}
-          data={filteredData}
-          columns={santriColumns({
-            onDetail: handleDetail,
-            onEdit: handleEdit,
-            onDelete: handleDelete,
-          })}
-        />
-      </TableContainer>
+          <div className="space-y-2 p-4">
+            {trashed.length === 0 ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                Tidak ada santri di sampah.
+              </p>
+            ) : (
+              trashed.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between rounded-2xl border p-4"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate font-medium">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {item.nis ?? "-"}
+                    </p>
+                  </div>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={restoreMutation.isPending}
+                    onClick={() =>
+                      restoreMutation.mutate(item.id, {
+                        onSuccess: () =>
+                          toast.success(`Santri ${item.name} dipulihkan.`),
+                        onError: (e) =>
+                          toast.error(
+                            e?.response?.data?.message ??
+                              "Gagal memulihkan santri.",
+                          ),
+                      })
+                    }
+                  >
+                    Pulihkan
+                  </Button>
+                </div>
+              ))
+            )}
+          </div>
+        </TableContainer>
+      ) : (
+        <TableContainer>
+          <DataTableHeader
+            title="Daftar Santri"
+            description={`Total ${filteredData.length} santri`}
+            search={
+              <DataTableSearch
+                value={search}
+                onChange={handleSearchChange}
+                placeholder="Cari NIS, Nama, Rombel..."
+              />
+            }
+          />
+
+          <DataTable
+            loading={isLoading}
+            data={filteredData}
+            columns={santriColumns({
+              onDetail: handleDetail,
+              onEdit: handleEdit,
+              onDelete: handleDelete,
+            })}
+          />
+        </TableContainer>
+      )}
 
       <SantriDialog
         open={dialogOpen}

@@ -29,6 +29,7 @@ import StatusBadge from "@/components/common/status-badge";
 import EmptyState from "@/components/common/empty-state";
 
 import { useInvoices } from "@/features/keuangan/hooks/use-invoices";
+import { useAgingReport, useCashFlowReport } from "@/features/keuangan/hooks/use-reports";
 
 import { getInvoiceStatus } from "../invoice/components/invoice-columns";
 
@@ -44,6 +45,11 @@ const STATUS_COLORS = {
 
 export default function LaporanPage() {
   const { data, isLoading, refetch } = useInvoices();
+  const agingQuery = useAgingReport();
+  const cashFlowQuery = useCashFlowReport();
+
+  const aging = agingQuery.data?.data ?? null;
+  const cashFlow = cashFlowQuery.data?.data ?? null;
 
   // API v2 paginated — normalisasi ke array (kompatibel array lama).
   const invoices = listData(data);
@@ -363,6 +369,83 @@ export default function LaporanPage() {
               </span>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Aging tunggakan + arus kas */}
+      <div className="grid gap-6 xl:grid-cols-2">
+        <div className="rounded-3xl border bg-card p-6 shadow-sm">
+          <h3 className="font-semibold">Aging Tunggakan</h3>
+
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tagihan lewat jatuh tempo dikelompokkan per umur.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            {!aging || aging.buckets?.every((b) => b.count === 0) ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                Tidak ada tunggakan. 🎉
+              </p>
+            ) : (
+              aging.buckets.map((b) => (
+                <div
+                  key={b.label}
+                  className="flex items-center justify-between rounded-2xl border p-4"
+                >
+                  <div>
+                    <p className="font-medium">{b.label}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {b.count} tagihan
+                    </p>
+                  </div>
+
+                  <p className="font-semibold text-red-600 dark:text-red-400">
+                    {formatCurrency(b.total)}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+
+          <p className="mt-4 text-sm font-medium">
+            Total tunggakan: {formatCurrency(aging?.grand_total ?? 0)}
+          </p>
+        </div>
+
+        <div className="rounded-3xl border bg-card p-6 shadow-sm">
+          <h3 className="font-semibold">Arus Kas Masuk per Bulan</h3>
+
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pendapatan dari pembayaran.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            {!cashFlow || cashFlow.series?.length === 0 ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                Belum ada pembayaran tercatat.
+              </p>
+            ) : (
+              cashFlow.series.map((s) => (
+                <div
+                  key={s.month}
+                  className="flex items-center justify-between rounded-2xl border p-4"
+                >
+                  <p className="font-medium">{s.month}</p>
+
+                  <div className="text-right">
+                    <p className="font-semibold">{formatCurrency(s.total)}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {s.count} transaksi
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          <p className="mt-4 text-sm font-medium">
+            Total pendapatan: {formatCurrency(cashFlow?.total_income ?? 0)}
+          </p>
         </div>
       </div>
     </div>
