@@ -1,1 +1,0 @@
-import{Ut as e}from"./index-8OFgyB_c.js";var t=async(t={})=>{let{data:n}=await e.get(`/attendances`,{params:t});return n},n=async t=>{let{data:n}=await e.post(`/attendances`,t);return n};export{t as n,n as t};

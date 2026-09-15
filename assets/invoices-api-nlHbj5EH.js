@@ -1,1 +1,0 @@
-import{Ut as e}from"./index-8OFgyB_c.js";var t=`/invoices`,n=async(n={})=>{let{data:r}=await e.get(t,{params:n});return r},r=async n=>{let{data:r}=await e.post(t,n);return r};export{n,r as t};
