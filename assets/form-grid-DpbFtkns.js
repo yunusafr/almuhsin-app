@@ -1,1 +1,0 @@
-import{W as e}from"./button-BPXa1-lC.js";var t=e();function n({children:e,cols:n=2}){return(0,t.jsx)(`div`,{className:`grid gap-5 ${{1:`grid-cols-1`,2:`md:grid-cols-2`,3:`md:grid-cols-3`,4:`md:grid-cols-4`}[n]}`,children:e})}export{n as t};
