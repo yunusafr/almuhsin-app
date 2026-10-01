@@ -73,11 +73,11 @@ export default function Navbar() {
 
               <div>
                 <h2 className="text-lg font-bold tracking-tight">
-                  Almuhsin App
+                  Pondok Pesantren Al-Muhsin
                 </h2>
 
                 <p className="text-xs text-muted-foreground">
-                  ERP Pondok Pesantren
+                  Kota Blitar
                 </p>
               </div>
             </Link>

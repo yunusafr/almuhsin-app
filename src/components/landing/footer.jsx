@@ -3,20 +3,22 @@ import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { scrollContainersToTop } from "@/lib/scroll";
 import useAuthStore from "@/features/auth/stores/auth-store";
+import { hero, pesantren } from "@/constants/profil-pesantren";
 
 const productMenus = [
-  { label: "Manajemen Santri", href: "/produk/santri" },
-  { label: "Presensi Digital", href: "/produk/presensi" },
-  { label: "Keuangan & Tagihan", href: "/produk/keuangan" },
-  { label: "Laporan & Statistik", href: "/produk/laporan" },
+  { label: "Profil Pesantren", href: "/#profil" },
+  { label: "Program Pendidikan", href: "/#program" },
+  { label: "Fasilitas", href: "/#fasilitas" },
+  { label: "Berita & Pengumuman", href: "/#berita" },
 ];
 
 const navigateMenus = [
   { label: "Beranda", href: "/" },
-  { label: "Tentang Kami", href: "/tentang" },
-  { label: "Kontak", href: "/kontak" },
-  { label: "Fitur", href: "/#features" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "Profil", href: "/#profil" },
+  { label: "Program", href: "/#program" },
+  { label: "Fasilitas", href: "/#fasilitas" },
+  { label: "Berita", href: "/#berita" },
+  { label: "Kontak", href: "/#kontak" },
 ];
 
 const supportMenus = [
@@ -101,19 +103,18 @@ export default function Footer() {
           <div className="flex flex-col items-center justify-between gap-8 lg:flex-row">
             <div>
               <span className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur">
-                Mulai Digitalisasi Pondok Anda
+                Pondok Pesantren Al-Muhsin Kota Blitar
               </span>
 
               <h2 className="mt-5 text-3xl font-bold text-white lg:text-5xl">
-                Kelola Pondok Pesantren
+                Mari Bergabung
                 <br />
-                Lebih Mudah Bersama Almuhsin App
+                Menjadi Santri Al-Muhsin
               </h2>
 
               <p className="mt-5 max-w-xl text-green-100">
-                Satu platform untuk mengelola santri, presensi, pembayaran,
-                administrasi, dan laporan pondok secara modern, cepat, dan
-                terintegrasi.
+                Informasi pendaftaran santri baru, program pendidikan, dan
+                kegiatan pesantren dapat ditanyakan langsung kepada kami.
               </p>
             </div>
 
@@ -121,9 +122,9 @@ export default function Footer() {
               size="lg"
               className="h-14 rounded-2xl bg-white px-8 text-base font-semibold text-green-700 hover:bg-slate-100"
               nativeButton={false}
-              render={<Link to={isAuthenticated ? "/app" : "/login"} />}
+              render={isAuthenticated ? <Link to="/app" /> : <a href="#kontak" />}
             >
-              {isAuthenticated ? "Buka Dashboard" : "Mulai Sekarang"}
+              {isAuthenticated ? "Buka Aplikasi" : "Hubungi Kami"}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -142,25 +143,21 @@ export default function Footer() {
 
               <div>
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-                  Almuhsin App
+                  {pesantren.nama}
                 </h2>
 
-                <p className="text-sm text-slate-400">
-                  ERP Pondok Pesantren Modern
-                </p>
+                <p className="text-sm text-slate-400">{pesantren.kota}</p>
               </div>
             </div>
 
             <p className="mt-8 max-w-md leading-8 text-slate-400">
-              Almuhsin App adalah sistem informasi pondok pesantren berbasis web
-              yang membantu digitalisasi administrasi, presensi, keuangan, serta
-              manajemen santri dalam satu platform yang modern.
+              {hero.kalimat}
             </p>
 
             <div className="mt-8 space-y-4 text-sm ">
               <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
                 <MapPin size={18} className="text-green-400" />
-                Indonesia
+                {pesantren.alamat}, {pesantren.kota}
               </div>
 
               <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
