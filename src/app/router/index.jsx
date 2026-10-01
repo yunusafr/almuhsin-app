@@ -16,6 +16,8 @@ const BantuanPage = lazy(() => import("@/pages/public/bantuan-page"));
 const KebijakanPrivasiPage = lazy(() => import("@/pages/public/kebijakan-privasi-page"));
 const SyaratKetentuanPage = lazy(() => import("@/pages/public/syarat-ketentuan-page"));
 const ProdukSantriPage = lazy(() => import("@/pages/public/produk/santri-page"));
+const DaftarBeritaPage = lazy(() => import("@/pages/public/daftar-berita-page"));
+const BeritaDetailPage = lazy(() => import("@/pages/public/berita-detail-page"));
 const ProdukPresensiPage = lazy(() => import("@/pages/public/produk/presensi-page"));
 const ProdukKeuanganPage = lazy(() => import("@/pages/public/produk/keuangan-page"));
 const ProdukLaporanPage = lazy(() => import("@/pages/public/produk/laporan-page"));
@@ -38,6 +40,7 @@ const PresensiGuruPage = lazy(() => import("@/pages/presensi-guru/presensi-guru-
 const HpPage = lazy(() => import("@/pages/hp/hp-page"));
 const SecurityGuardsPage = lazy(() => import("@/pages/security-guards/security-guards-page"));
 const UsersPage = lazy(() => import("@/pages/users/users-page"));
+const BeritaPage = lazy(() => import("@/pages/berita/berita-page"));
 const NotFoundPage = lazy(() => import("@/pages/misc/not-found-page"));
 
 export const router = createBrowserRouter([
@@ -73,6 +76,14 @@ export const router = createBrowserRouter([
       {
         path: "syarat-ketentuan",
         element: <SyaratKetentuanPage />,
+      },
+      {
+        path: "berita",
+        element: <DaftarBeritaPage />,
+      },
+      {
+        path: "berita/:slug",
+        element: <BeritaDetailPage />,
       },
       {
         path: "produk/santri",
@@ -175,6 +186,14 @@ export const router = createBrowserRouter([
         element: (
           <RoleGuard roles={["Super Admin"]}>
             <UsersPage />
+          </RoleGuard>
+        ),
+      },
+      {
+        path: "berita",
+        element: (
+          <RoleGuard roles={["Super Admin"]}>
+            <BeritaPage />
           </RoleGuard>
         ),
       },

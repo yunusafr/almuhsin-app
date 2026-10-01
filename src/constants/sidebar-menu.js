@@ -13,6 +13,7 @@ import {
   ReceiptText,
   HandCoins,
   UserCheck,
+  Newspaper,
 } from "lucide-react";
 
 export const sidebarMenus = {
@@ -57,6 +58,12 @@ export const sidebarMenus = {
       title: "Pengguna",
       path: "/app/pengguna",
       icon: UserCog,
+    },
+
+    {
+      title: "Berita",
+      path: "/app/berita",
+      icon: Newspaper,
     },
 
     {

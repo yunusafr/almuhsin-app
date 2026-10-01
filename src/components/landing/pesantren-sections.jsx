@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   BookOpen,
   Building2,
   CalendarDays,
@@ -17,8 +18,11 @@ import {
   Users,
   Warehouse,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
-import { berita, fasilitas, galeri, pesantren, program, profil } from "@/constants/profil-pesantren";
+import { fasilitas, galeri, pesantren, program, profil } from "@/constants/profil-pesantren";
+import { usePublicNews } from "@/features/berita/hooks/use-news";
+import { formatDate, listData } from "@/lib/utils";
 
 /* ---------------------------------------------------------------- */
 /*  Kepala bagian                                                    */
@@ -193,29 +197,66 @@ export function FasilitasSection() {
 /*  Berita                                                           */
 /* ---------------------------------------------------------------- */
 export function BeritaSection() {
+  const { data, isLoading } = usePublicNews({ per_page: 3 });
+  const daftar = listData(data);
+
   return (
     <section id="berita" className="scroll-mt-24 bg-white py-20 dark:bg-slate-950">
       <div className="container mx-auto px-6">
         <Kepala ikon={CalendarDays} judul="Berita & Pengumuman" keterangan="Kabar terbaru dari Pondok Pesantren Al-Muhsin Kota Blitar." />
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
-          {berita.map((b) => (
-            <article key={b.judul} className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <FotoMenyusul label="Foto berita" tinggi="h-40" />
-              <div className="flex flex-1 flex-col p-6">
-                <div className="flex items-center gap-3 text-xs">
-                  <span className="rounded-full bg-green-100 px-3 py-1 font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300">
-                    {b.kategori}
+
+        {isLoading ? (
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-72 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-900" />
+            ))}
+          </div>
+        ) : daftar.length === 0 ? (
+          <p className="mt-14 rounded-2xl border border-dashed border-slate-300 bg-slate-50 py-16 text-center text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900">
+            Belum ada berita yang diterbitkan.
+          </p>
+        ) : (
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {daftar.map((b) => (
+              <Link
+                key={b.id}
+                to={`/berita/${b.slug}`}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm transition hover:-translate-y-1 hover:border-green-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+              >
+                {b.cover_url ? (
+                  <img src={b.cover_url} alt={b.title} className="h-40 w-full object-cover" />
+                ) : (
+                  <FotoMenyusul label="Foto berita" tinggi="h-40" />
+                )}
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="flex items-center gap-3 text-xs">
+                    <span className="rounded-full bg-green-100 px-3 py-1 font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300">
+                      {b.category}
+                    </span>
+                    <span className="text-slate-500">{formatDate(b.published_at ?? b.created_at)}</span>
+                  </div>
+                  <h3 className="mt-4 text-lg font-bold leading-7 text-slate-900 dark:text-white">{b.title}</h3>
+                  <p className="mt-3 flex-1 text-sm leading-7 text-slate-600 dark:text-slate-400">
+                    {b.excerpt ?? `${String(b.body ?? "").slice(0, 140)}…`}
+                  </p>
+                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-green-700 group-hover:gap-2 dark:text-green-400">
+                    Baca selengkapnya
+                    <ArrowRight className="h-4 w-4" />
                   </span>
-                  <span className="text-slate-500">{b.tanggal}</span>
                 </div>
-                <h3 className="mt-4 text-lg font-bold leading-7 text-slate-900 dark:text-white">{b.judul}</h3>
-                <p className="mt-3 flex-1 text-sm leading-7 text-slate-600 dark:text-slate-400">{b.ringkasan}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-        <p className="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
-          Halaman baca berita dan pengelolaan berita dari aplikasi akan ditambahkan pada tahap berikutnya.
+              </Link>
+            ))}
+          </div>
+        )}
+
+        <p className="mt-10 text-center">
+          <Link
+            to="/berita"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-6 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-green-400 hover:text-green-700 dark:border-slate-700 dark:text-slate-200"
+          >
+            Lihat semua berita
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </p>
       </div>
     </section>

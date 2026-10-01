@@ -45,10 +45,9 @@ export const profil = {
     "Menanamkan akhlak dan kemandirian santri. (Isi sementara.)",
     "Menyiapkan santri yang siap mengabdi kepada masyarakat. (Isi sementara.)",
   ],
-  // GANTI: nama pengasuh & pimpinan
   pengasuh: [
-    { jabatan: "Pengasuh", nama: "(nama pengasuh)" },
-    { jabatan: "Pimpinan Pondok", nama: "(nama pimpinan)" },
+    { jabatan: "Pengasuh", nama: "Drs. KH. Subakir, M.Ag." },
+    { jabatan: "Pimpinan Pondok", nama: "Ust. Muchammad Ma'sum, M.Pd." },
   ],
 };
 
