@@ -1,1 +1,0 @@
-import{Gt as e}from"./index-CS1SM5xm.js";var t=`/invoices`,n=async(n={})=>{let{data:r}=await e.get(t,{params:n});return r},r=async n=>{let{data:r}=await e.post(t,n);return r};export{n,r as t};
