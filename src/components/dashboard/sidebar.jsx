@@ -58,7 +58,7 @@ ${collapsed ? "w-20" : "w-72"}
       </Link>
 
       {/* Menu */}
-      <nav className="flex-1 space-y-2 overflow-y-auto px-3 py-4">
+      <nav className="sidebar-scroll flex-1 space-y-2 overflow-y-auto px-3 py-4">
         {menus.map((menu) => {
           const Icon = menu.icon;
 
