@@ -71,15 +71,17 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* Penanda foto: belum memakai gambar dari internet */}
-          <div className="flex h-80 w-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-green-300 bg-gradient-to-br from-green-50 to-emerald-50 text-green-700 dark:border-green-800 dark:from-green-950/40 dark:to-emerald-950/30 dark:text-green-300 lg:h-[26rem]">
-            <GraduationCap className="h-10 w-10" />
-            <span className="text-base font-semibold">Foto Pesantren</span>
-            <span className="text-sm opacity-70">Foto menyusul</span>
-            <a href="#profil" className="mt-2 inline-flex items-center gap-1 text-sm font-semibold underline">
-              Lihat profil <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
+          {/* Foto asli pesantren (disimpan sendiri di public/img/pesantren/) */}
+          <figure className="overflow-hidden rounded-3xl border border-slate-200 shadow-lg dark:border-slate-800">
+            <img
+              src={hero.foto}
+              alt={hero.keteranganFoto}
+              className="h-80 w-full object-cover lg:h-[26rem]"
+            />
+            <figcaption className="bg-white px-5 py-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-400">
+              {hero.keteranganFoto}
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>

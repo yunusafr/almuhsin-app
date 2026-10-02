@@ -3,12 +3,22 @@
  * ------------------------------------------------------------------
  * Semua teks landing page diambil dari berkas ini supaya mudah diganti.
  *
- * CATATAN PENTING:
- * - Nama, alamat, dan kota SUDAH BENAR (sesuai keterangan pengelola).
- * - Bagian lain masih ISI SEMENTARA (dummy) dan perlu diganti dengan
- *   data resmi pesantren. Bagian yang perlu diganti ditandai komentar
- *   "GANTI:" di atasnya.
- * - Foto belum ada; sementara memakai kotak penanda "Foto menyusul".
+ * SUMBER ISI (diambil 1 Oktober 2026 dari situs resmi lembaga):
+ * - Sejarah, visi, dan misi  : https://smkislam1blitar.sch.id/sejarah-sekolah/
+ *                              https://smkislam1blitar.sch.id/visi-misi/
+ * - Foto hero & galeri       : berita resmi di smkislam1blitar.sch.id
+ *                              (disimpan sendiri di public/img/pesantren/)
+ * - Nama, alamat, pengasuh   : keterangan pengelola pesantren
+ *
+ * Pondok Pesantren Al-Muhsin berada di lingkungan SMK Islam 1 Blitar —
+ * sebutan resmi pada berita lembaga: "Pondok Pesantren Al-Muhsin SMK Islam 1
+ * Blitar". Karena itu sejarah, visi, dan misi di bawah ini adalah milik
+ * lembaga (Yayasan/LP Ma'arif NU Kota Blitar), bukan karangan.
+ *
+ * MASIH PERLU DILENGKAPI (ditandai komentar "GANTI:"):
+ * - nomor telepon/WhatsApp/surel pesantren
+ * - program pendidikan & fasilitas (belum ada sumber resminya)
+ * - motto resmi pesantren (sekarang usulan)
  */
 
 export const pesantren = {
@@ -16,10 +26,10 @@ export const pesantren = {
   namaPendek: "PP. Al-Muhsin",
   kota: "Kota Blitar",
   alamat: "Jl. Kaliputih, Dawuhan, Kauman, Kota Blitar",
-  // GANTI: nomor telepon/WhatsApp resmi
+  // GANTI: nomor telepon/WhatsApp resmi pesantren
   telepon: "(0342) 000000",
   whatsapp: "0812-0000-0000",
-  // GANTI: alamat surel resmi
+  // GANTI: alamat surel resmi pesantren
   email: "info@almuhsin.sch.id",
   petaUrl: "https://maps.google.com/?q=Jl.+Kaliputih+Dawuhan+Kauman+Kota+Blitar",
   jamLayanan: "Senin - Sabtu, 07.00 - 16.00 WIB",
@@ -29,21 +39,33 @@ export const hero = {
   // GANTI bila motto resmi pesantren berbeda
   motto: "Mencetak Generasi Qur'ani, Berilmu, dan Berakhlak",
   kalimat:
-    "Pondok Pesantren Al-Muhsin Kota Blitar membina santri dalam ilmu agama dan pendidikan formal, dengan bimbingan para asatidz serta lingkungan yang kondusif untuk menuntut ilmu.",
+    "Pondok Pesantren Al-Muhsin berada di lingkungan SMK Islam 1 Blitar. Santri dibina dalam ilmu agama dan pendidikan formal, dengan bimbingan para asatidz serta lingkungan yang kondusif untuk menuntut ilmu.",
+  foto: "/img/pesantren/hero-pesantren.jpg",
+  keteranganFoto: "Haflah Muwadda'ah santri Pondok Pesantren Al-Muhsin",
 };
 
-// GANTI: profil resmi pesantren
 export const profil = {
+  /**
+   * Sejarah lembaga — dikutip dari halaman Sejarah Sekolah (situs resmi).
+   * Diringkas tanpa mengubah makna.
+   */
   sejarah: [
-    "Pondok Pesantren Al-Muhsin Kota Blitar berdiri sebagai lembaga pendidikan Islam yang membina santri dalam bidang ilmu agama dan pendidikan formal. (Isi sementara — mohon diganti dengan sejarah resmi pesantren.)",
-    "Sejak awal berdirinya, pesantren ini berkomitmen mendampingi santri untuk menguasai ilmu alat, memperdalam kajian kitab, dan membiasakan adab serta akhlak dalam kehidupan sehari-hari. (Isi sementara.)",
+    "Pondok Pesantren Al-Muhsin merupakan pondok pesantren di lingkungan SMK Islam 1 Blitar, beralamat di Jl. Kaliputih, Dawuhan, Kauman, Kota Blitar.",
+    "Lembaga induknya, SMK Islam 1 Blitar, didirikan pada 2 Januari 1968 oleh Lembaga Pendidikan Ma'arif NU Cabang Blitar, dengan misi pengembangan ajaran Islam Ahlus Sunnah wal Jama'ah. Pada awal berdirinya bernama STM NU Blitar (Sekolah Teknologi Menengah Nahdlatul Ulama), kemudian berganti nama menjadi STM Islam Blitar pada tahun 1971.",
+    "Sejak berdiri, lembaga ini memadukan pendidikan kejuruan dengan pembinaan keagamaan — sebagaimana tercermin pada semboyan sekolah: Religius & Kompeten.",
   ],
-  visi: "Menjadi lembaga pendidikan Islam yang unggul dalam membentuk santri yang beriman, berilmu, berakhlak mulia, dan bermanfaat bagi masyarakat. (Isi sementara.)",
+  /** Visi lembaga — dikutip dari halaman Visi dan Misi (situs resmi). */
+  visi: "Mewujudkan SMK Islam 1 Blitar menjadi sekolah yang mampu mencetak teknisi yang profesional, beriman, bertaqwa kepada Allah SWT dan berakhlak mulia.",
+  /** Misi lembaga — dikutip dari halaman Visi dan Misi (situs resmi). */
   misi: [
-    "Menyelenggarakan pendidikan agama dan umum yang seimbang. (Isi sementara.)",
-    "Membina hafalan dan pemahaman Al-Qur'an. (Isi sementara.)",
-    "Menanamkan akhlak dan kemandirian santri. (Isi sementara.)",
-    "Menyiapkan santri yang siap mengabdi kepada masyarakat. (Isi sementara.)",
+    "Melaksanakan kurikulum berbasis kompetensi melalui pembelajaran dan penilaian berbasis kompetensi dan produksi.",
+    "Meningkatkan potensi peserta didik melalui kegiatan keagamaan, ekstrakurikuler, dan pembinaan kedisiplinan.",
+    "Meningkatkan kuantitas dan kualitas sumber daya melalui peningkatan kualifikasi dan sertifikasi kompetensi.",
+    "Mengembangkan dan meningkatkan sarana dan prasarana.",
+    "Mewujudkan kultur yang bermartabat, ramah, dan santun dalam suasana kekeluargaan.",
+    "Membangun kondisi yang tertib, aman, bersih, indah, nyaman, hijau, rindang, dan sehat.",
+    "Mewujudkan unit produksi sebagai wahana pelatihan berbasis produksi dan kewirausahaan.",
+    "Berupaya mewujudkan sistem dan kualitas pengelolaan melalui manajemen mutu ISO.",
   ],
   pengasuh: [
     { jabatan: "Pengasuh", nama: "Drs. KH. Subakir, M.Ag." },
@@ -51,7 +73,7 @@ export const profil = {
   ],
 };
 
-// GANTI: program pendidikan yang benar-benar berjalan
+// GANTI: program pendidikan yang benar-benar berjalan di pesantren
 export const program = [
   { nama: "Madrasah Diniyah", keterangan: "Kajian ilmu alat, fikih, dan akhlak setiap hari. (Isi sementara.)" },
   { nama: "Tahfidzul Qur'an", keterangan: "Bimbingan hafalan dengan setoran dan muraja'ah rutin. (Isi sementara.)" },
@@ -71,36 +93,18 @@ export const fasilitas = [
   { nama: "Lapangan", keterangan: "Olahraga dan kegiatan luar ruang." },
 ];
 
-// GANTI: berita asli (sementara hanya contoh tampilan)
-export const berita = [
-  {
-    judul: "Contoh Berita: Kegiatan Haul dan Doa Bersama",
-    tanggal: "1 Oktober 2026",
-    kategori: "Kegiatan",
-    ringkasan: "Contoh isi berita. Berita asli dapat ditulis melalui menu Berita setelah modulnya dipasang. (Isi sementara.)",
-  },
-  {
-    judul: "Contoh Berita: Penerimaan Santri Baru",
-    tanggal: "20 September 2026",
-    kategori: "Pengumuman",
-    ringkasan: "Contoh isi berita mengenai alur dan syarat pendaftaran santri baru. (Isi sementara.)",
-  },
-  {
-    judul: "Contoh Berita: Prestasi Santri di Lomba",
-    tanggal: "5 September 2026",
-    kategori: "Prestasi",
-    ringkasan: "Contoh isi berita prestasi santri pada perlombaan tingkat kota. (Isi sementara.)",
-  },
-];
-
-// GANTI: kegiatan yang biasa ditampilkan (foto menyusul)
+/**
+ * Galeri kegiatan — foto asli dari berita resmi lembaga,
+ * disimpan sendiri di public/img/pesantren/ (bukan mengambil dari situs lain
+ * setiap kali halaman dibuka).
+ */
 export const galeri = [
-  "Kegiatan Belajar",
-  "Hafalan & Muraja'ah",
-  "Pengajian Umum",
-  "Kerja Bakti",
-  "Olahraga",
-  "Pentas Seni",
+  { foto: "/img/pesantren/kegiatan-halal-bihalal.jpg", judul: "Halal bi halal keluarga besar LP Ma'arif NU di aula pesantren" },
+  { foto: "/img/pesantren/kegiatan-muskercab.jpg", judul: "Muskercab III PCNU Kota Blitar di Pondok Pesantren Al-Muhsin" },
+  { foto: "/img/pesantren/kegiatan-ramadhan.jpg", judul: "Kegiatan Pondok Pesantren Ramadhan 1446 H" },
+  { foto: "/img/pesantren/kegiatan-upacara.jpg", judul: "Upacara HUT ke-81 RI di lingkungan sekolah dan pesantren" },
+  { foto: "/img/pesantren/kegiatan-mekanik.jpg", judul: "Pelatihan mekanik bersama MPM Honda Jatim" },
+  { foto: "/img/pesantren/kegiatan-kunjungan.jpg", judul: "Kunjungan studi tiru SMK Sunan Drajat Lamongan" },
 ];
 
 export const menuTambahan = {

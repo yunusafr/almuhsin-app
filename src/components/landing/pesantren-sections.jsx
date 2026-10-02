@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { fasilitas, galeri, pesantren, program, profil } from "@/constants/profil-pesantren";
+import { fasilitas, galeri, hero, pesantren, program, profil } from "@/constants/profil-pesantren";
 import { usePublicNews } from "@/features/berita/hooks/use-news";
 import { formatDate, listData } from "@/lib/utils";
 
@@ -105,7 +105,17 @@ export function ProfilSection() {
           </div>
 
           <div className="space-y-6">
-            <FotoMenyusul label="Foto Pesantren" tinggi="h-72" />
+            <figure className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm dark:border-slate-800">
+              <img
+                src={hero.foto}
+                alt={hero.keteranganFoto}
+                className="h-72 w-full object-cover"
+                loading="lazy"
+              />
+              <figcaption className="bg-white px-5 py-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-400">
+                {hero.keteranganFoto}
+              </figcaption>
+            </figure>
             <div className="grid gap-4 sm:grid-cols-2">
               {profil.pengasuh.map((p) => (
                 <div key={p.jabatan} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -184,7 +194,20 @@ export function FasilitasSection() {
           <h3 className="text-center text-xl font-bold text-slate-900 dark:text-white">Galeri Kegiatan</h3>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {galeri.map((g) => (
-              <FotoMenyusul key={g} label={g} tinggi="h-44" />
+              <figure
+                key={g.foto}
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+              >
+                <img
+                  src={g.foto}
+                  alt={g.judul}
+                  loading="lazy"
+                  className="h-44 w-full object-cover transition duration-300 group-hover:scale-105"
+                />
+                <figcaption className="p-4 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                  {g.judul}
+                </figcaption>
+              </figure>
             ))}
           </div>
         </div>
