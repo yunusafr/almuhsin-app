@@ -94,17 +94,19 @@ export const fasilitas = [
 ];
 
 /**
- * Galeri kegiatan — foto asli dari berita resmi lembaga,
- * disimpan sendiri di public/img/pesantren/ (bukan mengambil dari situs lain
- * setiap kali halaman dibuka).
+ * Galeri kegiatan — HANYA kegiatan Pondok Pesantren Al-Muhsin / santri.
+ * Berita sekolah yang umum (upacara, kunjungan studi tiru, pelatihan
+ * industri) sengaja TIDAK dimasukkan agar halaman ini fokus ke pondok.
+ * Foto asli dari berita resmi lembaga, disimpan sendiri di
+ * public/img/pesantren/ (bukan mengambil dari situs lain setiap dibuka).
  */
 export const galeri = [
-  { foto: "/img/pesantren/kegiatan-halal-bihalal.jpg", judul: "Halal bi halal keluarga besar LP Ma'arif NU di aula pesantren" },
-  { foto: "/img/pesantren/kegiatan-muskercab.jpg", judul: "Muskercab III PCNU Kota Blitar di Pondok Pesantren Al-Muhsin" },
+  { foto: "/img/pesantren/kegiatan-ziarah-wali.jpg", judul: "Ziarah wali ke Madura bersama santri Pondok Pesantren Al-Muhsin" },
   { foto: "/img/pesantren/kegiatan-ramadhan.jpg", judul: "Kegiatan Pondok Pesantren Ramadhan 1446 H" },
-  { foto: "/img/pesantren/kegiatan-upacara.jpg", judul: "Upacara HUT ke-81 RI di lingkungan sekolah dan pesantren" },
-  { foto: "/img/pesantren/kegiatan-mekanik.jpg", judul: "Pelatihan mekanik bersama MPM Honda Jatim" },
-  { foto: "/img/pesantren/kegiatan-kunjungan.jpg", judul: "Kunjungan studi tiru SMK Sunan Drajat Lamongan" },
+  { foto: "/img/pesantren/kegiatan-maulid.jpg", judul: "Peringatan Maulid Nabi dan Hari Santri Nasional bersama KH. Subakir" },
+  { foto: "/img/pesantren/kegiatan-halal-bihalal.jpg", judul: "Halal bi halal keluarga besar LP Ma'arif NU di aula pesantren" },
+  { foto: "/img/pesantren/kegiatan-halaqoh.jpg", judul: "Halaqoh dan Festival Media Pondok Jawa Timur (MPJ) 2024" },
+  { foto: "/img/pesantren/kegiatan-blkk.jpg", judul: "Kunjungan Menteri Ketenagakerjaan RI ke BLKK Al-Muhsin" },
 ];
 
 export const menuTambahan = {

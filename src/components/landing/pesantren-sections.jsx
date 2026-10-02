@@ -81,6 +81,10 @@ export function ProfilSection() {
             ))}
 
             <div className="rounded-2xl border border-green-200 bg-green-50/70 p-6 dark:border-green-900 dark:bg-green-950/30">
+              <p className="mb-5 text-xs leading-6 text-green-800 dark:text-green-200">
+                Visi &amp; misi berikut adalah visi &amp; misi lembaga induk —
+                SMK Islam 1 Blitar bersama Pondok Pesantren Al-Muhsin.
+              </p>
               <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
                 <Target className="h-5 w-5" />
                 <span className="font-bold">Visi</span>
